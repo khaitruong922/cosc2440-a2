@@ -1,14 +1,14 @@
 package s3818074.cosc2440a2.models;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "products")
 public class Product {
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue
+    private UUID id;
 
     @Column
     private String name;
@@ -25,31 +25,21 @@ public class Product {
     @Column
     private String description;
 
-    @Column
-    private String category;
+    @ManyToOne
+    private Category category;
 
     @Column
     private double sellingPrice;
-
-    public Product(String name, String model, String brand, String company, String description, String category, double sellingPrice) {
-        this.name = name;
-        this.model = model;
-        this.brand = brand;
-        this.company = company;
-        this.description = description;
-        this.category = category;
-        this.sellingPrice = sellingPrice;
-    }
 
     public Product() {
 
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -93,11 +83,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
