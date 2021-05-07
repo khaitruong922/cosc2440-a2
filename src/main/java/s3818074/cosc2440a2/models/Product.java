@@ -26,15 +26,11 @@ public class Product {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "fkOrder")
+    @JoinColumn(name = "categoryId", referencedColumnName = "id")
     private Category category;
 
     @Column
     private double sellingPrice;
-
-    public Product() {
-
-    }
 
     public UUID getId() {
         return id;

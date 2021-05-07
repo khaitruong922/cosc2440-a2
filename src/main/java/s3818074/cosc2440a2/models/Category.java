@@ -17,10 +17,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
-    public Category() {
-
-    }
-
     public UUID getId() {
         return id;
     }
