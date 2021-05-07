@@ -26,6 +26,7 @@ public class Product {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "fkOrder")
     private Category category;
 
     @Column
