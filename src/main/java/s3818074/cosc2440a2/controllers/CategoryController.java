@@ -5,22 +5,27 @@ import org.springframework.web.bind.annotation.*;
 import s3818074.cosc2440a2.models.Category;
 import s3818074.cosc2440a2.models.Product;
 import s3818074.cosc2440a2.repositories.CategoryRepository;
+import s3818074.cosc2440a2.services.CategoryService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
+    private final CategoryService service;
+
     @Autowired
-    private CategoryRepository categoryRepository;
+    public CategoryController(CategoryService s) {
+        this.service = s;
+    }
 
     @GetMapping()
     public List<Category> getAll() {
-        return categoryRepository.findAll();
+        return service.getAll();
     }
 
     @PostMapping()
     public Category add(@RequestBody Category category) {
-        return categoryRepository.save(category);
+        return service.add(category);
     }
 }
