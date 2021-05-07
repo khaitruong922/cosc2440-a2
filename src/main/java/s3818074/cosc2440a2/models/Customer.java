@@ -1,12 +1,10 @@
 package s3818074.cosc2440a2.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
-@Entity(name = "customers")
+@Entity
+@Table(name = "customer")
 public class Customer {
 
     @Id

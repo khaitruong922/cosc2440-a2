@@ -3,7 +3,7 @@ package s3818074.cosc2440a2.models;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity("orderDetails")
+@Entity(name = "orderDetail")
 public class OrderDetail {
     @Id
     @GeneratedValue

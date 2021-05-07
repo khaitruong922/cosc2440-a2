@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "orders")
+@Entity(name = "order")
 public class Order {
     @Id
     @GeneratedValue

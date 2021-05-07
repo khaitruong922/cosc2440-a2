@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "category")
 public class Category {
     @Id
     @GeneratedValue
