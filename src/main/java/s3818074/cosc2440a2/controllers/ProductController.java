@@ -1,33 +1,19 @@
 package s3818074.cosc2440a2.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import s3818074.cosc2440a2.models.Product;
-import s3818074.cosc2440a2.repositories.ProductRepository;
-import s3818074.cosc2440a2.services.CategoryService;
 import s3818074.cosc2440a2.services.ProductService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController {
-    private final ProductService service;
-
+public class ProductController extends AbstractController<Product, UUID> {
     @Autowired
-    public ProductController(ProductService s) {
-        this.service = s;
-    }
-
-    @GetMapping()
-    public List<Product> getAll() {
-        return service.getAll();
-    }
-
-    @PostMapping()
-    public Product add(@RequestBody Product product) {
-        return service.add(product);
+    public ProductController(ProductService service) {
+        super(service);
     }
 
 }
