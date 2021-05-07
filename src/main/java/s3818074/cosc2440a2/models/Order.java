@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "order")
+@Entity(name = "orders")
 public class Order {
     @Id
     @GeneratedValue
@@ -15,11 +15,11 @@ public class Order {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "staffId", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "staffId",referencedColumnName = "id")
     private Staff staff;
 
-    @OneToMany(mappedBy = "orderDetail")
+    @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
     public UUID getId() {

@@ -9,7 +9,11 @@ public class OrderDetail {
     @GeneratedValue
     private UUID id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "orderId", referencedColumnName = "id")
+    private Order order;
+
+    @ManyToOne
     @JoinColumn(name = "productId", referencedColumnName = "id")
     private Product product;
 
