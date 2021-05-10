@@ -1,25 +1,19 @@
 package s3818074_s3818487.cosc2440a2.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import s3818074_s3818487.cosc2440a2.models.Provider;
+import s3818074_s3818487.cosc2440a2.services.ProviderService;
 
-import java.util.List;
 import java.util.UUID;
 
-public interface ProviderController {
-    @GetMapping
-    List<Provider> getAll();
+@RestController
+@RequestMapping("/providers")
+public class ProviderController extends AbstractController<Provider, UUID> {
 
-    @GetMapping("/{id}")
-    Provider getById(@PathVariable("id") UUID id);
-
-    @PostMapping
-    Provider add(@RequestBody Provider t);
-
-    @DeleteMapping("/{id}")
-    HttpStatus deleteById(@PathVariable("id") UUID id);
-
-    @DeleteMapping
-    HttpStatus deleteAll();
+    @Autowired
+    public ProviderController(ProviderService service) {
+        super(service);
+    }
 }

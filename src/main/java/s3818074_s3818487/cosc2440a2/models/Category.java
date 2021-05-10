@@ -8,7 +8,7 @@ import java.util.UUID;
 @Table(name = "category")
 public class Category {
     @Id
-    @Column(name="id")
+    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
@@ -41,5 +41,9 @@ public class Category {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
     }
 }

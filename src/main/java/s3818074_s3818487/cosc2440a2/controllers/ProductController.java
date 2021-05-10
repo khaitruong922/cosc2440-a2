@@ -1,27 +1,20 @@
 package s3818074_s3818487.cosc2440a2.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import s3818074_s3818487.cosc2440a2.models.Product;
 import s3818074_s3818487.cosc2440a2.representations.ProductCreateDto;
-import s3818074_s3818487.cosc2440a2.representations.ProductResponse;
+import s3818074_s3818487.cosc2440a2.services.ProductService;
 
-import java.util.List;
 import java.util.UUID;
 
-public interface ProductController{
-    @GetMapping
-    List<ProductResponse> getAll();
+@RestController
+@RequestMapping("/products")
+public class ProductController extends AbstractController<Product, UUID> {
+    @Autowired
+    public ProductController(ProductService service) {
+        super(service);
+    }
 
-    @GetMapping("/{id}")
-    Product getById(@PathVariable("id") UUID id);
-
-    @PostMapping
-    Product add(@RequestBody ProductCreateDto t);
-
-    @DeleteMapping("/{id}")
-    HttpStatus deleteById(@PathVariable("id") UUID id);
-
-    @DeleteMapping
-    HttpStatus deleteAll();
 }

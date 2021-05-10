@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import s3818074_s3818487.cosc2440a2.models.Category;
 import s3818074_s3818487.cosc2440a2.repositories.CategoryRepository;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service

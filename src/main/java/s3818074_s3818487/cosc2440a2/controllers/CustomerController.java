@@ -1,25 +1,19 @@
 package s3818074_s3818487.cosc2440a2.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import s3818074_s3818487.cosc2440a2.models.Customer;
+import s3818074_s3818487.cosc2440a2.services.CustomerService;
 
-import java.util.List;
 import java.util.UUID;
 
-public interface CustomerController{
-    @GetMapping
-    List<Customer> getAll();
+@RestController
+@RequestMapping("/customers")
+public class CustomerController extends AbstractController<Customer,UUID>{
 
-    @GetMapping("/{id}")
-    Customer getById(@PathVariable("id") UUID id);
-
-    @PostMapping
-    Customer add(@RequestBody Customer t);
-
-    @DeleteMapping("/{id}")
-    HttpStatus deleteById(@PathVariable("id") UUID id);
-
-    @DeleteMapping
-    HttpStatus deleteAll();
+    @Autowired
+    public CustomerController(CustomerService service) {
+        super(service);
+    }
 }
