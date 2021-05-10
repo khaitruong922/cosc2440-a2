@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Cosc2440A2Application {
+public class MyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Cosc2440A2Application.class, args);
+        SpringApplication.run(MyApplication.class, args);
     }
 
 }
