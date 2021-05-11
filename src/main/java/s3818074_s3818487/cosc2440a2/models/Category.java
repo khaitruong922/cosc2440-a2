@@ -8,25 +8,13 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "category")
-public class Category {
-    @Id
-    @GeneratedValue
-    private UUID id;
-
+public class Category extends BaseEntity {
     @Column
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     @JsonIgnoreProperties("category")
     private List<Product> products;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

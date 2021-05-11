@@ -1,14 +1,13 @@
 package s3818074_s3818487.cosc2440a2.models;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity(name="receivingNote")
-public class ReceivingNote {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class ReceivingNote extends BaseEntity {
 
     @Column
     @Temporal(TemporalType.DATE)
@@ -17,15 +16,6 @@ public class ReceivingNote {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
-
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;

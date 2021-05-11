@@ -4,11 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity(name = "provider")
-public class Provider {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class Provider extends BaseEntity {
 
     @Column
     private String name;
@@ -26,14 +22,6 @@ public class Provider {
     private String email;
 
     // TODO: contact person
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

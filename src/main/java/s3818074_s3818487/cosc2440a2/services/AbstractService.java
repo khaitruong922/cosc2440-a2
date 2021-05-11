@@ -3,11 +3,11 @@ package s3818074_s3818487.cosc2440a2.services;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
-
+import s3818074_s3818487.cosc2440a2.models.BaseEntity;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractService<T, ID> {
+public abstract class AbstractService<T extends BaseEntity, ID> {
     private static final int RESULTS_PER_PAGE = 5;
 
     protected JpaRepository<T, ID> repo;
@@ -57,5 +57,7 @@ public abstract class AbstractService<T, ID> {
         }
     }
 
-
+    public HttpStatus updateById(T t, ID id){
+        return null;
+    }
 }

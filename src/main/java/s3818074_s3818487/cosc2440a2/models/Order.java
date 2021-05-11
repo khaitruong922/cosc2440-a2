@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "orders")
-public class Order {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class Order extends BaseEntity {
 
     @Column
     @Temporal(TemporalType.DATE)
@@ -21,14 +18,6 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;

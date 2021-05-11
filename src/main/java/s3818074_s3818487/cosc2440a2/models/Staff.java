@@ -4,10 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity(name = "staff")
-public class Staff {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class Staff extends BaseEntity {
 
     @Column
     private String name;
@@ -22,14 +19,6 @@ public class Staff {
     private String email;
 
     // TODO: contact person
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

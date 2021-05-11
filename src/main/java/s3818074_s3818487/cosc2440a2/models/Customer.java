@@ -5,11 +5,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "customer")
-public class Customer {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class Customer extends BaseEntity {
 
     @Column
     private String name;
@@ -27,14 +23,6 @@ public class Customer {
     private String email;
 
     // TODO: contact person
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

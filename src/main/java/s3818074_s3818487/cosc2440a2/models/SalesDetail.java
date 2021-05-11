@@ -4,10 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity(name = "salesDetail")
-public class SalesDetail {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class SalesDetail extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
@@ -23,14 +20,6 @@ public class SalesDetail {
     // TODO product price * quantity
     @Column
     private float totalValue;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Product getProduct() {
         return product;

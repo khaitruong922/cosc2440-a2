@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import s3818074_s3818487.cosc2440a2.models.Product;
-import s3818074_s3818487.cosc2440a2.representations.ProductCreateDto;
 import s3818074_s3818487.cosc2440a2.services.ProductService;
 
 import java.util.UUID;

@@ -5,11 +5,7 @@ import java.util.UUID;
 
 // TODO:  To make it easier for warehouse keepers, data of a note should be transferred from an order.
 @Entity(name = "receivingDetail")
-public class ReceivingDetail {
-    @Id
-    @GeneratedValue
-    private UUID id;
-
+public class ReceivingDetail extends BaseEntity {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private ReceivingNote receivingNote;
@@ -20,14 +16,6 @@ public class ReceivingDetail {
 
     @Column
     private int quantity;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public ReceivingNote getReceivingNote() {
         return receivingNote;

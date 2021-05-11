@@ -6,6 +6,5 @@ import s3818074_s3818487.cosc2440a2.models.Staff;
 
 import java.util.UUID;
 
-@Repository
 public interface StaffRepository extends JpaRepository<Staff, UUID> {
 }

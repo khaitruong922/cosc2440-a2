@@ -5,10 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity(name="deliveryNote")
-public class DeliveryNote {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class DeliveryNote extends BaseEntity {
 
     @Column
     @Temporal(TemporalType.DATE)
@@ -17,15 +14,6 @@ public class DeliveryNote {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
-
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;

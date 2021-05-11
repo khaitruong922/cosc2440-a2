@@ -1,19 +1,13 @@
 package s3818074_s3818487.cosc2440a2.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = "product")
-public class Product {
-    @Id
-    @GeneratedValue
-    private UUID id;
-
+public class Product extends BaseEntity {
     @Column
     private String name;
 
@@ -36,14 +30,6 @@ public class Product {
 
     @Column
     private double sellingPrice;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

@@ -4,10 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity(name = "orderDetail")
-public class OrderDetail {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class OrderDetail extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
@@ -22,14 +19,6 @@ public class OrderDetail {
 
     @Column
     private float price;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Product getProduct() {
         return product;

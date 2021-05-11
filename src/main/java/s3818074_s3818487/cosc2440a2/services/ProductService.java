@@ -6,8 +6,6 @@ import s3818074_s3818487.cosc2440a2.models.Category;
 import s3818074_s3818487.cosc2440a2.models.Product;
 import s3818074_s3818487.cosc2440a2.repositories.CategoryRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ProductRepository;
-import s3818074_s3818487.cosc2440a2.representations.ProductResponse;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,10 +29,6 @@ public class ProductService extends AbstractService<Product, UUID> {
         product.setCategory(category.get());
         category.get().addProduct(product);
         return super.add(product);
-    }
-
-    public List<ProductResponse> getAllJoinInfo() {
-        return productRepository.getJoinInfo();
     }
 
 }

@@ -3,20 +3,17 @@ package s3818074_s3818487.cosc2440a2.models;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity(name="salesInvoice")
-public class SalesInvoice {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class SalesInvoice extends  BaseEntity{
 
     @Column
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @Column
-    private String nameOfSalesStaff;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Staff staff;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
@@ -24,14 +21,6 @@ public class SalesInvoice {
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<SalesDetail> SaleDetail;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;
@@ -41,12 +30,12 @@ public class SalesInvoice {
         this.date = date;
     }
 
-    public String getNameOfSalesStaff() {
-        return nameOfSalesStaff;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setNameOfSalesStaff(String nameOfSalesStaff) {
-        this.nameOfSalesStaff = nameOfSalesStaff;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public Customer getCustomer() {
