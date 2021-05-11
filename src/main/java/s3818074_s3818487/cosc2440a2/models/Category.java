@@ -10,8 +10,7 @@ import java.util.UUID;
 @Table(name = "category")
 public class Category {
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @Column

@@ -8,8 +8,7 @@ import java.util.UUID;
 @Entity(name = "orders")
 public class Order {
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @Column

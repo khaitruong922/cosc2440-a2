@@ -6,8 +6,7 @@ import java.util.UUID;
 @Entity(name = "orderDetail")
 public class OrderDetail {
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne

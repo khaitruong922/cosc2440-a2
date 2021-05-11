@@ -7,8 +7,7 @@ import java.util.UUID;
 @Entity(name="deliveryNote")
 public class DeliveryNote {
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @Column

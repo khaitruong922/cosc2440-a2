@@ -29,7 +29,7 @@ public class Product {
     @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JsonIgnoreProperties("products")
     @JoinColumn(referencedColumnName = "id")
     private Category category;

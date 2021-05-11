@@ -7,16 +7,15 @@ import java.util.UUID;
 @Entity(name = "deliveryDetail")
 public class DeliveryDetail {
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "deliveryNoteId", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private DeliveryNote deliveryNote;
 
     @ManyToOne
-    @JoinColumn(name = "productId", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Product product;
 
     @Column

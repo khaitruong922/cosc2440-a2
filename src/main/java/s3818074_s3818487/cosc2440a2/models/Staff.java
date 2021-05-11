@@ -6,8 +6,7 @@ import java.util.UUID;
 @Entity(name = "staff")
 public class Staff {
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @Column

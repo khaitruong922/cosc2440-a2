@@ -7,8 +7,7 @@ import java.util.UUID;
 public class Provider {
 
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @Column
