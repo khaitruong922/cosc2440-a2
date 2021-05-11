@@ -18,7 +18,6 @@ public abstract class AbstractController<T, ID> {
         return service.getAll();
     }
 
-
     @GetMapping("/{id}")
     T getById(@PathVariable("id") ID id) {
         return service.getById(id);
@@ -33,7 +32,7 @@ public abstract class AbstractController<T, ID> {
     T add(@RequestBody T t) {
         return service.add(t);
     }
-    
+
     @DeleteMapping("/{id}")
     HttpStatus deleteById(@PathVariable("id") ID id) {
         return service.deleteById(id);
