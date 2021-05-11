@@ -19,11 +19,10 @@ public class SalesInvoice {
     private String nameOfSalesStaff;
 
     @ManyToOne
-    @JoinColumn(name = "customerId",referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Customer customer;
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "si_sd_fk", referencedColumnName = "id")
     private List<SalesDetail> SaleDetail;
 
     public UUID getId() {

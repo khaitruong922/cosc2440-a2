@@ -10,11 +10,11 @@ public class OrderDetail {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "orderId", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "productId", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Product product;
 
     @Column

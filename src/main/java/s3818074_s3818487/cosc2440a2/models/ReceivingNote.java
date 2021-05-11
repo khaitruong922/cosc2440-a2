@@ -15,7 +15,7 @@ public class ReceivingNote {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "staffId",referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
 

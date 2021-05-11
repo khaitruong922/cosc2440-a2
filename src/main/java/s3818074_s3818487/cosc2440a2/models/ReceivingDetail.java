@@ -11,11 +11,11 @@ public class ReceivingDetail {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "receivingNoteId", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private ReceivingNote receivingNote;
 
     @ManyToOne
-    @JoinColumn(name = "productId", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Product product;
 
     @Column

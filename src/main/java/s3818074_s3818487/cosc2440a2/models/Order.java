@@ -16,7 +16,7 @@ public class Order {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "staffId",referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
     @OneToMany(mappedBy = "order")
