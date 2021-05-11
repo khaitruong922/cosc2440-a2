@@ -15,8 +15,7 @@ public class Category {
     @Column
     private String name;
 
-    @OneToMany(targetEntity = Product.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "cp_fk", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private List<Product> products;
 
     public UUID getId() {

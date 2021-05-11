@@ -1,6 +1,7 @@
 package s3818074_s3818487.cosc2440a2.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -29,7 +30,8 @@ public class Product {
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnoreProperties("products")
+    @JoinColumn(referencedColumnName = "id")
     private Category category;
 
     @Column
