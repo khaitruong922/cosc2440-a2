@@ -1,6 +1,7 @@
 package s3818074_s3818487.cosc2440a2.models;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.UUID;
 public class ReceivingNote extends BaseEntity {
 
     @Column
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Date date;
 
     @ManyToOne
