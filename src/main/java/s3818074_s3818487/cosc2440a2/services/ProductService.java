@@ -12,13 +12,11 @@ import java.util.UUID;
 
 @Service
 public class ProductService extends AbstractService<Product, UUID> {
-    private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
     @Autowired
     public ProductService(ProductRepository repo, CategoryRepository categoryRepository) {
         super(repo);
-        this.productRepository = repo;
         this.categoryRepository = categoryRepository;
     }
 

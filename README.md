@@ -6,11 +6,11 @@ For example: http://localhost:8080/swagger.html
 
 1. CRUD for these classes (5% for pagination)
 
-- Staff
+- Staff [Done]
 
-- Customer (Search API)
+- Customer (Search API) [In-progress | #Contact person]
 
-- Order
+- Order [In-progress]
 
 - Inventory receiving note
 

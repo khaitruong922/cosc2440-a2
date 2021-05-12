@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,10 +21,10 @@ public class StaffService extends AbstractService<Staff, UUID> {
     public HttpStatus updateById(Staff staff, UUID id) {
         try {
             Staff targetedStaff = repo.getOne(id);
-            targetedStaff.setAddress(staff.getAddress() != null ? staff.getAddress() : targetedStaff.getAddress());
-            targetedStaff.setEmail(staff.getEmail() != null ? staff.getEmail() : targetedStaff.getEmail());
-            targetedStaff.setName(staff.getName() != null ? staff.getName() : targetedStaff.getName());
-            targetedStaff.setPhone(staff.getPhone() != null ? staff.getPhone() : targetedStaff.getPhone());
+            targetedStaff.setAddress(Optional.of(staff.getAddress()).orElse(targetedStaff.getAddress()));
+            targetedStaff.setEmail(Optional.of(staff.getEmail()).orElse(targetedStaff.getEmail()));
+            targetedStaff.setName(Optional.of(staff.getName()).orElse(targetedStaff.getName()));
+            targetedStaff.setPhone(Optional.of(staff.getPhone()).orElse(targetedStaff.getPhone()));
             repo.save(targetedStaff);
             return HttpStatus.OK;
         } catch (Exception e) {

@@ -1,12 +1,14 @@
 package s3818074_s3818487.cosc2440a2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity(name = "orderDetail")
 public class OrderDetail extends BaseEntity {
-
     @ManyToOne
+    @JsonIgnoreProperties("orderDetails")
     @JoinColumn(referencedColumnName = "id")
     private Order order;
 
