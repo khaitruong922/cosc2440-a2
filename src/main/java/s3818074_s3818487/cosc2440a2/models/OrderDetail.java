@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity(name = "orderDetail")
+@Entity
+@Table(name = "orderDetails")
 public class OrderDetail extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("orderDetails")
     @JoinColumn(referencedColumnName = "id")
     private Order order;
@@ -44,5 +45,13 @@ public class OrderDetail extends BaseEntity {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

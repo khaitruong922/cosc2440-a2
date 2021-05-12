@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity(name="deliveryNote")
+@Entity
+@Table(name = "deliveryNotes")
 public class DeliveryNote extends BaseEntity {
 
     @Column

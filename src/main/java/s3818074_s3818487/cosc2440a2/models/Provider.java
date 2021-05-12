@@ -3,7 +3,8 @@ package s3818074_s3818487.cosc2440a2.models;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity(name = "provider")
+@Entity
+@Table(name = "providers")
 public class Provider extends BaseEntity {
 
     @Column

@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.UUID;
 
 // TODO:  To make it easier for warehouse keepers, data of a note should be transferred from an order.
-@Entity(name = "receivingDetail")
+@Entity
+@Table(name = "receivingDetails")
 public class ReceivingDetail extends BaseEntity {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")

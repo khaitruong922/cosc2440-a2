@@ -1,16 +1,19 @@
 package s3818074_s3818487.cosc2440a2.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "orders")
+@Entity
+@Table(name = "orders")
 public class Order extends BaseEntity {
-
     @Column
+    @CreationTimestamp
     @Temporal(TemporalType.DATE)
     private Date date;
 
@@ -18,7 +21,7 @@ public class Order extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     @JsonIgnoreProperties("order")
     private List<OrderDetail> orderDetails;
 

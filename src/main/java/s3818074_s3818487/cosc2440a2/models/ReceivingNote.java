@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity(name="receivingNote")
+@Entity
+@Table(name = "receivingNotes")
 public class ReceivingNote extends BaseEntity {
 
     @Column

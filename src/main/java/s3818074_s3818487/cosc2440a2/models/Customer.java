@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 public class Customer extends BaseEntity {
 
     @Column

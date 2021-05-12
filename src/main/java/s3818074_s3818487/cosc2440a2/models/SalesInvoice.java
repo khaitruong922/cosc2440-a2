@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name="salesInvoice")
+@Entity
+@Table(name = "salesInvoices")
 public class SalesInvoice extends  BaseEntity{
 
     @Column
