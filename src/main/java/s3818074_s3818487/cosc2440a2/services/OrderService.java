@@ -10,6 +10,7 @@ import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
+@Transactional
 public class OrderService extends AbstractService<Order, UUID> {
     private final OrderDetailRepository orderDetailRepository;
 

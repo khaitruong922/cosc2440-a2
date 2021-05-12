@@ -6,11 +6,14 @@ import s3818074_s3818487.cosc2440a2.models.Category;
 import s3818074_s3818487.cosc2440a2.models.Product;
 import s3818074_s3818487.cosc2440a2.repositories.CategoryRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ProductRepository;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class ProductService extends AbstractService<Product, UUID> {
     private final CategoryRepository categoryRepository;
 

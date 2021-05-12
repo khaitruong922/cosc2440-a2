@@ -10,10 +10,12 @@ import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ProductRepository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class OrderDetailService extends AbstractService<OrderDetail, UUID> {
     private final ProductRepository productRepository;
 
