@@ -19,18 +19,14 @@ public class StaffService extends AbstractService<Staff, UUID> {
     }
 
     @Override
-    public HttpStatus updateById(Staff staff, UUID id) {
-        try {
-            Staff targetedStaff = repo.getOne(id);
-            targetedStaff.setAddress(Optional.of(staff.getAddress()).orElse(targetedStaff.getAddress()));
-            targetedStaff.setEmail(Optional.of(staff.getEmail()).orElse(targetedStaff.getEmail()));
-            targetedStaff.setName(Optional.of(staff.getName()).orElse(targetedStaff.getName()));
-            targetedStaff.setPhone(Optional.of(staff.getPhone()).orElse(targetedStaff.getPhone()));
-            repo.save(targetedStaff);
-            return HttpStatus.OK;
-        } catch (Exception e) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
+    public Staff updateById(Staff staff, UUID id) {
+        Staff targetedStaff = repo.getOne(id);
+        targetedStaff.setAddress(Optional.of(staff.getAddress()).orElse(targetedStaff.getAddress()));
+        targetedStaff.setEmail(Optional.of(staff.getEmail()).orElse(targetedStaff.getEmail()));
+        targetedStaff.setName(Optional.of(staff.getName()).orElse(targetedStaff.getName()));
+        targetedStaff.setPhone(Optional.of(staff.getPhone()).orElse(targetedStaff.getPhone()));
+
+        return repo.save(targetedStaff);
     }
 }
 

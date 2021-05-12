@@ -13,7 +13,6 @@ import java.util.UUID;
 @Table(name = "orders")
 public class Order extends BaseEntity {
     @Column
-    @CreationTimestamp
     @Temporal(TemporalType.DATE)
     private Date date;
 
@@ -21,7 +20,7 @@ public class Order extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @OneToMany( mappedBy = "order")
     @JsonIgnoreProperties("order")
     private List<OrderDetail> orderDetails;
 

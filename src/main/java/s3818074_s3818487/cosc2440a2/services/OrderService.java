@@ -3,22 +3,21 @@ package s3818074_s3818487.cosc2440a2.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import s3818074_s3818487.cosc2440a2.models.Order;
 import s3818074_s3818487.cosc2440a2.models.OrderDetail;
+
 import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import javax.swing.text.html.Option;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
-@Transactional
 public class OrderService extends AbstractService<Order, UUID> {
     private final OrderDetailRepository orderDetailRepository;
 
@@ -59,7 +58,26 @@ public class OrderService extends AbstractService<Order, UUID> {
     }
 
     @Override
-    public HttpStatus updateById(Order order, UUID uuid) {
-        return super.updateById(order, uuid);
+    public Order updateById(Order orderBody, UUID uuid) {
+        Order order = repo.getOne(uuid);
+        List<OrderDetail> updatedListOfOrderDetail = new ArrayList<>();
+        // Handle Order Details update
+        if (orderBody.getOrderDetails() != null){
+            orderBody.getOrderDetails().forEach(orderDetail -> {
+                Optional<OrderDetail> updatedOrderDetail = orderDetailRepository.findById(orderDetail.getId());
+                if (updatedOrderDetail.isEmpty()) throw new Error();
+                updatedOrderDetail.get().setOrder(orderBody);
+                updatedListOfOrderDetail.add(updatedOrderDetail.get());
+            });
+            order.setOrderDetails(Optional.of(updatedListOfOrderDetail).orElse(order.getOrderDetails()));
+        }
+        // Handle Staff update
+        if (orderBody.getStaff() != null){
+            Optional<Staff> staff = staffRepository.findById(orderBody.getStaff().getId());
+            order.setStaff(staff.orElse(order.getStaff()));
+        }
+        // TODO Handle Date update
+//        order.setDate(Optional.of(orderBody.getDate()).orElse(order.getDate()));
+        return repo.save(order);
     }
 }

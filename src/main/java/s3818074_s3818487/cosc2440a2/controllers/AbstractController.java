@@ -45,7 +45,7 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    HttpStatus updateById(@RequestBody T t,@PathVariable("id") ID id){
+    T updateById(@RequestBody T t,@PathVariable("id") ID id){
         return service.updateById(t, id);
     };
 }

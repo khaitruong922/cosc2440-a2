@@ -3,10 +3,11 @@ package s3818074_s3818487.cosc2440a2.services;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Propagation;
 import s3818074_s3818487.cosc2440a2.models.BaseEntity;
 
 import javax.persistence.MappedSuperclass;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,8 +66,7 @@ public abstract class AbstractService<T extends BaseEntity, ID> {
         }
     }
 
-    @Transactional
-    public HttpStatus updateById(T t, ID id){
+    public T updateById(T t, ID id){
         return null;
     }
 }

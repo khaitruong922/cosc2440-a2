@@ -8,7 +8,6 @@ import s3818074_s3818487.cosc2440a2.repositories.CategoryRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ProductRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

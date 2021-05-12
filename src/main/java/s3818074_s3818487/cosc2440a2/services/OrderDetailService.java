@@ -34,20 +34,15 @@ public class OrderDetailService extends AbstractService<OrderDetail, UUID> {
     }
 
     @Override
-    public HttpStatus updateById(OrderDetail orderDetail, UUID id) {
-        try {
-            OrderDetail t = repo.getOne(id);
-            if (orderDetail.getProduct() != null){
-                Optional<Product> updatedProduct = productRepository.findById(orderDetail.getProduct().getId());
-                if (updatedProduct.isEmpty()) throw new Error("There is no valid product");
-                t.setProduct(updatedProduct.orElse(t.getProduct()));
-            }
-            t.setPrice(Optional.of(orderDetail.getPrice()).orElse(t.getPrice()));
-            t.setQuantity(Optional.of(orderDetail.getQuantity()).orElse(t.getQuantity()));
-            repo.save(t);
-            return HttpStatus.OK;
-        } catch (Exception e) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+    public OrderDetail updateById(OrderDetail orderDetail, UUID id) {
+        OrderDetail t = repo.getOne(id);
+        if (orderDetail.getProduct() != null){
+            Optional<Product> updatedProduct = productRepository.findById(orderDetail.getProduct().getId());
+            if (updatedProduct.isEmpty()) throw new Error("There is no valid product");
+            t.setProduct(updatedProduct.orElse(t.getProduct()));
         }
+        t.setPrice(Optional.of(orderDetail.getPrice()).orElse(t.getPrice()));
+        t.setQuantity(Optional.of(orderDetail.getQuantity()).orElse(t.getQuantity()));
+        return repo.save(t);
     }
 }
