@@ -24,10 +24,14 @@ public class ProductService extends AbstractService<Product, UUID> {
 
     @Override
     public Product add(Product product) {
-        Optional<Category> category = categoryRepository.findById(product.getCategory().getId());
-        if (category.isEmpty()) return null;
-        product.setCategory(category.get());
-        category.get().addProduct(product);
+        Optional<Category> categoryOptional = categoryRepository.findById(product.getCategory().getId());
+        if (categoryOptional.isEmpty()) {
+            product.setCategory(null);
+            return super.add(product);
+        }
+        Category category = categoryOptional.get();
+        product.setCategory(category);
+        category.addProduct(product);
         return super.add(product);
     }
 

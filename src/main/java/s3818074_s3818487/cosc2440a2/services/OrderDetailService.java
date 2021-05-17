@@ -28,21 +28,23 @@ public class OrderDetailService extends AbstractService<OrderDetail, UUID> {
     @Override
     public OrderDetail add(OrderDetail orderDetail) {
         Optional<Product> product = productRepository.findById(orderDetail.getProduct().getId());
-        if(product.isEmpty()) return null;
+        if (product.isEmpty()) return null;
         orderDetail.setProduct(product.get());
         return super.add(orderDetail);
     }
 
     @Override
-    public OrderDetail updateById(OrderDetail orderDetail, UUID id) {
-        OrderDetail t = repo.getOne(id);
-        if (orderDetail.getProduct() != null){
-            Optional<Product> updatedProduct = productRepository.findById(orderDetail.getProduct().getId());
+    public OrderDetail updateById(OrderDetail newOrderDetail, UUID id) {
+        Optional<OrderDetail> orderDetailOptional = repo.findById(id);
+        if (orderDetailOptional.isEmpty()) return null;
+        OrderDetail orderDetail = orderDetailOptional.get();
+        if (newOrderDetail.getProduct() != null) {
+            Optional<Product> updatedProduct = productRepository.findById(newOrderDetail.getProduct().getId());
             if (updatedProduct.isEmpty()) throw new Error("There is no valid product");
-            t.setProduct(updatedProduct.orElse(t.getProduct()));
+            orderDetail.setProduct(updatedProduct.orElse(orderDetail.getProduct()));
         }
-        t.setPrice(Optional.of(orderDetail.getPrice()).orElse(t.getPrice()));
-        t.setQuantity(Optional.of(orderDetail.getQuantity()).orElse(t.getQuantity()));
-        return repo.save(t);
+        orderDetail.setPrice(Optional.of(newOrderDetail.getPrice()).orElse(orderDetail.getPrice()));
+        orderDetail.setQuantity(Optional.of(newOrderDetail.getQuantity()).orElse(orderDetail.getQuantity()));
+        return repo.save(orderDetail);
     }
 }
