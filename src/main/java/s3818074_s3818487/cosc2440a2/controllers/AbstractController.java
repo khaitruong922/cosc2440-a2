@@ -15,19 +15,20 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
     }
 
     @GetMapping
-    List<T> getAll() {
-        return service.getAll();
+    List<T> getAll(@PathVariable(value = "page", required = false) Integer page) {
+        return service.getAll(page);
     }
+
 
     @GetMapping("/{id}")
     T getById(@PathVariable("id") ID id) {
         return service.getById(id);
     }
 
-    @GetMapping("/pages/{page}")
-    List<T> getAllByPage(@PathVariable("page") int page) {
-        return service.getAllByPage(page);
-    }
+//    @GetMapping("/pages/{page}")
+//    List<T> getAllByPage(@PathVariable(value = "page", required = false) int page) {
+//        return service.getAllByPage(page);
+//    }
 
     @PostMapping
     T add(@RequestBody T t) {
@@ -45,7 +46,9 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    T updateById(@RequestBody T t,@PathVariable("id") ID id){
+    T updateById(@RequestBody T t, @PathVariable("id") ID id) {
         return service.updateById(t, id);
-    };
+    }
+
+    ;
 }

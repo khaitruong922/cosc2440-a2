@@ -15,13 +15,13 @@ public class ReceivingNoteFilter {
 
     public ReceivingNoteFilter start(Date startDate) {
         if (startDate == null) return this;
-        receivingNotes = receivingNotes.stream().filter(note -> note.getDate().after(startDate)).collect(Collectors.toList());
+        receivingNotes = receivingNotes.stream().filter(note -> !note.getDate().before(startDate)).collect(Collectors.toList());
         return this;
     }
 
     public ReceivingNoteFilter end(Date endDate) {
         if (endDate == null) return this;
-        receivingNotes = receivingNotes.stream().filter(note -> note.getDate().before(endDate)).collect(Collectors.toList());
+        receivingNotes = receivingNotes.stream().filter(note -> !note.getDate().after(endDate)).collect(Collectors.toList());
         return this;
     }
 

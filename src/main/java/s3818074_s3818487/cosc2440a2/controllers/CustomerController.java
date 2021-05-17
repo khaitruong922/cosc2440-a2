@@ -21,10 +21,19 @@ public class CustomerController extends AbstractController<Customer, UUID> {
         super(service);
     }
 
-    @GetMapping("/search")
+    // Without search param
+    @Override
+    @GetMapping("/all")
+    List<Customer> getAll(Integer page) {
+        return super.getAll(page);
+    }
+
+    // With search param
+    @GetMapping
     public List<Customer> search(@RequestParam(required = false) String name,
                                  @RequestParam(required = false) String phone,
-                                 @RequestParam(required = false) String address) {
-        return new CustomerFilter(service.getAll()).withName(name).withPhone(phone).withAddress(address).get();
+                                 @RequestParam(required = false) String address,
+                                 @RequestParam(required = false) Integer page) {
+        return new CustomerFilter(super.getAll(page)).withName(name).withPhone(phone).withAddress(address).get();
     }
 }

@@ -10,7 +10,6 @@ import javax.persistence.MappedSuperclass;
 import java.util.List;
 import java.util.Optional;
 
-@MappedSuperclass
 public abstract class AbstractService<T extends BaseEntity, ID> {
     private static final int RESULTS_PER_PAGE = 5;
 
@@ -22,6 +21,11 @@ public abstract class AbstractService<T extends BaseEntity, ID> {
 
     public List<T> getAll() {
         return repo.findAll();
+    }
+
+    public List<T> getAll(Integer page) {
+        if (page == null) return getAll();
+        return repo.findAll(PageRequest.of(page, RESULTS_PER_PAGE)).toList();
     }
 
     @Transactional
@@ -38,11 +42,6 @@ public abstract class AbstractService<T extends BaseEntity, ID> {
         Optional<T> t = repo.findById(id);
         if (t.isEmpty()) return null;
         return t.get();
-    }
-
-    @Transactional
-    public List<T> getAllByPage(int page) {
-        return repo.findAll(PageRequest.of(page, RESULTS_PER_PAGE)).toList();
     }
 
     @Transactional
@@ -65,7 +64,7 @@ public abstract class AbstractService<T extends BaseEntity, ID> {
         }
     }
 
-    public T updateById(T t, ID id){
+    public T updateById(T t, ID id) {
         return null;
     }
 }

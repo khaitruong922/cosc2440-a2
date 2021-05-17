@@ -10,7 +10,8 @@ import java.util.Date;
 public class DeliveryNote extends BaseEntity {
 
     @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date date;
 
     @ManyToOne

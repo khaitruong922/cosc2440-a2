@@ -11,14 +11,15 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseEntity {
     @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date date;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
-    @OneToMany( mappedBy = "order")
+    @OneToMany(mappedBy = "order")
     @JsonIgnoreProperties("order")
     private List<OrderDetail> orderDetails;
 

@@ -8,10 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "salesInvoices")
-public class SalesInvoice extends  BaseEntity{
+public class SalesInvoice extends BaseEntity {
 
     @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date date;
 
     @ManyToOne
@@ -22,7 +23,7 @@ public class SalesInvoice extends  BaseEntity{
     @JoinColumn(referencedColumnName = "id")
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<SalesDetail> SaleDetail;
 
     public Date getDate() {

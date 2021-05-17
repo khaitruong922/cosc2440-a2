@@ -16,13 +16,13 @@ public class SalesInvoiceFilter {
 
     public SalesInvoiceFilter start(Date startDate) {
         if (startDate == null) return this;
-        salesInvoices = salesInvoices.stream().filter(invoice -> invoice.getDate().after(startDate)).collect(Collectors.toList());
+        salesInvoices = salesInvoices.stream().filter(invoice -> !invoice.getDate().before(startDate)).collect(Collectors.toList());
         return this;
     }
 
     public SalesInvoiceFilter end(Date endDate) {
         if (endDate == null) return this;
-        salesInvoices = salesInvoices.stream().filter(invoice -> invoice.getDate().before(endDate)).collect(Collectors.toList());
+        salesInvoices = salesInvoices.stream().filter(invoice -> !invoice.getDate().after(endDate)).collect(Collectors.toList());
         return this;
     }
 
