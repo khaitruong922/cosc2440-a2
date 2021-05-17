@@ -1,20 +1,18 @@
 package s3818074_s3818487.cosc2440a2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import s3818074_s3818487.cosc2440a2.models.Order;
 import s3818074_s3818487.cosc2440a2.models.OrderDetail;
-
 import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
-import javax.swing.text.html.Option;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service

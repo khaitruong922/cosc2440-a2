@@ -3,11 +3,10 @@ package s3818074_s3818487.cosc2440a2.services;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import s3818074_s3818487.cosc2440a2.models.BaseEntity;
 
 import javax.persistence.MappedSuperclass;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 

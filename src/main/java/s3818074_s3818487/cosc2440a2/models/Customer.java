@@ -1,7 +1,8 @@
 package s3818074_s3818487.cosc2440a2.models;
 
-import javax.persistence.*;
-import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "customers")
