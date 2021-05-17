@@ -22,6 +22,9 @@ public class Provider extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column
+    private String contactPerson;
+
     // TODO: contact person
 
     public String getName() {
@@ -62,5 +65,13 @@ public class Provider extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 }

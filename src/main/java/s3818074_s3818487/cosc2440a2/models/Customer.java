@@ -22,7 +22,8 @@ public class Customer extends BaseEntity {
     @Column
     private String email;
 
-    // TODO: contact person
+    @Column
+    private String contactPerson;
 
     public String getName() {
         return name;
@@ -62,5 +63,13 @@ public class Customer extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 }
