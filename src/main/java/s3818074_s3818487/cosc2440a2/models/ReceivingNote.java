@@ -1,10 +1,12 @@
 package s3818074_s3818487.cosc2440a2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,12 +14,16 @@ import java.util.UUID;
 public class ReceivingNote extends BaseEntity {
 
     @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date date;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receivingNote")
+    @JsonIgnoreProperties("receivingNote")
+    private List<ReceivingDetail> receivingDetails;
 
     public Date getDate() {
         return date;
@@ -33,5 +39,13 @@ public class ReceivingNote extends BaseEntity {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+
+    public List<ReceivingDetail> getReceivingDetails() {
+        return receivingDetails;
+    }
+
+    public void setReceivingDetails(List<ReceivingDetail> receivingDetails) {
+        this.receivingDetails = receivingDetails;
     }
 }

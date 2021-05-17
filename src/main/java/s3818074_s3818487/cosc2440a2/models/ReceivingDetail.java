@@ -1,5 +1,7 @@
 package s3818074_s3818487.cosc2440a2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -9,6 +11,7 @@ import java.util.UUID;
 public class ReceivingDetail extends BaseEntity {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
+    @JsonIgnoreProperties("receivingDetails")
     private ReceivingNote receivingNote;
 
     @ManyToOne
