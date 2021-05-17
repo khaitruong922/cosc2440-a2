@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "receivingNotes")
-public class ReceivingNote extends BaseEntity implements DateEntity {
+public class ReceivingNote extends BaseEntity {
 
     @Column
     @Temporal(value = TemporalType.DATE)

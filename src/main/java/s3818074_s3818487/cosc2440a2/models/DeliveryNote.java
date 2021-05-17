@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "deliveryNotes")
-public class DeliveryNote extends BaseEntity implements DateEntity {
+public class DeliveryNote extends BaseEntity {
 
     @Column
     @Temporal(value = TemporalType.DATE)

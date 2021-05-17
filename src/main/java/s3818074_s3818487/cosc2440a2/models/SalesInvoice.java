@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "salesInvoices")
-public class SalesInvoice extends BaseEntity implements DateEntity {
+public class SalesInvoice extends BaseEntity {
 
     @Column
     @Temporal(value = TemporalType.DATE)

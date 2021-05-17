@@ -24,6 +24,13 @@ public class DeliveryNoteController extends AbstractController<DeliveryNote, UUI
         super(service);
     }
 
+    @Override
+    @GetMapping("/all")
+    List<DeliveryNote> getAll(Integer page) {
+        return super.getAll(page);
+    }
+
+
     @GetMapping
     List<DeliveryNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
