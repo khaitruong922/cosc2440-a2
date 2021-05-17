@@ -7,26 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SalesInvoiceFilter {
-    private List<SalesInvoice> salesInvoices;
+public class SalesInvoiceFilter extends DateFilter<SalesInvoice> {
 
-    public SalesInvoiceFilter(List<SalesInvoice> salesInvoices) {
-        this.salesInvoices = salesInvoices;
-    }
-
-    public SalesInvoiceFilter start(Date startDate) {
-        if (startDate == null) return this;
-        salesInvoices = salesInvoices.stream().filter(invoice -> !invoice.getDate().before(startDate)).collect(Collectors.toList());
-        return this;
-    }
-
-    public SalesInvoiceFilter end(Date endDate) {
-        if (endDate == null) return this;
-        salesInvoices = salesInvoices.stream().filter(invoice -> !invoice.getDate().after(endDate)).collect(Collectors.toList());
-        return this;
-    }
-
-    public List<SalesInvoice> get() {
-        return salesInvoices;
+    public SalesInvoiceFilter(List<SalesInvoice> dateEntities) {
+        super(dateEntities);
     }
 }

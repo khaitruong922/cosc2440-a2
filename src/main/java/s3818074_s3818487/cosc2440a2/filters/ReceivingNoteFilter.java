@@ -6,26 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReceivingNoteFilter {
-    private List<ReceivingNote> receivingNotes;
+public class ReceivingNoteFilter extends DateFilter<ReceivingNote> {
 
-    public ReceivingNoteFilter(List<ReceivingNote> receivingNotes) {
-        this.receivingNotes = receivingNotes;
-    }
-
-    public ReceivingNoteFilter start(Date startDate) {
-        if (startDate == null) return this;
-        receivingNotes = receivingNotes.stream().filter(note -> !note.getDate().before(startDate)).collect(Collectors.toList());
-        return this;
-    }
-
-    public ReceivingNoteFilter end(Date endDate) {
-        if (endDate == null) return this;
-        receivingNotes = receivingNotes.stream().filter(note -> !note.getDate().after(endDate)).collect(Collectors.toList());
-        return this;
-    }
-
-    public List<ReceivingNote> get() {
-        return receivingNotes;
+    public ReceivingNoteFilter(List<ReceivingNote> dateEntities) {
+        super(dateEntities);
     }
 }

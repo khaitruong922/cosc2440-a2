@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class Order extends BaseEntity {
+public class Order extends BaseEntity implements DateEntity{
     @Column
     @Temporal(value = TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
