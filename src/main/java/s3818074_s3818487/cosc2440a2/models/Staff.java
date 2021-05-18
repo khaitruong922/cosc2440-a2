@@ -19,7 +19,16 @@ public class Staff extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    // TODO: contact person
+    @Column
+    private String contactPerson;
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
 
     public String getName() {
         return name;

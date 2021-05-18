@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import s3818074_s3818487.cosc2440a2.models.BaseEntity;
 
-import javax.persistence.MappedSuperclass;
 import java.util.List;
 import java.util.Optional;
 

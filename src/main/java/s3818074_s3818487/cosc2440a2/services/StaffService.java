@@ -24,6 +24,7 @@ public class StaffService extends AbstractService<Staff, UUID> {
         targetedStaff.setEmail(Optional.of(staff.getEmail()).orElse(targetedStaff.getEmail()));
         targetedStaff.setName(Optional.of(staff.getName()).orElse(targetedStaff.getName()));
         targetedStaff.setPhone(Optional.of(staff.getPhone()).orElse(targetedStaff.getPhone()));
+        targetedStaff.setContactPerson(Optional.of(staff.getContactPerson()).orElse(targetedStaff.getContactPerson()));
 
         return repo.save(targetedStaff);
     }

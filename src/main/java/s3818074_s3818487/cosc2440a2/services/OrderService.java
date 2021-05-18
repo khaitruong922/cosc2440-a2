@@ -38,6 +38,9 @@ public class OrderService extends AbstractService<Order, UUID> {
             if (orderDetail.isEmpty()) {
                 isRolledBack.set(true);
             } else {
+                if (orderDetail.get().getOrder() != null){
+                    throw new Error("Order detail " + orderDetail.get().getId() + " has been used!" );
+                }
                 orderDetail.get().setOrder(order);
                 listOfOrderDetails.add(orderDetail.get());
             }
@@ -61,12 +64,26 @@ public class OrderService extends AbstractService<Order, UUID> {
         List<OrderDetail> updatedListOfOrderDetail = new ArrayList<>();
         // Handle Order Details update
         if (orderBody.getOrderDetails() != null){
-            orderBody.getOrderDetails().forEach(orderDetail -> {
-                Optional<OrderDetail> updatedOrderDetail = orderDetailRepository.findById(orderDetail.getId());
-                if (updatedOrderDetail.isEmpty()) throw new Error();
-                updatedOrderDetail.get().setOrder(orderBody);
-                updatedListOfOrderDetail.add(updatedOrderDetail.get());
-            });
+            if (orderBody.getOrderDetails().size() > 0){
+                orderBody.getOrderDetails().forEach(orderDetail -> {
+                    Optional<OrderDetail> updatedOrderDetail = orderDetailRepository.findById(orderDetail.getId());
+                    if (updatedOrderDetail.isEmpty()) throw new Error();
+                    if (updatedOrderDetail.get().getOrder() != null){
+                        throw new Error("Order detail " + updatedOrderDetail.get().getId() + " has been used!" );
+                    }
+                    updatedOrderDetail.get().setOrder(order);
+                    updatedListOfOrderDetail.add(updatedOrderDetail.get());
+                });
+            } else {
+                order.getOrderDetails().forEach(orderDetail -> {
+                    Optional<OrderDetail> updatedOrderDetail = orderDetailRepository.findById(orderDetail.getId());
+                    if (updatedOrderDetail.isEmpty()) throw new Error();
+                    if (updatedOrderDetail.get().getOrder() != null){
+                        updatedOrderDetail.get().setOrder(null);
+                    }
+                    updatedListOfOrderDetail.add(updatedOrderDetail.get());
+                });
+            }
             order.setOrderDetails(Optional.of(updatedListOfOrderDetail).orElse(order.getOrderDetails()));
         }
         // Handle Staff update
@@ -74,8 +91,8 @@ public class OrderService extends AbstractService<Order, UUID> {
             Optional<Staff> staff = staffRepository.findById(orderBody.getStaff().getId());
             order.setStaff(staff.orElse(order.getStaff()));
         }
-        // TODO Handle Date update
-//        order.setDate(Optional.of(orderBody.getDate()).orElse(order.getDate()));
+        // Handle Date update
+        order.setDate(Optional.of(orderBody.getDate()).orElse(order.getDate()));
         return repo.save(order);
     }
 }
