@@ -13,6 +13,7 @@ import s3818074_s3818487.cosc2440a2.models.Product;
 import s3818074_s3818487.cosc2440a2.models.ReceivingNote;
 import s3818074_s3818487.cosc2440a2.models.WarehouseInfo;
 import s3818074_s3818487.cosc2440a2.services.DeliveryNoteService;
+import s3818074_s3818487.cosc2440a2.services.ProductService;
 import s3818074_s3818487.cosc2440a2.services.ReceivingNoteService;
 
 import java.util.*;
@@ -23,11 +24,13 @@ import java.util.stream.Collectors;
 public class WarehouseInfoController {
     private final ReceivingNoteService receivingNoteService;
     private final DeliveryNoteService deliveryNoteService;
+    private final ProductService productService;
 
     @Autowired
-    public WarehouseInfoController(ReceivingNoteService receivingNoteService, DeliveryNoteService deliveryNoteService) {
+    public WarehouseInfoController(ReceivingNoteService receivingNoteService, DeliveryNoteService deliveryNoteService, ProductService productService) {
         this.receivingNoteService = receivingNoteService;
         this.deliveryNoteService = deliveryNoteService;
+        this.productService = productService;
     }
 
     @GetMapping
@@ -38,7 +41,7 @@ public class WarehouseInfoController {
         List<DeliveryNote> deliveryNotes = new DeliveryNoteFilter(deliveryNoteService.getAll()).start(startDate).end(endDate).in(date).get();
         Map<Product, Integer> receivedMap = new HashMap<>();
         Map<Product, Integer> deliveryMap = new HashMap<>();
-        Set<Product> products = new LinkedHashSet<>();
+        List<Product> products = productService.getAll();
 
         receivingNotes.forEach(rn -> {
             rn.getReceivingDetails().forEach(rd -> {
@@ -52,8 +55,6 @@ public class WarehouseInfoController {
                 deliveryMap.put(product, deliveryMap.getOrDefault(product, 0) + dd.getQuantity());
             });
         });
-        products.addAll(receivedMap.keySet());
-        products.addAll(deliveryMap.keySet());
         return products.stream().map(p -> new WarehouseInfo(p, receivedMap.getOrDefault(p, 0), deliveryMap.getOrDefault(p, 0))).collect(Collectors.toList());
     }
 }
