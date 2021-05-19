@@ -1,6 +1,5 @@
 package s3818074_s3818487.cosc2440a2.filters;
 
-import s3818074_s3818487.cosc2440a2.models.ReceivingNote;
 import s3818074_s3818487.cosc2440a2.models.SalesInvoice;
 import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 
