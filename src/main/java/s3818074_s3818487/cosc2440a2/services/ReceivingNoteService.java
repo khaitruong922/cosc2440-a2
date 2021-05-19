@@ -33,17 +33,19 @@ public class ReceivingNoteService extends AbstractService<ReceivingNote, UUID> {
     @Override
     public ReceivingNote add(ReceivingNote receivingNote) {
         // Handle staff
-        Optional<Staff> staffOptional = staffRepository.findById(receivingNote.getStaff().getId());
-        if (staffOptional.isEmpty()) throw new Error("Staff does not exist!");
+        Staff staff = receivingNote.getStaff();
+        if (staff == null) throw new RuntimeException("Staff not found in request!");
+        Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
+        if (staffOptional.isEmpty()) throw new RuntimeException("Staff does not exist!");
         receivingNote.setStaff(staffOptional.get());
         List<ReceivingDetail> receivingDetails = new ArrayList<>();
         // Handle receiving details
         receivingNote.getReceivingDetails().forEach(rd -> {
             Optional<ReceivingDetail> receivingDetailOptional = receivingDetailRepository.findById(rd.getId());
-            if (receivingDetailOptional.isEmpty()) throw new Error("Receiving detail does not exist");
+            if (receivingDetailOptional.isEmpty()) throw new RuntimeException("Receiving detail does not exist");
             ReceivingDetail receivingDetail = receivingDetailOptional.get();
             if (receivingDetail.getReceivingNote() != null)
-                throw new Error("Receiving detail is already belong to a receiving note");
+                throw new RuntimeException("Receiving detail is already belong to a receiving note");
             receivingDetail.setReceivingNote(receivingNote);
             receivingDetails.add(receivingDetail);
         });
