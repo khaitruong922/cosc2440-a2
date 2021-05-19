@@ -21,7 +21,7 @@ public class ReceivingNote extends BaseEntity {
     private Staff staff;
 
     @OneToMany(mappedBy = "receivingNote")
-    @JsonIgnoreProperties("receivingNote")
+    @JsonIgnoreProperties(value = "receivingNote", allowSetters = true)
     private List<ReceivingDetail> receivingDetails;
 
     public Date getDate() {

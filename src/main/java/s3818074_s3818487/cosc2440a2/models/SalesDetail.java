@@ -1,5 +1,7 @@
 package s3818074_s3818487.cosc2440a2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,16 +12,17 @@ public class SalesDetail extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Product product;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "id")
+    @JsonIgnoreProperties(value = "salesDetails",allowSetters = true)
+    private SalesInvoice salesInvoice;
+
     @Column
     private int quantity;
 
     // TODO this price will be copied from product price, after copying users can change them manually by another API if needed
     @Column
-    private float price;
-
-    // TODO product price * quantity
-    @Column
-    private float totalValue;
+    private double price;
 
     public Product getProduct() {
         return product;
@@ -37,19 +40,19 @@ public class SalesDetail extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public float getTotalValue() {
-        return totalValue;
+    public SalesInvoice getSalesInvoice() {
+        return salesInvoice;
     }
 
-    public void setTotalValue(float totalValue) {
-        this.totalValue = totalValue;
+    public void setSalesInvoice(SalesInvoice salesInvoice) {
+        this.salesInvoice = salesInvoice;
     }
 }

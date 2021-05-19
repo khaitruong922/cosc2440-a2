@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "orderDetails")
 public class OrderDetail extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("orderDetails")
+    @JsonIgnoreProperties(value = "orderDetails", allowSetters = true)
     @JoinColumn(referencedColumnName = "id")
     private Order order;
 

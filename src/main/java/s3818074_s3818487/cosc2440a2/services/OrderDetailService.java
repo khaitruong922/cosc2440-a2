@@ -24,9 +24,11 @@ public class OrderDetailService extends AbstractService<OrderDetail, UUID> {
 
     @Override
     public OrderDetail add(OrderDetail orderDetail) {
-        Optional<Product> product = productRepository.findById(orderDetail.getProduct().getId());
-        if (product.isEmpty()) throw new RuntimeException("Product not found!");
-        orderDetail.setProduct(product.get());
+        Product product = orderDetail.getProduct();
+        if (product == null) throw new RuntimeException("Missing product argument!");
+        Optional<Product> productOptional = productRepository.findById(product.getId());
+        if (productOptional.isEmpty()) throw new RuntimeException("Product not found!");
+        orderDetail.setProduct(productOptional.get());
         return super.add(orderDetail);
     }
 

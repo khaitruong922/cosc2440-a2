@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class Order extends BaseEntity{
+public class Order extends BaseEntity {
     @Column
     @Temporal(value = TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -20,7 +20,7 @@ public class Order extends BaseEntity{
     private Staff staff;
 
     @OneToMany(mappedBy = "order")
-    @JsonIgnoreProperties("order")
+    @JsonIgnoreProperties(value = "order", allowSetters = true)
     private List<OrderDetail> orderDetails;
 
     public Date getDate() {

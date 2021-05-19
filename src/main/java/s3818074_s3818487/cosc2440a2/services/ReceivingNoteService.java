@@ -11,10 +11,7 @@ import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,18 +31,21 @@ public class ReceivingNoteService extends AbstractService<ReceivingNote, UUID> {
     public ReceivingNote add(ReceivingNote receivingNote) {
         // Handle staff
         Staff staff = receivingNote.getStaff();
-        if (staff == null) throw new RuntimeException("Staff not found in request!");
+        if (staff == null) throw new RuntimeException("Missing staff argument!");
         Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
-        if (staffOptional.isEmpty()) throw new RuntimeException("Staff does not exist!");
+        if (staffOptional.isEmpty()) throw new RuntimeException("Staff not found!");
         receivingNote.setStaff(staffOptional.get());
-        List<ReceivingDetail> receivingDetails = new ArrayList<>();
+
+
         // Handle receiving details
+        List<ReceivingDetail> receivingDetails = new ArrayList<>();
+        if (receivingNote.getReceivingDetails() == null) receivingNote.setReceivingDetails(Collections.emptyList());
         receivingNote.getReceivingDetails().forEach(rd -> {
             Optional<ReceivingDetail> receivingDetailOptional = receivingDetailRepository.findById(rd.getId());
-            if (receivingDetailOptional.isEmpty()) throw new RuntimeException("Receiving detail does not exist");
+            if (receivingDetailOptional.isEmpty()) throw new RuntimeException("Receiving detail not found!");
             ReceivingDetail receivingDetail = receivingDetailOptional.get();
             if (receivingDetail.getReceivingNote() != null)
-                throw new RuntimeException("Receiving detail is already belong to a receiving note");
+                throw new RuntimeException("Receiving detail " + receivingDetail.getId() + " has been used!");
             receivingDetail.setReceivingNote(receivingNote);
             receivingDetails.add(receivingDetail);
         });
