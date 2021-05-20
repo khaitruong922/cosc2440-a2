@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import s3818074_s3818487.cosc2440a2.controllers.OrderController;
@@ -28,10 +29,7 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 		setUp(controller);
 	}
 
-	@Test
-	@org.junit.jupiter.api.Order(2)
-	@DisplayName("[POST] Create Order")
-	public void addOrderTest() throws Exception {
+	private List<Order> getMockOrders(){
 		// Setup our mock repository
 		Category category = new Category(genUUID(),"bike");
 		Product product = new Product(genUUID(),"bike for kid", "BK3","BKA",
@@ -43,14 +41,38 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 		OrderDetail orderDetail = new OrderDetail(genUUID(),product,10,
 				(float) (product.getSellingPrice() * 10));
 		List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
+		return Arrays.asList(
+				new Order(genUUID(),new Date(),staff,provider, orderDetails),
+				new Order(genUUID(),new Date(),staff,provider, Collections.emptyList()));
+	}
+
+	private Order getMockOrder(){
+		Category category = new Category(genUUID(),"bike");
+		Product product = new Product(genUUID(),"bike for kid", "BK3","BKA",
+				"BikeForPeace","This is a bike",category,25.5);
+		Staff staff = new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+				"admin@email.com","Chung Quan Tin");
+		Provider provider = new Provider(genUUID(),"Tin Provider", "123 ABC",
+				"0909090888", "123","admin@email.com","Chung Quan Tin");
+		OrderDetail orderDetail = new OrderDetail(genUUID(),product,10,
+				(float) (product.getSellingPrice() * 10));
+		List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
+		return new Order(genUUID(),new Date(),staff,provider, orderDetails);
+	}
+
+	@Test
+	@org.junit.jupiter.api.Order(2)
+	@DisplayName("[POST] Create Order")
+	public void addOrderTest() throws Exception {
 		UUID orderId = genUUID();
-		Order order = new Order(orderId,new Date(),staff,provider, orderDetails);
+		Order order = getMockOrder();
+		order.setId(orderId);
 
 		when(service.add(order)).thenReturn(order);
-		Assert.assertEquals(service.add(order), order);
+		Assert.assertEquals(order, service.add(order));
 
 		when(service.getAll()).thenReturn(Collections.singletonList(order));
-		Assert.assertEquals(service.getAll().size(), 1);
+		Assert.assertEquals(1, service.getAll().size());
 
 		// Assertions
 		String jsonRequest = om.writeValueAsString(order);
@@ -65,24 +87,11 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 	@org.junit.jupiter.api.Order(3)
 	@DisplayName("[GET] Get Orders")
 	public void getOrdersTest() throws Exception {
-		// Setup our mock repository
-		Category category = new Category(genUUID(),"bike");
-		Product product = new Product(genUUID(),"bike for kid", "BK3","BKA",
-				"BikeForPeace","This is a bike",category,25.5);
-		Staff staff = new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
-				"admin@email.com","Chung Quan Tin");
-		Provider provider = new Provider(genUUID(),"Tin Provider", "123 ABC",
-				"0909090888", "123","admin@email.com","Chung Quan Tin");
-		OrderDetail orderDetail = new OrderDetail(genUUID(),product,10,
-				(float) (product.getSellingPrice() * 10));
-		List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
-		List<Order> orders = Arrays.asList(
-				new Order(genUUID(),new Date(),staff,provider, orderDetails),
-				new Order(genUUID(),new Date(),staff,provider, Collections.emptyList()));
+		List<Order> orders = getMockOrders();
 
 		when(service.getAll()).thenReturn(orders);
-		Assert.assertEquals(service.getAll().size(), 2);
-		Assert.assertEquals(service.getAll(), orders);
+		Assert.assertEquals(2, service.getAll().size());
+		Assert.assertEquals(orders, service.getAll());
 
 		mockMvc.perform(
 				get("/orders").contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -92,12 +101,39 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 	@Test
 	@org.junit.jupiter.api.Order(4)
 	@DisplayName("[GET] Get Order")
-	public void getOrderTest() throws Exception {}
+	public void getOrderTest() throws Exception {
+		UUID orderId = genUUID();
+		Order order = getMockOrder();
+		order.setId(orderId);
+
+		when(service.getById(orderId)).thenReturn(order);
+		Assert.assertEquals(order, service.getById(orderId));
+
+		mockMvc.perform(
+				get("/orders/{id}", orderId).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andReturn();
+	}
 
 	@Test
 	@org.junit.jupiter.api.Order(5)
 	@DisplayName("[DELETE] Delete Orders")
-	public void deleteOrdersTest() throws Exception {}
+	public void deleteOrdersTest() throws Exception {
+		List<Order> orders = getMockOrders();
+
+		when(service.getAll()).thenReturn(orders);
+		Assert.assertEquals(2, service.getAll().size());
+		Assert.assertEquals(orders, service.getAll());
+
+		repository.deleteAll();
+
+		when(service.deleteAll()).thenReturn(HttpStatus.OK);
+		when(service.getAll()).thenReturn(Collections.emptyList());
+		Assert.assertEquals(0, service.getAll().size());
+
+		mockMvc.perform(
+				delete("/orders").contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andReturn();
+	}
 
 	@Test
 	@org.junit.jupiter.api.Order(5)

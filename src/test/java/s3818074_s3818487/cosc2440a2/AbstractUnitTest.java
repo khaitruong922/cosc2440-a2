@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import s3818074_s3818487.cosc2440a2.controllers.AbstractController;
@@ -20,6 +21,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
 
     @Mock
     AbstractService<T, UUID> service;
+
+    @Mock
+    JpaRepository<T, UUID> repository;
 
     ObjectMapper om = new ObjectMapper();
 
