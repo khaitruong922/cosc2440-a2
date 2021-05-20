@@ -30,6 +30,7 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 
 	@Test
 	@org.junit.jupiter.api.Order(2)
+	@DisplayName("[POST] Create Order")
 	public void addOrderTest() throws Exception {
 		// Setup our mock repository
 		Category category = new Category(genUUID(),"bike");
@@ -62,6 +63,7 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 
 	@Test
 	@org.junit.jupiter.api.Order(3)
+	@DisplayName("[GET] Get Orders")
 	public void getOrdersTest() throws Exception {
 		// Setup our mock repository
 		Category category = new Category(genUUID(),"bike");
@@ -86,4 +88,24 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 				get("/orders").contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isOk()).andReturn();
 	}
+
+	@Test
+	@org.junit.jupiter.api.Order(4)
+	@DisplayName("[GET] Get Order")
+	public void getOrderTest() throws Exception {}
+
+	@Test
+	@org.junit.jupiter.api.Order(5)
+	@DisplayName("[DELETE] Delete Orders")
+	public void deleteOrdersTest() throws Exception {}
+
+	@Test
+	@org.junit.jupiter.api.Order(5)
+	@DisplayName("[DELETE] Delete Order")
+	public void deleteOrderTest() throws Exception {}
+
+	@Test
+	@org.junit.jupiter.api.Order(5)
+	@DisplayName("[PUT] Update Order")
+	public void updateOrderTest() throws Exception {}
 }
