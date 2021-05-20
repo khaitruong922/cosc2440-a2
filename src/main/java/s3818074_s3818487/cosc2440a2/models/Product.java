@@ -23,7 +23,7 @@ public class Product extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JsonIgnoreProperties("products")
+    @JsonIgnoreProperties(value = "products", allowSetters = true)
     @JoinColumn(referencedColumnName = "id")
     private Category category;
 

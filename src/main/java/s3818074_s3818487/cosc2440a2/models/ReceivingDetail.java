@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "receivingDetails")
 public class ReceivingDetail extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
-    @JsonIgnoreProperties("receivingDetails")
+    @JsonIgnoreProperties(value = "receivingDetails", allowSetters = true)
     private ReceivingNote receivingNote;
 
     @ManyToOne

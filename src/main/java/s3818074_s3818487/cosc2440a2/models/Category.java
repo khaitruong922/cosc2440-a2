@@ -12,7 +12,7 @@ public class Category extends BaseEntity {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    @JsonIgnoreProperties("category")
+    @JsonIgnoreProperties(value = "category", allowSetters = true)
     private List<Product> products;
 
     public String getName() {

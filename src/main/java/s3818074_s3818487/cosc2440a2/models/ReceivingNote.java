@@ -20,8 +20,8 @@ public class ReceivingNote extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receivingNote")
-    @JsonIgnoreProperties("receivingNote")
+    @OneToMany(mappedBy = "receivingNote")
+    @JsonIgnoreProperties(value = "receivingNote", allowSetters = true)
     private List<ReceivingDetail> receivingDetails;
 
     public Date getDate() {
@@ -46,5 +46,10 @@ public class ReceivingNote extends BaseEntity {
 
     public void setReceivingDetails(List<ReceivingDetail> receivingDetails) {
         this.receivingDetails = receivingDetails;
+    }
+
+    public void addReceivingDetail(ReceivingDetail receivingDetail) {
+        receivingDetails.add(receivingDetail);
+
     }
 }

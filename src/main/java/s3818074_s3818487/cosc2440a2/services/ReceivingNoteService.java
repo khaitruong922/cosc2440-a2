@@ -11,10 +11,7 @@ import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Transactional
@@ -31,14 +28,26 @@ public class ReceivingNoteService extends AbstractService<ReceivingNote, UUID> {
 
     @Override
     public ReceivingNote add(ReceivingNote receivingNote) {
-        Optional<Staff> staffOptional = staffRepository.findById(receivingNote.getStaff().getId());
-        if (staffOptional.isEmpty()) return null;
+        // Handle staff
+        Staff staff = receivingNote.getStaff();
+        if (staff == null) throw new RuntimeException("Missing staff argument!");
+        Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
+        if (staffOptional.isEmpty()) throw new RuntimeException("Staff not found!");
         receivingNote.setStaff(staffOptional.get());
-        List<ReceivingDetail> receivingDetails = receivingNote.getReceivingDetails();
-        receivingDetails = receivingDetails.stream().filter(detail -> {
-            Optional<ReceivingDetail> detailOptional = receivingDetailRepository.findById(detail.getId());
-            return detailOptional.isPresent();
-        }).collect(Collectors.toList());
+
+
+        // Handle receiving details
+        List<ReceivingDetail> receivingDetails = new ArrayList<>();
+        if (receivingNote.getReceivingDetails() == null) receivingNote.setReceivingDetails(Collections.emptyList());
+        receivingNote.getReceivingDetails().forEach(rd -> {
+            Optional<ReceivingDetail> receivingDetailOptional = receivingDetailRepository.findById(rd.getId());
+            if (receivingDetailOptional.isEmpty()) throw new RuntimeException("Receiving detail not found!");
+            ReceivingDetail receivingDetail = receivingDetailOptional.get();
+            if (receivingDetail.getReceivingNote() != null)
+                throw new RuntimeException("Receiving detail " + receivingDetail.getId() + " has been used!");
+            receivingDetail.setReceivingNote(receivingNote);
+            receivingDetails.add(receivingDetail);
+        });
         receivingNote.setReceivingDetails(receivingDetails);
         return super.add(receivingNote);
     }

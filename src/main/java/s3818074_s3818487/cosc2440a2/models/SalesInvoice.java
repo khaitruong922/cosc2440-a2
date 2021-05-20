@@ -1,5 +1,6 @@
 package s3818074_s3818487.cosc2440a2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -23,8 +24,12 @@ public class SalesInvoice extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SalesDetail> SaleDetail;
+    @OneToMany(mappedBy = "salesInvoice")
+    @JsonIgnoreProperties(value = "salesInvoice", allowSetters = true)
+    private List<SalesDetail> salesDetails;
+
+    @Column
+    private double totalValue;
 
     public Date getDate() {
         return date;
@@ -50,11 +55,19 @@ public class SalesInvoice extends BaseEntity {
         this.customer = customer;
     }
 
-    public List<SalesDetail> getSaleDetail() {
-        return SaleDetail;
+    public List<SalesDetail> getSalesDetails() {
+        return salesDetails;
     }
 
-    public void setSaleDetail(List<SalesDetail> saleDetail) {
-        SaleDetail = saleDetail;
+    public void setSalesDetails(List<SalesDetail> salesDetails) {
+        this.salesDetails = salesDetails;
+    }
+
+    public double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(double totalValue) {
+        this.totalValue = totalValue;
     }
 }

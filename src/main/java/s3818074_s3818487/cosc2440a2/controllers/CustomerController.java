@@ -1,14 +1,16 @@
 package s3818074_s3818487.cosc2440a2.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 import s3818074_s3818487.cosc2440a2.filters.CustomerFilter;
+import s3818074_s3818487.cosc2440a2.filters.SalesInvoiceFilter;
 import s3818074_s3818487.cosc2440a2.models.Customer;
+import s3818074_s3818487.cosc2440a2.models.SalesInvoice;
 import s3818074_s3818487.cosc2440a2.services.CustomerService;
+import s3818074_s3818487.cosc2440a2.services.SalesInvoiceService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,9 +18,12 @@ import java.util.UUID;
 @RequestMapping("/customers")
 public class CustomerController extends AbstractController<Customer, UUID> {
 
+    private final SalesInvoiceService salesInvoiceService;
+
     @Autowired
-    public CustomerController(CustomerService service) {
+    public CustomerController(CustomerService service, SalesInvoiceService salesInvoiceService) {
         super(service);
+        this.salesInvoiceService = salesInvoiceService;
     }
 
     // Without search param
@@ -35,5 +40,13 @@ public class CustomerController extends AbstractController<Customer, UUID> {
                                  @RequestParam(required = false) String address,
                                  @RequestParam(required = false) Integer page) {
         return new CustomerFilter(super.getAll(page)).withName(name).withPhone(phone).withAddress(address).get();
+    }
+
+    @GetMapping("/{id}/revenue")
+    public double getRevenue(@PathVariable("id") UUID id,
+                             @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                             @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(salesInvoiceService.getAll()).ofCustomer(id).start(startDate).end(endDate).get();
+        return salesInvoices.stream().mapToDouble(SalesInvoice::getTotalValue).sum();
     }
 }
