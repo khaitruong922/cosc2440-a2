@@ -16,12 +16,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import s3818074_s3818487.cosc2440a2.controllers.OrderController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.models.Order;
-import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
 import s3818074_s3818487.cosc2440a2.services.OrderService;
 
 import java.util.*;
-
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,7 +70,11 @@ class OrderControllerUnitTest {
 		UUID orderId = genUUID();
 		Order order = new Order(orderId,new Date(),staff,provider, orderDetails);
 
-		when(orderService.getById(orderId)).thenReturn(order);
+		when(orderService.add(order)).thenReturn(order);
+		Assert.assertEquals(orderService.add(order), order);
+
+		when(orderService.getAll()).thenReturn(Collections.singletonList(order));
+		Assert.assertEquals(orderService.getAll().size(), 1);
 
 		// Assertions
 		String jsonRequest = om.writeValueAsString(order);
@@ -103,6 +104,8 @@ class OrderControllerUnitTest {
 				new Order(genUUID(),new Date(),staff,provider, Collections.emptyList()));
 
 		when(orderService.getAll()).thenReturn(orders);
+		Assert.assertEquals(orderService.getAll().size(), 2);
+		Assert.assertEquals(orderService.getAll(), orders);
 
 		mockMvc.perform(
 				get("/orders").contentType(MediaType.APPLICATION_JSON_VALUE))
