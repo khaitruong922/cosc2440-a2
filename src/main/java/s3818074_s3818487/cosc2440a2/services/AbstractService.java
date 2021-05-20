@@ -29,11 +29,7 @@ public abstract class AbstractService<T extends BaseEntity, ID> {
 
     @Transactional
     public T add(T t) {
-        try {
-            return repo.save(t);
-        } catch (Exception e) {
-            return null;
-        }
+        return repo.save(t);
     }
 
     @Transactional

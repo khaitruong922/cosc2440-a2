@@ -11,12 +11,10 @@ import java.util.UUID;
 @Service
 @Transactional
 public class CategoryService extends AbstractService<Category, UUID> {
-    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryService(CategoryRepository repo) {
         super(repo);
-        this.categoryRepository = repo;
     }
 
 }

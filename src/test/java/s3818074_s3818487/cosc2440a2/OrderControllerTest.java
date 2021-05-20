@@ -1,4 +1,4 @@
-package s3818074_s3818487.cosc2440a2.tests;
+package s3818074_s3818487.cosc2440a2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,16 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import s3818074_s3818487.cosc2440a2.MyApplication;
 import s3818074_s3818487.cosc2440a2.controllers.OrderController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.models.Order;
@@ -26,9 +20,8 @@ import java.util.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @WebMvcTest(OrderController.class)
-@ContextConfiguration(classes = MyApplication.class)
 public class OrderControllerTest {
 
     @Autowired
