@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "salesInvoices")
@@ -31,7 +32,8 @@ public class SalesInvoice extends BaseEntity {
     @Column
     private double totalValue;
 
-    public SalesInvoice(Date date, Staff staff, Customer customer, List<SalesDetail> salesDetails, double totalValue) {
+    public SalesInvoice(UUID id,Date date, Staff staff, Customer customer, List<SalesDetail> salesDetails, double totalValue) {
+        super(id);
         this.date = date;
         this.staff = staff;
         this.customer = customer;

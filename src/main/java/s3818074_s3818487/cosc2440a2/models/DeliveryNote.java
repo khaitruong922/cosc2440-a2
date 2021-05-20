@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "deliveryNotes")
@@ -24,7 +25,8 @@ public class DeliveryNote extends BaseEntity {
     @JsonIgnoreProperties("deliveryNote")
     private List<DeliveryDetail> deliveryDetails;
 
-    public DeliveryNote(Date date, Staff staff, List<DeliveryDetail> deliveryDetails) {
+    public DeliveryNote(UUID id, Date date, Staff staff, List<DeliveryDetail> deliveryDetails) {
+        super(id);
         this.date = date;
         this.staff = staff;
         this.deliveryDetails = deliveryDetails;

@@ -3,6 +3,7 @@ package s3818074_s3818487.cosc2440a2.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orderDetails")
@@ -54,7 +55,8 @@ public class OrderDetail extends BaseEntity {
         this.order = order;
     }
 
-    public OrderDetail(Product product, int quantity, float price) {
+    public OrderDetail(UUID id, Product product, int quantity, float price) {
+        super(id);
         this.product = product;
         this.quantity = quantity;
         this.price = price;

@@ -3,6 +3,7 @@ package s3818074_s3818487.cosc2440a2.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "staffs")
@@ -22,7 +23,8 @@ public class Staff extends BaseEntity {
     @Column
     private String contactPerson;
 
-    public Staff(String name, String address, String phone, String email, String contactPerson) {
+    public Staff(UUID id,String name, String address, String phone, String email, String contactPerson) {
+        super(id);
         this.name = name;
         this.address = address;
         this.phone = phone;

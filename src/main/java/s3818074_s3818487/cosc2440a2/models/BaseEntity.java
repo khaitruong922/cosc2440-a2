@@ -15,4 +15,10 @@ public abstract class BaseEntity {
         return id;
     }
 
+    public BaseEntity() {
+    }
+
+    public BaseEntity(UUID id) {
+        this.id = id;
+    }
 }

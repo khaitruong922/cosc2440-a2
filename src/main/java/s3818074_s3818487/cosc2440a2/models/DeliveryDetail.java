@@ -24,7 +24,8 @@ public class DeliveryDetail extends BaseEntity {
     public DeliveryDetail() {
     }
 
-    public DeliveryDetail(Product product, int quantity) {
+    public DeliveryDetail(UUID id, Product product, int quantity) {
+        super(id);
         this.product = product;
         this.quantity = quantity;
     }

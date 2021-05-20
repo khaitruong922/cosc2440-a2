@@ -3,6 +3,7 @@ package s3818074_s3818487.cosc2440a2.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "products")
@@ -30,7 +31,8 @@ public class Product extends BaseEntity {
     @Column
     private double sellingPrice;
 
-    public Product(String name, String model, String brand, String company, String description, Category category, double sellingPrice) {
+    public Product(UUID id, String name, String model, String brand, String company, String description, Category category, double sellingPrice) {
+        super(id);
         this.name = name;
         this.model = model;
         this.brand = brand;
