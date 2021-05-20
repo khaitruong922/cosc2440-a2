@@ -1,22 +1,16 @@
 package s3818074_s3818487.cosc2440a2;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import s3818074_s3818487.cosc2440a2.controllers.OrderController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.models.Order;
-import s3818074_s3818487.cosc2440a2.services.OrderService;
 
 import java.util.*;
 import static org.mockito.Mockito.*;
@@ -25,32 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class OrderControllerUnitTest {
-
-	private MockMvc mockMvc;
-
-	@Mock
-	private OrderService orderService;
-
+class OrderControllerUnitTest extends AbstractUnitTest<Order>{
 	@InjectMocks
-	private OrderController orderController;
-
-	ObjectMapper om = new ObjectMapper();
+	private OrderController controller;
 
 	@BeforeEach
-	public void setUp() {
-		om.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
-		mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
-	}
-
-	@Test
-	@org.junit.jupiter.api.Order(1)
-	void contextLoads() {
-		Assert.assertNotNull(mockMvc);
-	}
-
-	private UUID genUUID(){
-		return UUID.randomUUID();
+	public void init(){
+		setUp(controller);
 	}
 
 	@Test
@@ -70,11 +45,11 @@ class OrderControllerUnitTest {
 		UUID orderId = genUUID();
 		Order order = new Order(orderId,new Date(),staff,provider, orderDetails);
 
-		when(orderService.add(order)).thenReturn(order);
-		Assert.assertEquals(orderService.add(order), order);
+		when(service.add(order)).thenReturn(order);
+		Assert.assertEquals(service.add(order), order);
 
-		when(orderService.getAll()).thenReturn(Collections.singletonList(order));
-		Assert.assertEquals(orderService.getAll().size(), 1);
+		when(service.getAll()).thenReturn(Collections.singletonList(order));
+		Assert.assertEquals(service.getAll().size(), 1);
 
 		// Assertions
 		String jsonRequest = om.writeValueAsString(order);
@@ -103,9 +78,9 @@ class OrderControllerUnitTest {
 				new Order(genUUID(),new Date(),staff,provider, orderDetails),
 				new Order(genUUID(),new Date(),staff,provider, Collections.emptyList()));
 
-		when(orderService.getAll()).thenReturn(orders);
-		Assert.assertEquals(orderService.getAll().size(), 2);
-		Assert.assertEquals(orderService.getAll(), orders);
+		when(service.getAll()).thenReturn(orders);
+		Assert.assertEquals(service.getAll().size(), 2);
+		Assert.assertEquals(service.getAll(), orders);
 
 		mockMvc.perform(
 				get("/orders").contentType(MediaType.APPLICATION_JSON_VALUE))
