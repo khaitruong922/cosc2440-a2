@@ -49,4 +49,11 @@ public class CustomerController extends AbstractController<Customer, UUID> {
         List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(salesInvoiceService.getAll()).ofCustomer(id).start(startDate).end(endDate).get();
         return salesInvoices.stream().mapToDouble(SalesInvoice::getTotalValue).sum();
     }
+
+    @GetMapping("/{id}/sales-invoices")
+    public List<SalesInvoice> getSalesInvoices(@PathVariable("id") UUID id,
+                                               @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        return new SalesInvoiceFilter(salesInvoiceService.getAll()).ofCustomer(id).start(startDate).end(endDate).get();
+    }
 }
