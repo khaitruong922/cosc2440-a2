@@ -30,6 +30,19 @@ public class Product extends BaseEntity {
     @Column
     private double sellingPrice;
 
+    public Product(String name, String model, String brand, String company, String description, Category category, double sellingPrice) {
+        this.name = name;
+        this.model = model;
+        this.brand = brand;
+        this.company = company;
+        this.description = description;
+        this.category = category;
+        this.sellingPrice = sellingPrice;
+    }
+
+    public Product() {
+    }
+
     public String getName() {
         return name;
     }

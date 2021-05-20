@@ -17,6 +17,14 @@ public class ReceivingDetail extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Product product;
 
+    public ReceivingDetail() {
+    }
+
+    public ReceivingDetail(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     @Column
     private int quantity;
 

@@ -24,6 +24,15 @@ public class ReceivingNote extends BaseEntity {
     @JsonIgnoreProperties(value = "receivingNote", allowSetters = true)
     private List<ReceivingDetail> receivingDetails;
 
+    public ReceivingNote(Date date, Staff staff, List<ReceivingDetail> receivingDetails) {
+        this.date = date;
+        this.staff = staff;
+        this.receivingDetails = receivingDetails;
+    }
+
+    public ReceivingNote() {
+    }
+
     public Date getDate() {
         return date;
     }

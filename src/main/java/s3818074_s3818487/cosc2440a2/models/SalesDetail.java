@@ -24,6 +24,15 @@ public class SalesDetail extends BaseEntity {
     @Column
     private double price;
 
+    public SalesDetail() {
+    }
+
+    public SalesDetail(Product product, int quantity, double price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public Product getProduct() {
         return product;
     }

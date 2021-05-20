@@ -22,6 +22,17 @@ public class Staff extends BaseEntity {
     @Column
     private String contactPerson;
 
+    public Staff(String name, String address, String phone, String email, String contactPerson) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.contactPerson = contactPerson;
+    }
+
+    public Staff() {
+    }
+
     public String getContactPerson() {
         return contactPerson;
     }

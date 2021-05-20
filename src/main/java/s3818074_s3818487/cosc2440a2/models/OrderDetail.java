@@ -53,4 +53,13 @@ public class OrderDetail extends BaseEntity {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+    public OrderDetail(Product product, int quantity, float price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public OrderDetail() {
+    }
 }

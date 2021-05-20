@@ -9,10 +9,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "deliveryDetails")
 public class DeliveryDetail extends BaseEntity {
-    @Id
-    @GeneratedValue
-    private UUID id;
-
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     @JsonIgnoreProperties(value = "deliveryDetails", allowSetters = true)
@@ -25,12 +21,12 @@ public class DeliveryDetail extends BaseEntity {
     @Column
     private int quantity;
 
-    public UUID getId() {
-        return id;
+    public DeliveryDetail() {
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public DeliveryDetail(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public DeliveryNote getDeliveryNote() {

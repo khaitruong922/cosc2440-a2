@@ -31,6 +31,17 @@ public class SalesInvoice extends BaseEntity {
     @Column
     private double totalValue;
 
+    public SalesInvoice(Date date, Staff staff, Customer customer, List<SalesDetail> salesDetails, double totalValue) {
+        this.date = date;
+        this.staff = staff;
+        this.customer = customer;
+        this.salesDetails = salesDetails;
+        this.totalValue = totalValue;
+    }
+
+    public SalesInvoice() {
+    }
+
     public Date getDate() {
         return date;
     }

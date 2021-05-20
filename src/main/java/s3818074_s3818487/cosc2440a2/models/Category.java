@@ -15,6 +15,13 @@ public class Category extends BaseEntity {
     @JsonIgnoreProperties(value = "category", allowSetters = true)
     private List<Product> products;
 
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category() {
+    }
+
     public String getName() {
         return name;
     }

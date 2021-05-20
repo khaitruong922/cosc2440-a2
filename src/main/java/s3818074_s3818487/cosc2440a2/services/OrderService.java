@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import s3818074_s3818487.cosc2440a2.models.Order;
 import s3818074_s3818487.cosc2440a2.models.OrderDetail;
+import s3818074_s3818487.cosc2440a2.models.Provider;
 import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
+import s3818074_s3818487.cosc2440a2.repositories.ProviderRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 
 import javax.transaction.Transactional;
@@ -19,11 +21,15 @@ public class OrderService extends AbstractService<Order, UUID> {
 
     private final StaffRepository staffRepository;
 
+    private final ProviderRepository providerRepository;
+
     @Autowired
-    public OrderService(OrderRepository repo, OrderDetailRepository orderDetailRepository, StaffRepository staffRepository) {
+    public OrderService(OrderRepository repo, OrderDetailRepository orderDetailRepository,
+                        StaffRepository staffRepository, ProviderRepository providerRepository) {
         super(repo);
         this.orderDetailRepository = orderDetailRepository;
         this.staffRepository = staffRepository;
+        this.providerRepository = providerRepository;
     }
 
     @Override
@@ -33,7 +39,11 @@ public class OrderService extends AbstractService<Order, UUID> {
         if (staff == null) throw new RuntimeException("Missing staff argument!");
         Optional<Staff> staffOptional = staffRepository.findById(order.getStaff().getId());
         if (staffOptional.isEmpty()) throw new RuntimeException("Staff not found!");
-
+        // Handle provider
+        Provider provider = order.getProvider();
+        if (provider == null) throw new RuntimeException("Missing provider argument");
+        Optional<Provider> providerOptional = providerRepository.findById(order.getProvider().getId());
+        if (providerOptional.isEmpty()) throw new RuntimeException("Provider not found");
         // Handle order details
         List<OrderDetail> orderDetails = new ArrayList<>();
         if (order.getOrderDetails() == null) order.setOrderDetails(Collections.emptyList());
@@ -83,6 +93,11 @@ public class OrderService extends AbstractService<Order, UUID> {
         if (orderBody.getStaff() != null) {
             Optional<Staff> staff = staffRepository.findById(orderBody.getStaff().getId());
             order.setStaff(staff.orElse(order.getStaff()));
+        }
+        // Handle Provider update
+        if (orderBody.getProvider() != null){
+            Optional<Provider> provider = providerRepository.findById(orderBody.getProvider().getId());
+            order.setProvider(provider.orElse(order.getProvider()));
         }
         // Handle Date update
         order.setDate(Optional.of(orderBody.getDate()).orElse(order.getDate()));

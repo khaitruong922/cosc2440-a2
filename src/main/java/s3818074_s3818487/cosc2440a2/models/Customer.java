@@ -26,6 +26,18 @@ public class Customer extends BaseEntity {
     @Column
     private String contactPerson;
 
+    public Customer() {
+    }
+
+    public Customer(String name, String address, String phone, String fax, String email, String contactPerson) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.fax = fax;
+        this.email = email;
+        this.contactPerson = contactPerson;
+    }
+
     public String getName() {
         return name;
     }

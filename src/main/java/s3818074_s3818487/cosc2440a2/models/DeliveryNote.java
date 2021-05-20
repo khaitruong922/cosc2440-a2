@@ -24,6 +24,15 @@ public class DeliveryNote extends BaseEntity {
     @JsonIgnoreProperties("deliveryNote")
     private List<DeliveryDetail> deliveryDetails;
 
+    public DeliveryNote(Date date, Staff staff, List<DeliveryDetail> deliveryDetails) {
+        this.date = date;
+        this.staff = staff;
+        this.deliveryDetails = deliveryDetails;
+    }
+
+    public DeliveryNote() {
+    }
+
     public Date getDate() {
         return date;
     }

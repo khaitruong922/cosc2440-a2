@@ -19,9 +19,31 @@ public class Order extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private Staff staff;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Provider provider;
+
     @OneToMany(mappedBy = "order")
     @JsonIgnoreProperties(value = "order", allowSetters = true)
     private List<OrderDetail> orderDetails;
+
+    public Order(Date date, Staff staff, Provider provider, List<OrderDetail> orderDetails) {
+        this.date = date;
+        this.staff = staff;
+        this.provider = provider;
+        this.orderDetails = orderDetails;
+    }
+
+    public Order() {
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
 
     public Date getDate() {
         return date;
