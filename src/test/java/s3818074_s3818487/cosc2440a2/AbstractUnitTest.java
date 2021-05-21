@@ -6,11 +6,14 @@ import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import s3818074_s3818487.cosc2440a2.controllers.AbstractController;
 import s3818074_s3818487.cosc2440a2.models.BaseEntity;
 import s3818074_s3818487.cosc2440a2.services.AbstractService;
@@ -62,7 +65,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
     @Test
     @org.junit.jupiter.api.Order(2)
     @DisplayName("[POST] Create")
-    public void addOrderTest() throws Exception {
+    public void createTest() throws Exception {
         UUID dataId = genUUID();
         T data = populateData();
         data.setId(dataId);
@@ -83,9 +86,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(3)
+    @org.junit.jupiter.api.Order(2)
     @DisplayName("[GET] Get all")
-    public void getOrdersTest() throws Exception {
+    public void getAllTest() throws Exception {
         List<T> data = populateListOfData();
 
         when(service.getAll()).thenReturn(data);
@@ -98,9 +101,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(4)
+    @org.junit.jupiter.api.Order(2)
     @DisplayName("[GET] Get one by id")
-    public void getOrderTest() throws Exception {
+    public void getOneTest() throws Exception {
         UUID dataId = genUUID();
         T data = populateData();
         data.setId(dataId);
@@ -114,9 +117,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(5)
+    @org.junit.jupiter.api.Order(2)
     @DisplayName("[DELETE] Delete all")
-    public void deleteOrdersTest() throws Exception {
+    public void deleteAllTest() throws Exception {
         List<T> data = populateListOfData();
 
         when(service.getAll()).thenReturn(data);
@@ -135,9 +138,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(5)
+    @org.junit.jupiter.api.Order(2)
     @DisplayName("[DELETE] Delete one")
-    public void deleteOrderTest() throws Exception {
+    public void deleteOneTest() throws Exception {
         UUID dataId = genUUID();
         T data = populateData();
         data.setId(dataId);
@@ -155,9 +158,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(5)
+    @org.junit.jupiter.api.Order(2)
     @DisplayName("[PUT] Update Order")
-    public void updateOrderTest() throws Exception {
+    public void updateOneTest() throws Exception {
         UUID dataId = genUUID();
         T data = populateData();
         data.setId(dataId);
@@ -175,6 +178,28 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
                 put("/"+endpoint+"/{id}",dataId)
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @DisplayName("[GET] Get with pagination")
+    @org.junit.jupiter.api.Order(2)
+    public void paging() throws Exception {
+        List<T> data = populateListOfData();
+
+        when(service.getAll(0)).thenReturn(data);
+        Assert.assertEquals(data.size(), service.getAll(0).size());
+
+        mockMvc.perform(
+                get("/" + endpoint + "?page=0").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk()).andReturn();
+
+        mockMvc.perform(
+                get("/" + endpoint + "?page=1").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk()).andReturn();
+
+        mockMvc.perform(
+                get("/" + endpoint + "?page=2").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk()).andReturn();
     }
 }

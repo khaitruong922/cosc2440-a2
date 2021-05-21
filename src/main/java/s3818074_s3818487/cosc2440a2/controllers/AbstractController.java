@@ -19,16 +19,10 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
         return service.getAll(page);
     }
 
-
     @GetMapping("/{id}")
     T getById(@PathVariable("id") ID id) {
         return service.getById(id);
     }
-
-//    @GetMapping("/pages/{page}")
-//    List<T> getAllByPage(@PathVariable(value = "page", required = false) int page) {
-//        return service.getAllByPage(page);
-//    }
 
     @PostMapping
     T add(@RequestBody T t) {
