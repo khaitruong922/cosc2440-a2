@@ -44,6 +44,6 @@ public class OrderDetailService extends AbstractService<OrderDetail, UUID> {
         }
         orderDetail.setPrice(Optional.ofNullable(updatedOrderDetail.getPrice()).orElse(orderDetail.getPrice()));
         orderDetail.setQuantity(Optional.ofNullable(updatedOrderDetail.getQuantity()).orElse(orderDetail.getQuantity()));
-        return repo.save(orderDetail);
+        return orderDetail;
     }
 }

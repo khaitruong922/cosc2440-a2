@@ -103,6 +103,6 @@ public class OrderService extends AbstractService<Order, UUID> {
         }
         // Handle Date update
         order.setDate(Optional.ofNullable(updatedOrder.getDate()).orElse(order.getDate()));
-        return repo.save(order);
+        return order;
     }
 }

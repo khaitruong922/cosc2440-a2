@@ -29,6 +29,6 @@ public class CustomerService extends AbstractService<Customer, UUID> {
         customer.setFax(Optional.ofNullable(updatedCustomer.getPhone()).orElse(customer.getPhone()));
         customer.setEmail(Optional.ofNullable(updatedCustomer.getEmail()).orElse(customer.getEmail()));
         customer.setContactPerson(Optional.ofNullable(updatedCustomer.getContactPerson()).orElse(customer.getContactPerson()));
-        return repo.save(customer);
+        return customer;
     }
 }

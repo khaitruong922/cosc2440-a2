@@ -18,15 +18,17 @@ public class StaffService extends AbstractService<Staff, UUID> {
     }
 
     @Override
-    public Staff updateById(Staff staff, UUID id) {
-        Staff targetedStaff = repo.getOne(id);
-        targetedStaff.setAddress(Optional.of(staff.getAddress()).orElse(targetedStaff.getAddress()));
-        targetedStaff.setEmail(Optional.of(staff.getEmail()).orElse(targetedStaff.getEmail()));
-        targetedStaff.setName(Optional.of(staff.getName()).orElse(targetedStaff.getName()));
-        targetedStaff.setPhone(Optional.of(staff.getPhone()).orElse(targetedStaff.getPhone()));
-        targetedStaff.setContactPerson(Optional.of(staff.getContactPerson()).orElse(targetedStaff.getContactPerson()));
+    public Staff updateById(Staff updatedStaff, UUID id) {
+        Optional<Staff> staffOptional = repo.findById(id);
+        if (staffOptional.isEmpty()) throw new RuntimeException("Staff not found!");
+        Staff staff = staffOptional.get();
+        staff.setAddress(Optional.ofNullable(updatedStaff.getAddress()).orElse(staff.getAddress()));
+        staff.setEmail(Optional.ofNullable(updatedStaff.getEmail()).orElse(staff.getEmail()));
+        staff.setName(Optional.ofNullable(updatedStaff.getName()).orElse(staff.getName()));
+        staff.setPhone(Optional.ofNullable(updatedStaff.getPhone()).orElse(staff.getPhone()));
+        staff.setContactPerson(Optional.ofNullable(updatedStaff.getContactPerson()).orElse(staff.getContactPerson()));
 
-        return repo.save(targetedStaff);
+        return staff;
     }
 }
 
