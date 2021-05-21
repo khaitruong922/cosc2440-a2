@@ -62,13 +62,15 @@ public class OrderService extends AbstractService<Order, UUID> {
     }
 
     @Override
-    public Order updateById(Order orderBody, UUID uuid) {
-        Order order = repo.getOne(uuid);
+    public Order updateById(Order updatedOrder, UUID id) {
+        Optional<Order> orderOptional = repo.findById(id);
+        if (orderOptional.isEmpty()) throw new RuntimeException("Order not found!");
+        Order order = orderOptional.get();
         List<OrderDetail> updatedListOfOrderDetail = new ArrayList<>();
         // Handle Order Details update
-        if (orderBody.getOrderDetails() != null) {
-            if (orderBody.getOrderDetails().size() > 0) {
-                orderBody.getOrderDetails().forEach(orderDetail -> {
+        if (updatedOrder.getOrderDetails() != null) {
+            if (updatedOrder.getOrderDetails().size() > 0) {
+                updatedOrder.getOrderDetails().forEach(orderDetail -> {
                     Optional<OrderDetail> updatedOrderDetail = orderDetailRepository.findById(orderDetail.getId());
                     if (updatedOrderDetail.isEmpty()) throw new Error();
                     if (updatedOrderDetail.get().getOrder() != null) {
@@ -90,17 +92,17 @@ public class OrderService extends AbstractService<Order, UUID> {
             order.setOrderDetails(Optional.of(updatedListOfOrderDetail).orElse(order.getOrderDetails()));
         }
         // Handle Staff update
-        if (orderBody.getStaff() != null) {
-            Optional<Staff> staff = staffRepository.findById(orderBody.getStaff().getId());
+        if (updatedOrder.getStaff() != null) {
+            Optional<Staff> staff = staffRepository.findById(updatedOrder.getStaff().getId());
             order.setStaff(staff.orElse(order.getStaff()));
         }
         // Handle Provider update
-        if (orderBody.getProvider() != null){
-            Optional<Provider> provider = providerRepository.findById(orderBody.getProvider().getId());
+        if (updatedOrder.getProvider() != null) {
+            Optional<Provider> provider = providerRepository.findById(updatedOrder.getProvider().getId());
             order.setProvider(provider.orElse(order.getProvider()));
         }
         // Handle Date update
-        order.setDate(Optional.of(orderBody.getDate()).orElse(order.getDate()));
+        order.setDate(Optional.ofNullable(updatedOrder.getDate()).orElse(order.getDate()));
         return repo.save(order);
     }
 }

@@ -33,17 +33,17 @@ public class OrderDetailService extends AbstractService<OrderDetail, UUID> {
     }
 
     @Override
-    public OrderDetail updateById(OrderDetail newOrderDetail, UUID id) {
+    public OrderDetail updateById(OrderDetail updatedOrderDetail, UUID id) {
         Optional<OrderDetail> orderDetailOptional = repo.findById(id);
-        if (orderDetailOptional.isEmpty()) return null;
+        if (orderDetailOptional.isEmpty()) throw new RuntimeException("Order detail not found");
         OrderDetail orderDetail = orderDetailOptional.get();
-        if (newOrderDetail.getProduct() != null) {
-            Optional<Product> updatedProduct = productRepository.findById(newOrderDetail.getProduct().getId());
+        if (updatedOrderDetail.getProduct() != null) {
+            Optional<Product> updatedProduct = productRepository.findById(updatedOrderDetail.getProduct().getId());
             if (updatedProduct.isEmpty()) throw new RuntimeException("There is no valid product!");
             orderDetail.setProduct(updatedProduct.orElse(orderDetail.getProduct()));
         }
-        orderDetail.setPrice(Optional.of(newOrderDetail.getPrice()).orElse(orderDetail.getPrice()));
-        orderDetail.setQuantity(Optional.of(newOrderDetail.getQuantity()).orElse(orderDetail.getQuantity()));
+        orderDetail.setPrice(Optional.ofNullable(updatedOrderDetail.getPrice()).orElse(orderDetail.getPrice()));
+        orderDetail.setQuantity(Optional.ofNullable(updatedOrderDetail.getQuantity()).orElse(orderDetail.getQuantity()));
         return repo.save(orderDetail);
     }
 }

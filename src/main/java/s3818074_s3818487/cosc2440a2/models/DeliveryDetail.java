@@ -19,7 +19,7 @@ public class DeliveryDetail extends BaseEntity {
     private Product product;
 
     @Column
-    private int quantity;
+    private Integer quantity;
 
     public DeliveryDetail() {
     }
@@ -46,11 +46,11 @@ public class DeliveryDetail extends BaseEntity {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }

@@ -18,10 +18,10 @@ public class OrderDetail extends BaseEntity {
     private Product product;
 
     @Column
-    private int quantity;
+    private Integer quantity;
 
     @Column
-    private float price;
+    private Double price;
 
     public Product getProduct() {
         return product;
@@ -31,7 +31,7 @@ public class OrderDetail extends BaseEntity {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -39,11 +39,11 @@ public class OrderDetail extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -55,7 +55,7 @@ public class OrderDetail extends BaseEntity {
         this.order = order;
     }
 
-    public OrderDetail(UUID id, Product product, int quantity, float price) {
+    public OrderDetail(UUID id, Product product, Integer quantity, Double price) {
         super(id);
         this.product = product;
         this.quantity = quantity;

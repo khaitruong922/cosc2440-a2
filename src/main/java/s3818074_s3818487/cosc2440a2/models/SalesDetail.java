@@ -15,20 +15,19 @@ public class SalesDetail extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
-    @JsonIgnoreProperties(value = "salesDetails",allowSetters = true)
+    @JsonIgnoreProperties(value = "salesDetails", allowSetters = true)
     private SalesInvoice salesInvoice;
 
     @Column
-    private int quantity;
+    private Integer quantity;
 
-    // TODO this price will be copied from product price, after copying users can change them manually by another API if needed
     @Column
-    private double price;
+    private Double price;
 
     public SalesDetail() {
     }
 
-    public SalesDetail(UUID id,Product product, int quantity, double price) {
+    public SalesDetail(UUID id, Product product, int quantity, double price) {
         super(id);
         this.product = product;
         this.quantity = quantity;
@@ -43,19 +42,19 @@ public class SalesDetail extends BaseEntity {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
