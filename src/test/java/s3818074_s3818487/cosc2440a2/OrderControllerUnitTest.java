@@ -27,35 +27,35 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
     }
 
     @Override
-    Order populateData() {
-        Category category = new Category(genUUID(), "bike");
-        Product product = new Product(genUUID(), "bike for kid", "BK3", "BKA",
+    protected Order populateData() {
+        Category category = new Category(uuid(), "bike");
+        Product product = new Product(uuid(), "bike for kid", "BK3", "BKA",
                 "BikeForPeace", "This is a bike", category, 25.5);
-        Staff staff = new Staff(genUUID(), "Tin Staff", "123 ABC", "0909090888",
+        Staff staff = new Staff(uuid(), "Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com", "Chung Quan Tin");
-        Provider provider = new Provider(genUUID(), "Tin Provider", "123 ABC",
+        Provider provider = new Provider(uuid(), "Tin Provider", "123 ABC",
                 "0909090888", "123", "admin@email.com", "Chung Quan Tin");
-        OrderDetail orderDetail = new OrderDetail(genUUID(), product, 10,
+        OrderDetail orderDetail = new OrderDetail(uuid(), product, 10,
                 product.getSellingPrice() * 10);
         List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
-        return new Order(genUUID(), new Date(), staff, provider, orderDetails);
+        return new Order(uuid(), new Date(), staff, provider, orderDetails);
     }
 
     @Override
-    List<Order> populateListOfData() {
+    protected List<Order> populateListOfData() {
         // Setup our mock repository
-        Category category = new Category(genUUID(), "bike");
-        Product product = new Product(genUUID(), "bike for kid", "BK3", "BKA",
+        Category category = new Category(uuid(), "bike");
+        Product product = new Product(uuid(), "bike for kid", "BK3", "BKA",
                 "BikeForPeace", "This is a bike", category, 25.5);
-        Staff staff = new Staff(genUUID(), "Tin Staff", "123 ABC", "0909090888",
+        Staff staff = new Staff(uuid(), "Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com", "Chung Quan Tin");
-        Provider provider = new Provider(genUUID(), "Tin Provider", "123 ABC",
+        Provider provider = new Provider(uuid(), "Tin Provider", "123 ABC",
                 "0909090888", "123", "admin@email.com", "Chung Quan Tin");
-        OrderDetail orderDetail = new OrderDetail(genUUID(), product, 10,
+        OrderDetail orderDetail = new OrderDetail(uuid(), product, 10,
                 product.getSellingPrice() * 10);
         List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
         return Arrays.asList(
-                new Order(genUUID(), new Date(), staff, provider, orderDetails),
-                new Order(genUUID(), new Date(), staff, provider, Collections.emptyList()));
+                new Order(uuid(), new Date(), staff, provider, orderDetails),
+                new Order(uuid(), new Date(), staff, provider, Collections.emptyList()));
     }
 }
