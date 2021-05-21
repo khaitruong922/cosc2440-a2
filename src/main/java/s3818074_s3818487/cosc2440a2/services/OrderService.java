@@ -69,7 +69,7 @@ public class OrderService extends AbstractService<Order, UUID> {
         if (orderOptional.isEmpty()) throw new RuntimeException("Order not found!");
         Order order = orderOptional.get();
 
-        // Handle Order Details update
+        // Handle order details update
         if (updatedOrder.getOrderDetails() != null) {
             List<OrderDetail> orderDetails = new ArrayList<>();
             updatedOrder.getOrderDetails().forEach(od -> {
@@ -86,19 +86,19 @@ public class OrderService extends AbstractService<Order, UUID> {
             order.setOrderDetails(orderDetails);
         }
 
-        // Handle Staff update
+        // Handle staff update
         if (updatedOrder.getStaff() != null) {
-            Optional<Staff> staff = staffRepository.findById(updatedOrder.getStaff().getId());
-            order.setStaff(staff.orElse(order.getStaff()));
+            Optional<Staff> staffOptional = staffRepository.findById(updatedOrder.getStaff().getId());
+            order.setStaff(staffOptional.orElse(order.getStaff()));
         }
-        // Handle Provider update
+        // Handle provider update
         if (updatedOrder.getProvider() != null) {
-            Optional<Provider> provider = providerRepository.findById(updatedOrder.getProvider().getId());
-            order.setProvider(provider.orElse(order.getProvider()));
+            Optional<Provider> providerOptional = providerRepository.findById(updatedOrder.getProvider().getId());
+            order.setProvider(providerOptional.orElse(order.getProvider()));
         }
-        // Handle Date update
+        // Handle date update
         order.setDate(Optional.ofNullable(updatedOrder.getDate()).orElse(order.getDate()));
-        
+
         return order;
     }
 }
