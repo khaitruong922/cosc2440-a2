@@ -28,51 +28,51 @@ class DeliveryNoteUnitTest extends AbstractUnitTest<DeliveryNote>{
 
 
     @Override
-    DeliveryNote populateData() {
-        Category c1 = new Category(genUUID(),"bike");
-        Category c2 = new Category(genUUID(),"book");
-        Product p1 = new Product(genUUID(),"bike for kid", "BK3","BKA",
+    protected DeliveryNote populateData() {
+        Category c1 = new Category(uuid(),"bike");
+        Category c2 = new Category(uuid(),"book");
+        Product p1 = new Product(uuid(),"bike for kid", "BK3","BKA",
                 "BikeForPeace","This is a bike",c1,25.5);
-        Product p2 = new Product(genUUID(),"book for kid", "BK5","BOOKA",
+        Product p2 = new Product(uuid(),"book for kid", "BK5","BOOKA",
                 "BookForPeace","This is a book",c2,25.5);
-        Staff staff = new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+        Staff staff = new Staff(uuid(),"Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com","Chung Quan Tin");
-        return new DeliveryNote(genUUID(),new Date(), staff, Arrays.asList(
-                new DeliveryDetail(genUUID(),p1, 10),
-                new DeliveryDetail(genUUID(), p2 , 10)
+        return new DeliveryNote(uuid(),new Date(), staff, Arrays.asList(
+                new DeliveryDetail(uuid(),p1, 10),
+                new DeliveryDetail(uuid(), p2 , 10)
         ));
     }
 
     @Override
-    List<DeliveryNote> populateListOfData() {
-        Category c1 = new Category(genUUID(),"bike");
-        Category c2 = new Category(genUUID(),"book");
-        Product p1 = new Product(genUUID(),"bike for kid", "BK3","BKA",
+    protected List<DeliveryNote> populateListOfData() {
+        Category c1 = new Category(uuid(),"bike");
+        Category c2 = new Category(uuid(),"book");
+        Product p1 = new Product(uuid(),"bike for kid", "BK3","BKA",
                 "BikeForPeace","This is a bike",c1,25.5);
-        Product p2 = new Product(genUUID(),"book for kid", "BK5","BOOKA",
+        Product p2 = new Product(uuid(),"book for kid", "BK5","BOOKA",
                 "BookForPeace","This is a book",c2,25.5);
-        Staff staff = new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+        Staff staff = new Staff(uuid(),"Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com","Chung Quan Tin");
         return Arrays.asList(
-                new DeliveryNote(genUUID(),new Date(), staff, Arrays.asList(
-                        new DeliveryDetail(genUUID(),p1, 10),
-                        new DeliveryDetail(genUUID(), p2 , 10)
+                new DeliveryNote(uuid(),new Date(), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(),p1, 10),
+                        new DeliveryDetail(uuid(), p2 , 10)
                 )),
-                new DeliveryNote(genUUID(),new Date(), staff, Arrays.asList(
-                        new DeliveryDetail(genUUID(),p1, 10),
-                        new DeliveryDetail(genUUID(), p2 , 10)
+                new DeliveryNote(uuid(),new Date(), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(),p1, 10),
+                        new DeliveryDetail(uuid(), p2 , 10)
                 )),
-                new DeliveryNote(genUUID(),new Date(), staff, Arrays.asList(
-                        new DeliveryDetail(genUUID(),p1, 10),
-                        new DeliveryDetail(genUUID(), p2 , 10)
+                new DeliveryNote(uuid(),new Date(), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(),p1, 10),
+                        new DeliveryDetail(uuid(), p2 , 10)
                 )),
-                new DeliveryNote(genUUID(),new Date(), staff, Arrays.asList(
-                        new DeliveryDetail(genUUID(),p1, 10),
-                        new DeliveryDetail(genUUID(), p2 , 10)
+                new DeliveryNote(uuid(),new Date(), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(),p1, 10),
+                        new DeliveryDetail(uuid(), p2 , 10)
                 )),
-                new DeliveryNote(genUUID(),new Date(), staff, Arrays.asList(
-                        new DeliveryDetail(genUUID(),p1, 10),
-                        new DeliveryDetail(genUUID(), p2 , 10)
+                new DeliveryNote(uuid(),new Date(), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(),p1, 10),
+                        new DeliveryDetail(uuid(), p2 , 10)
                 ))
         );
     }

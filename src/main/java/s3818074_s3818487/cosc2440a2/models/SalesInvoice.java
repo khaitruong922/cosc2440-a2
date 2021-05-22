@@ -30,9 +30,9 @@ public class SalesInvoice extends BaseEntity {
     private List<SalesDetail> salesDetails;
 
     @Column
-    private double totalValue;
+    private Double totalValue;
 
-    public SalesInvoice(UUID id,Date date, Staff staff, Customer customer, List<SalesDetail> salesDetails, double totalValue) {
+    public SalesInvoice(UUID id, Date date, Staff staff, Customer customer, List<SalesDetail> salesDetails, Double totalValue) {
         super(id);
         this.date = date;
         this.staff = staff;
@@ -76,11 +76,11 @@ public class SalesInvoice extends BaseEntity {
         this.salesDetails = salesDetails;
     }
 
-    public double getTotalValue() {
+    public Double getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(double totalValue) {
+    public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
     }
 }

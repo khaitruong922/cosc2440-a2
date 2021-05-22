@@ -26,17 +26,17 @@ class StaffControllerUnitTest extends AbstractUnitTest<Staff>{
     }
 
     @Override
-    Staff populateData() {
-        return new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+    protected Staff populateData() {
+        return new Staff(uuid(),"Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com","Chung Quan Tin");
     }
 
     @Override
-    List<Staff> populateListOfData() {
+    protected List<Staff> populateListOfData() {
         return Arrays.asList(
-                new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+                new Staff(uuid(),"Tin Staff", "123 ABC", "0909090888",
                         "admin@email.com","Chung Quan Tin"),
-                new Staff(genUUID(),"Khai Staff", "123 ABC", "0909090888",
+                new Staff(uuid(),"Khai Staff", "123 ABC", "0909090888",
                         "admin@email.com","Truong Duc Khai")
         );
     }

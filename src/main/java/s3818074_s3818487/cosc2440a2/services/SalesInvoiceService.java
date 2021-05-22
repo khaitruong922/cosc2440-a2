@@ -68,4 +68,53 @@ public class SalesInvoiceService extends AbstractService<SalesInvoice, UUID> {
 
         return super.add(salesInvoice);
     }
+
+    @Override
+    public SalesInvoice updateById(SalesInvoice updatedSalesInvoice, UUID id) {
+        Optional<SalesInvoice> salesInvoiceOptional = repo.findById(id);
+        if (salesInvoiceOptional.isEmpty()) throw new RuntimeException("Sales invoice not found!");
+        SalesInvoice salesInvoice = salesInvoiceOptional.get();
+
+
+        // Handle sales details update
+        if (salesInvoice.getSalesDetails() != null) {
+            AtomicReference<Double> totalValue = new AtomicReference<>((double) 0);
+            List<SalesDetail> salesDetails = new ArrayList<>();
+            updatedSalesInvoice.getSalesDetails().forEach(sd -> {
+                Optional<SalesDetail> salesDetailOptional = salesDetailsRepository.findById(sd.getId());
+                if (salesDetailOptional.isEmpty()) throw new RuntimeException("Sales detail not found");
+                SalesDetail salesDetail = salesDetailOptional.get();
+                // Check if the sales detail does not belong to other order
+                if (salesDetail.getSalesInvoice() != null && !salesDetail.getSalesInvoice().getId().equals(salesInvoice.getId()))
+                    throw new RuntimeException("Sales detail " + salesDetail.getId() + " has been used!");
+
+                totalValue.updateAndGet(v -> v + salesDetail.getPrice() * salesDetail.getQuantity());
+                salesDetail.setSalesInvoice(salesInvoice);
+                salesDetails.add(salesDetail);
+            });
+            salesInvoice.setSalesDetails(salesDetails);
+            // Update total value
+            salesInvoice.setTotalValue(totalValue.get());
+        }
+
+        // Handle staff update
+        if (updatedSalesInvoice.getStaff() != null) {
+            Optional<Staff> staffOptional = staffRepository.findById(updatedSalesInvoice.getStaff().getId());
+            salesInvoice.setStaff(staffOptional.orElse(salesInvoice.getStaff()));
+        }
+
+        // Handle customer update
+        if (updatedSalesInvoice.getCustomer() != null) {
+            Optional<Customer> customerOptional = customerRepository.findById(updatedSalesInvoice.getCustomer().getId());
+            salesInvoice.setCustomer(customerOptional.orElse(salesInvoice.getCustomer()));
+        }
+
+        // Handle total value update - in case the user wants to change it manually
+        salesInvoice.setTotalValue(Optional.ofNullable(updatedSalesInvoice.getTotalValue()).orElse(salesInvoice.getTotalValue()));
+
+        // Handle date update
+        salesInvoice.setDate(Optional.ofNullable(updatedSalesInvoice.getDate()).orElse(salesInvoice.getDate()));
+
+        return salesInvoice;
+    }
 }

@@ -26,46 +26,46 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice>{
     }
 
     @Override
-    SalesInvoice populateData() {
-        Category category = new Category(genUUID(),"bike");
-        Product product = new Product(genUUID(),"bike for kid", "BK3","BKA",
+    protected SalesInvoice populateData() {
+        Category category = new Category(uuid(),"bike");
+        Product product = new Product(uuid(),"bike for kid", "BK3","BKA",
                 "BikeForPeace","This is a bike",category,25.5);
-        Staff staff = new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+        Staff staff = new Staff(uuid(),"Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com","Chung Quan Tin");
-        Customer customer = new Customer(genUUID(),"Tin Customer", "123 ABC",
+        Customer customer = new Customer(uuid(),"Tin Customer", "123 ABC",
                 "0909090888", "123","admin@email.com","Chung Quan Tin");
-        return new SalesInvoice(genUUID(),new Date(),staff,customer,Arrays.asList(
-                new SalesDetail(genUUID(),product, 100, 15),
-                new SalesDetail(genUUID(),product, 100, 15)
-        ), 3000);
+        return new SalesInvoice(uuid(),new Date(),staff,customer,Arrays.asList(
+                new SalesDetail(uuid(),product, 100, 15),
+                new SalesDetail(uuid(),product, 100, 15)
+        ), 3000.0);
     }
 
     @Override
-    List<SalesInvoice> populateListOfData() {
-        Category category = new Category(genUUID(),"bike");
-        Product product = new Product(genUUID(),"bike for kid", "BK3","BKA",
+    protected List<SalesInvoice> populateListOfData() {
+        Category category = new Category(uuid(),"bike");
+        Product product = new Product(uuid(),"bike for kid", "BK3","BKA",
                 "BikeForPeace","This is a bike",category,25.5);
-        Staff staff = new Staff(genUUID(),"Tin Staff", "123 ABC", "0909090888",
+        Staff staff = new Staff(uuid(),"Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com","Chung Quan Tin");
-        Customer customer = new Customer(genUUID(),"Tin Customer", "123 ABC",
+        Customer customer = new Customer(uuid(),"Tin Customer", "123 ABC",
                 "0909090888", "123","admin@email.com","Chung Quan Tin");
         return Arrays.asList(
-                new SalesInvoice(genUUID(),new Date(),staff,customer,Arrays.asList(
-                        new SalesDetail(genUUID(),product, 100, 15),
-                        new SalesDetail(genUUID(),product, 100, 15)
-                ), 3000),
-                new SalesInvoice(genUUID(),new Date(),staff,customer,Arrays.asList(
-                        new SalesDetail(genUUID(),product, 100, 15),
-                        new SalesDetail(genUUID(),product, 100, 15)
-                ), 3000),
-                new SalesInvoice(genUUID(),new Date(),staff,customer,Arrays.asList(
-                        new SalesDetail(genUUID(),product, 100, 15),
-                        new SalesDetail(genUUID(),product, 100, 15)
-                ), 3000),
-                new SalesInvoice(genUUID(),new Date(),staff,customer,Arrays.asList(
-                        new SalesDetail(genUUID(),product, 100, 15),
-                        new SalesDetail(genUUID(),product, 100, 15)
-                ), 3000)
+                new SalesInvoice(uuid(),new Date(),staff,customer,Arrays.asList(
+                        new SalesDetail(uuid(),product, 100, 15),
+                        new SalesDetail(uuid(),product, 100, 15)
+                ), 3000.0),
+                new SalesInvoice(uuid(),new Date(),staff,customer,Arrays.asList(
+                        new SalesDetail(uuid(),product, 100, 15),
+                        new SalesDetail(uuid(),product, 100, 15)
+                ), 3000.0),
+                new SalesInvoice(uuid(),new Date(),staff,customer,Arrays.asList(
+                        new SalesDetail(uuid(),product, 100, 15),
+                        new SalesDetail(uuid(),product, 100, 15)
+                ), 3000.0),
+                new SalesInvoice(uuid(),new Date(),staff,customer,Arrays.asList(
+                        new SalesDetail(uuid(),product, 100, 15),
+                        new SalesDetail(uuid(),product, 100, 15)
+                ), 3000.0)
         );
     }
 }

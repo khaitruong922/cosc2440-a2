@@ -21,14 +21,14 @@ public class ReceivingDetail extends BaseEntity {
     public ReceivingDetail() {
     }
 
-    public ReceivingDetail(UUID id,Product product, int quantity) {
+    public ReceivingDetail(UUID id, Product product, int quantity) {
         super(id);
         this.product = product;
         this.quantity = quantity;
     }
 
     @Column
-    private int quantity;
+    private Integer quantity;
 
     public ReceivingNote getReceivingNote() {
         return receivingNote;
@@ -46,11 +46,11 @@ public class ReceivingDetail extends BaseEntity {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }

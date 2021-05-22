@@ -49,5 +49,40 @@ public class DeliveryNoteService extends AbstractService<DeliveryNote, UUID> {
         deliveryNote.setDeliveryDetails(deliveryDetails);
         return super.add(deliveryNote);
     }
+
+    @Override
+    public DeliveryNote updateById(DeliveryNote updatedDeliveryNote, UUID id) {
+        Optional<DeliveryNote> deliveryNoteOptional = repo.findById(id);
+        if (deliveryNoteOptional.isEmpty()) throw new RuntimeException("Delivery note not found!");
+        DeliveryNote deliveryNote = deliveryNoteOptional.get();
+
+        // Handle delivery details update
+        if (updatedDeliveryNote.getDeliveryDetails() != null) {
+            List<DeliveryDetail> deliveryDetails = new ArrayList<>();
+            updatedDeliveryNote.getDeliveryDetails().forEach(dd -> {
+                Optional<DeliveryDetail> deliveryDetailOptional = deliveryDetailRepository.findById(dd.getId());
+                if (deliveryDetailOptional.isEmpty()) throw new RuntimeException("Delivery detail not found");
+                DeliveryDetail deliveryDetail = deliveryDetailOptional.get();
+                // Check if the delivery detail does not belong to other order
+                if (deliveryDetail.getDeliveryNote() != null && !deliveryDetail.getDeliveryNote().getId().equals(deliveryNote.getId()))
+                    throw new RuntimeException("Delivery detail " + deliveryDetail.getId() + " has been used!");
+
+                deliveryDetail.setDeliveryNote(deliveryNote);
+                deliveryDetails.add(deliveryDetail);
+            });
+            deliveryNote.setDeliveryDetails(deliveryDetails);
+        }
+
+        // Handle staff update
+        if (updatedDeliveryNote.getStaff() != null) {
+            Optional<Staff> staffOptional = staffRepository.findById(updatedDeliveryNote.getStaff().getId());
+            deliveryNote.setStaff(staffOptional.orElse(deliveryNote.getStaff()));
+        }
+
+        // Handle date update
+        deliveryNote.setDate(Optional.ofNullable(deliveryNote.getDate()).orElse(deliveryNote.getDate()));
+
+        return deliveryNote;
+    }
 }
 

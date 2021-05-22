@@ -39,7 +39,7 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
         return service.deleteAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PatchMapping(value = "/{id}")
     T updateById(@RequestBody T t, @PathVariable("id") ID id) {
         return service.updateById(t, id);
     }

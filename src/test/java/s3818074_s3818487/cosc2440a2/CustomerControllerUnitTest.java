@@ -27,19 +27,19 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer>{
 
 
     @Override
-    Customer populateData() {
-        return new Customer(genUUID(),"Tin Provider", "123 ABC",
+    protected Customer populateData() {
+        return new Customer(uuid(),"Tin Provider", "123 ABC",
                 "0909090888", "123","admin@email.com","Chung Quan Tin");
     }
 
     @Override
-    List<Customer> populateListOfData() {
+    protected List<Customer> populateListOfData() {
         return Arrays.asList(
-                new Customer(genUUID(),"Tin Cus", "123 ABC",
+                new Customer(uuid(),"Tin Cus", "123 ABC",
                         "0909090888", "123","admin@email.com","Chung Quan Tin"),
-                new Customer(genUUID(),"Tin Cus", "123 ABC",
+                new Customer(uuid(),"Tin Cus", "123 ABC",
                         "0909090888", "123","admin@email.com","Chung Quan Tin"),
-                new Customer(genUUID(),"Tin Cus", "123 ABC",
+                new Customer(uuid(),"Tin Cus", "123 ABC",
                         "0909090888", "123","admin@email.com","Chung Quan Tin")
         );
     }

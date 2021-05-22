@@ -51,4 +51,39 @@ public class ReceivingNoteService extends AbstractService<ReceivingNote, UUID> {
         receivingNote.setReceivingDetails(receivingDetails);
         return super.add(receivingNote);
     }
+
+    @Override
+    public ReceivingNote updateById(ReceivingNote updatedReceivingNote, UUID id) {
+        Optional<ReceivingNote> receivingNoteOptional = repo.findById(id);
+        if (receivingNoteOptional.isEmpty()) throw new RuntimeException("Receiving note not found!");
+        ReceivingNote receivingNote = receivingNoteOptional.get();
+
+        // Handle receiving details update
+        if (receivingNote.getReceivingDetails() != null) {
+            List<ReceivingDetail> receivingDetails = new ArrayList<>();
+            updatedReceivingNote.getReceivingDetails().forEach(rd -> {
+                Optional<ReceivingDetail> receivingDetailOptional = receivingDetailRepository.findById(rd.getId());
+                if (receivingDetailOptional.isEmpty()) throw new RuntimeException("Receiving detail not found");
+                ReceivingDetail receivingDetail = receivingDetailOptional.get();
+                // Check if the receiving detail does not belong to other order
+                if (receivingDetail.getReceivingNote() != null && !receivingDetail.getReceivingNote().getId().equals(receivingNote.getId()))
+                    throw new RuntimeException("Delivery detail " + receivingDetail.getId() + " has been used!");
+
+                receivingDetail.setReceivingNote(receivingNote);
+                receivingDetails.add(receivingDetail);
+            });
+            receivingNote.setReceivingDetails(receivingDetails);
+        }
+
+        // Handle staff update
+        if (updatedReceivingNote.getStaff() != null) {
+            Optional<Staff> staffOptional = staffRepository.findById(updatedReceivingNote.getStaff().getId());
+            receivingNote.setStaff(staffOptional.orElse(receivingNote.getStaff()));
+        }
+
+        // Handle date update
+        receivingNote.setDate(Optional.ofNullable(receivingNote.getDate()).orElse(receivingNote.getDate()));
+
+        return receivingNote;
+    }
 }
