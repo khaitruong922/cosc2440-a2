@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/categories")
-public class CategoryController extends AbstractController<Category,UUID>{
+public class CategoryController extends AbstractController<Category, UUID> {
 
     @Autowired
     public CategoryController(CategoryService service) {

@@ -2,7 +2,10 @@ package s3818074_s3818487.cosc2440a2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import s3818074_s3818487.cosc2440a2.models.*;
+import s3818074_s3818487.cosc2440a2.models.Customer;
+import s3818074_s3818487.cosc2440a2.models.SalesDetail;
+import s3818074_s3818487.cosc2440a2.models.SalesInvoice;
+import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.CustomerRepository;
 import s3818074_s3818487.cosc2440a2.repositories.SalesDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.SalesInvoiceRepository;

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/order-details")
-public class OrderDetailController extends AbstractController<OrderDetail, UUID>{
+public class OrderDetailController extends AbstractController<OrderDetail, UUID> {
     @Autowired
     public OrderDetailController(OrderDetailService service) {
         super(service);

@@ -23,7 +23,7 @@ public class Staff extends BaseEntity {
     @Column
     private String contactPerson;
 
-    public Staff(UUID id,String name, String address, String phone, String email, String contactPerson) {
+    public Staff(UUID id, String name, String address, String phone, String email, String contactPerson) {
         super(id);
         this.name = name;
         this.address = address;

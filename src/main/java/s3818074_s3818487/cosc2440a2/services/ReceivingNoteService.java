@@ -2,7 +2,9 @@ package s3818074_s3818487.cosc2440a2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import s3818074_s3818487.cosc2440a2.models.*;
+import s3818074_s3818487.cosc2440a2.models.ReceivingDetail;
+import s3818074_s3818487.cosc2440a2.models.ReceivingNote;
+import s3818074_s3818487.cosc2440a2.models.Staff;
 import s3818074_s3818487.cosc2440a2.repositories.ProductRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ReceivingDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
