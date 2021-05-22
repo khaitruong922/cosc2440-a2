@@ -36,7 +36,8 @@ public class StaffController extends AbstractController<Staff, UUID> {
     @GetMapping("/{id}/sales-invoices")
     public List<SalesInvoice> getSalesInvoices(@PathVariable("id") UUID id,
                                                @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
-        return new SalesInvoiceFilter(salesInvoiceService.getAll()).ofStaff(id).start(startDate).end(endDate).get();
+                                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                               @RequestParam(value = "page", required = false) Integer page) {
+        return new SalesInvoiceFilter(salesInvoiceService.getAll(page)).ofStaff(id).start(startDate).end(endDate).get();
     }
 }
