@@ -6,14 +6,11 @@ import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import s3818074_s3818487.cosc2440a2.controllers.AbstractController;
 import s3818074_s3818487.cosc2440a2.models.BaseEntity;
 import s3818074_s3818487.cosc2440a2.services.AbstractService;
@@ -26,7 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public abstract class AbstractUnitTest<T extends BaseEntity> {
+public abstract class AbstractUnitTest<T extends BaseEntity> implements CRUDAPITest {
     MockMvc mockMvc;
 
     @Mock
