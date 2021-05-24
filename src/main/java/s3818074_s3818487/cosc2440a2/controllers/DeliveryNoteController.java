@@ -24,13 +24,13 @@ public class DeliveryNoteController extends AbstractController<DeliveryNote, UUI
 
     @Override
     @GetMapping("/all")
-    List<DeliveryNote> getAll(Integer page) {
+    public List<DeliveryNote> getAll(Integer page) {
         return super.getAll(page);
     }
 
 
     @GetMapping
-    List<DeliveryNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+    public List<DeliveryNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
                               @RequestParam(value = "page", required = false) Integer page) {
 

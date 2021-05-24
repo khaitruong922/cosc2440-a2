@@ -25,13 +25,13 @@ public class SalesInvoiceController extends AbstractController<SalesInvoice, UUI
     // Without search param
     @Override
     @GetMapping("/all")
-    List<SalesInvoice> getAll(Integer page) {
+    public List<SalesInvoice> getAll(Integer page) {
         return super.getAll(page);
     }
 
     // With search param
     @GetMapping
-    List<SalesInvoice> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+    public List<SalesInvoice> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
                               @RequestParam(value = "customer", required = false) UUID customerId,
                               @RequestParam(value = "staff", required = false) UUID staffId,

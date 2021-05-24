@@ -15,32 +15,32 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
     }
 
     @GetMapping
-    List<T> getAll(@PathVariable(value = "page", required = false) Integer page) {
+    public List<T> getAll(@PathVariable(value = "page", required = false) Integer page) {
         return service.getAll(page);
     }
 
     @GetMapping("/{id}")
-    T getById(@PathVariable("id") ID id) {
+    public T getById(@PathVariable("id") ID id) {
         return service.getById(id);
     }
 
     @PostMapping
-    T add(@RequestBody T t) {
+    public T add(@RequestBody T t) {
         return service.add(t);
     }
 
     @DeleteMapping("/{id}")
-    HttpStatus deleteById(@PathVariable("id") ID id) {
+    public HttpStatus deleteById(@PathVariable("id") ID id) {
         return service.deleteById(id);
     }
 
     @DeleteMapping
-    HttpStatus deleteAll() {
+    public HttpStatus deleteAll() {
         return service.deleteAll();
     }
 
     @PatchMapping(value = "/{id}")
-    T updateById(@RequestBody T t, @PathVariable("id") ID id) {
+    public T updateById(@RequestBody T t, @PathVariable("id") ID id) {
         return service.updateById(t, id);
     }
 }

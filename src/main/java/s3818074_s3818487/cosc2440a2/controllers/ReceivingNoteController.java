@@ -25,13 +25,13 @@ public class ReceivingNoteController extends AbstractController<ReceivingNote, U
     // Without search param
     @Override
     @GetMapping("/all")
-    List<ReceivingNote> getAll(Integer page) {
+    public List<ReceivingNote> getAll(Integer page) {
         return super.getAll(page);
     }
 
     // With search param
     @GetMapping
-    List<ReceivingNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+    public List<ReceivingNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                                @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
                                @RequestParam(value = "page", required = false) Integer page) {
 

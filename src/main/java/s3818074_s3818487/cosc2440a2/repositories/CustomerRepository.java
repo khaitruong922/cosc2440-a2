@@ -7,9 +7,4 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
-    List<Customer> findAllByName(String name);
-
-    List<Customer> findAllByAddress(String address);
-
-    List<Customer> findAllByPhone(String phone);
 }
