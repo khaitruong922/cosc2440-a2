@@ -40,6 +40,9 @@ public class ReceivingNoteService extends AbstractService<ReceivingNote, UUID> {
         List<ReceivingDetail> receivingDetails = new ArrayList<>();
         if (receivingNote.getReceivingDetails() == null) receivingNote.setReceivingDetails(Collections.emptyList());
         receivingNote.getReceivingDetails().forEach(rd -> {
+            // Set the note of all current details to null
+            receivingNote.getReceivingDetails().forEach(d -> d.setReceivingNote(null));
+
             Optional<ReceivingDetail> receivingDetailOptional = receivingDetailRepository.findById(rd.getId());
             if (receivingDetailOptional.isEmpty()) throw new RuntimeException("Receiving detail not found!");
             ReceivingDetail receivingDetail = receivingDetailOptional.get();

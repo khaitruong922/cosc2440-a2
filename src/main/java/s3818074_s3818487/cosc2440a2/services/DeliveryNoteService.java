@@ -60,11 +60,14 @@ public class DeliveryNoteService extends AbstractService<DeliveryNote, UUID> {
         if (updatedDeliveryNote.getDeliveryDetails() != null) {
             List<DeliveryDetail> deliveryDetails = new ArrayList<>();
             updatedDeliveryNote.getDeliveryDetails().forEach(dd -> {
+                // Set the note of all current details to null
+                deliveryNote.getDeliveryDetails().forEach(d -> d.setDeliveryNote(null));
+
                 Optional<DeliveryDetail> deliveryDetailOptional = deliveryDetailRepository.findById(dd.getId());
                 if (deliveryDetailOptional.isEmpty()) throw new RuntimeException("Delivery detail not found");
                 DeliveryDetail deliveryDetail = deliveryDetailOptional.get();
-                // Check if the delivery detail does not belong to other order
-                if (deliveryDetail.getDeliveryNote() != null && !deliveryDetail.getDeliveryNote().getId().equals(deliveryNote.getId()))
+                // Check if the delivery detail is null
+                if (deliveryDetail.getDeliveryNote() != null)
                     throw new RuntimeException("Delivery detail " + deliveryDetail.getId() + " has been used!");
 
                 deliveryDetail.setDeliveryNote(deliveryNote);

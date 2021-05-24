@@ -81,11 +81,14 @@ public class SalesInvoiceService extends AbstractService<SalesInvoice, UUID> {
             AtomicReference<Double> totalValue = new AtomicReference<>((double) 0);
             List<SalesDetail> salesDetails = new ArrayList<>();
             updatedSalesInvoice.getSalesDetails().forEach(sd -> {
+                // Set the sales invoice of all current details to null
+                salesInvoice.getSalesDetails().forEach(d -> d.setSalesInvoice(null));
+
                 Optional<SalesDetail> salesDetailOptional = salesDetailsRepository.findById(sd.getId());
                 if (salesDetailOptional.isEmpty()) throw new RuntimeException("Sales detail not found");
                 SalesDetail salesDetail = salesDetailOptional.get();
                 // Check if the sales detail does not belong to other order
-                if (salesDetail.getSalesInvoice() != null && !salesDetail.getSalesInvoice().getId().equals(salesInvoice.getId()))
+                if (salesDetail.getSalesInvoice() != null)
                     throw new RuntimeException("Sales detail " + salesDetail.getId() + " has been used!");
 
                 totalValue.updateAndGet(v -> v + salesDetail.getPrice() * salesDetail.getQuantity());

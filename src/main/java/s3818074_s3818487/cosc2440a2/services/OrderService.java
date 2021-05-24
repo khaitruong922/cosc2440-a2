@@ -73,11 +73,14 @@ public class OrderService extends AbstractService<Order, UUID> {
         if (updatedOrder.getOrderDetails() != null) {
             List<OrderDetail> orderDetails = new ArrayList<>();
             updatedOrder.getOrderDetails().forEach(od -> {
+                // Set the order of all current details to null
+                order.getOrderDetails().forEach(d -> d.setOrder(null));
+
                 Optional<OrderDetail> orderDetailOptional = orderDetailRepository.findById(od.getId());
                 if (orderDetailOptional.isEmpty()) throw new RuntimeException("Order detail not found");
                 OrderDetail orderDetail = orderDetailOptional.get();
-                // Check if the order detail does not belong to other order
-                if (orderDetail.getOrder() != null && !orderDetail.getOrder().getId().equals(order.getId()))
+                // Check if the order detail is null
+                if (orderDetail.getOrder() != null)
                     throw new RuntimeException("Order detail " + orderDetail.getId() + " has been used!");
 
                 orderDetail.setOrder(order);
