@@ -56,7 +56,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
         return UUID.randomUUID();
     }
 
-    private final String endpoint;
+    protected final String endpoint;
 
     public AbstractUnitTest(String endpoint) {
         this.endpoint = endpoint;
