@@ -114,7 +114,6 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class Element_Not_Found{
-
         @Test
         @DisplayName("[POST][ERROR] Staff not found!")
         void addTestThrowStaffNotFound(){

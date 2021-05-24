@@ -70,68 +70,70 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         super.updateByIdTestWebLayerThrowDataNotFound("Customer");
     }
 
-    @Test
-    @Order(2)
-    @DisplayName("[GET] Search by name")
-    public void searchByNameTest() throws Exception {
-        Mockito.when(repository.findAll()).thenReturn(populateListOfData());
-        int expectedCount = 1;
-        String name = "tin";
-        List<Customer> customers = service.search(name, null, null, null);
-        Assertions.assertEquals(customers.size(), expectedCount);
-        mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON).param("name", name))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(expectedCount)));
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Search_API{
+        @Test
+        @Order(2)
+        @DisplayName("[GET] Search by name")
+        public void searchByNameTest() throws Exception {
+            Mockito.when(repository.findAll()).thenReturn(populateListOfData());
+            int expectedCount = 1;
+            String name = "tin";
+            List<Customer> customers = service.search(name, null, null, null);
+            Assertions.assertEquals(customers.size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON).param("name", name))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("[GET] Search by phone")
+        public void searchByPhoneTest() throws Exception {
+            Mockito.when(repository.findAll()).thenReturn(populateListOfData());
+            int expectedCount = 3;
+            String phone = "0908321238";
+            List<Customer> customersWithName = service.search(null, phone, null, null);
+            Assertions.assertEquals(customersWithName.size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON).param("phone", phone))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("[GET] Search by address")
+        public void searchByAddressTest() throws Exception {
+            Mockito.when(repository.findAll()).thenReturn(populateListOfData());
+            int expectedCount = 2;
+            String address = "19 earth";
+            List<Customer> customers = service.search(null, null, address, null);
+            Assertions.assertEquals(customers.size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON).param("address", address))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("[GET] Search by multiple params")
+        public void searchByMultipleParams() throws Exception {
+            Mockito.when(repository.findAll()).thenReturn(populateListOfData());
+            int expectedCount = 1;
+            String name = "Khai 2";
+            String address = "19 earth";
+            String phone = "0908321238";
+            List<Customer> customers = service.search(name, phone, address, null);
+            Assertions.assertEquals(customers.size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("name", name)
+                    .param("phone", phone)
+                    .param("address", address))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+        }
     }
-
-    @Test
-    @Order(2)
-    @DisplayName("[GET] Search by phone")
-    public void searchByPhoneTest() throws Exception {
-        Mockito.when(repository.findAll()).thenReturn(populateListOfData());
-        int expectedCount = 3;
-        String phone = "0908321238";
-        List<Customer> customersWithName = service.search(null, phone, null, null);
-        Assertions.assertEquals(customersWithName.size(), expectedCount);
-        mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON).param("phone", phone))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(expectedCount)));
-    }
-
-    @Test
-    @Order(2)
-    @DisplayName("[GET] Search by address")
-    public void searchByAddressTest() throws Exception {
-        Mockito.when(repository.findAll()).thenReturn(populateListOfData());
-        int expectedCount = 2;
-        String address = "19 earth";
-        List<Customer> customers = service.search(null, null, address, null);
-        Assertions.assertEquals(customers.size(), expectedCount);
-        mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON).param("address", address))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(expectedCount)));
-    }
-
-    @Test
-    @Order(2)
-    @DisplayName("[GET] Search by multiple params")
-    public void searchByMultipleParams() throws Exception {
-        Mockito.when(repository.findAll()).thenReturn(populateListOfData());
-        int expectedCount = 1;
-        String name = "Khai 2";
-        String address = "19 earth";
-        String phone = "0908321238";
-        List<Customer> customers = service.search(name, phone, address, null);
-        Assertions.assertEquals(customers.size(), expectedCount);
-        mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
-                .param("name", name)
-                .param("phone", phone)
-                .param("address", address))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(expectedCount)));
-    }
-
-
 }
 
 
