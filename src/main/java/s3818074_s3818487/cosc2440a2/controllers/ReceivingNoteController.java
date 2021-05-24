@@ -17,9 +17,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/receiving-notes")
 public class ReceivingNoteController extends AbstractController<ReceivingNote, UUID> {
+    private final ReceivingNoteService receivingNoteService;
+
     @Autowired
     public ReceivingNoteController(ReceivingNoteService service) {
         super(service);
+        this.receivingNoteService = service;
     }
 
     // Without search param
@@ -32,9 +35,9 @@ public class ReceivingNoteController extends AbstractController<ReceivingNote, U
     // With search param
     @GetMapping
     public List<ReceivingNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                               @RequestParam(value = "page", required = false) Integer page) {
+                                      @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                      @RequestParam(value = "page", required = false) Integer page) {
 
-        return new ReceivingNoteFilter(super.getAll(page)).start(startDate).end(endDate).get();
+        return receivingNoteService.search(startDate, endDate, page);
     }
 }

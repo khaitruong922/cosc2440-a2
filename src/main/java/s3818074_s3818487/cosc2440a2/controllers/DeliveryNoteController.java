@@ -17,9 +17,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/delivery-notes")
 public class DeliveryNoteController extends AbstractController<DeliveryNote, UUID> {
+    private final DeliveryNoteService deliveryNoteService;
+
     @Autowired
     public DeliveryNoteController(DeliveryNoteService service) {
         super(service);
+        this.deliveryNoteService = service;
     }
 
     @Override
@@ -31,9 +34,9 @@ public class DeliveryNoteController extends AbstractController<DeliveryNote, UUI
 
     @GetMapping
     public List<DeliveryNote> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                              @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                              @RequestParam(value = "page", required = false) Integer page) {
+                                     @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                     @RequestParam(value = "page", required = false) Integer page) {
 
-        return new DeliveryNoteFilter(super.getAll(page)).start(startDate).end(endDate).get();
+        return deliveryNoteService.search(startDate, endDate, page);
     }
 }

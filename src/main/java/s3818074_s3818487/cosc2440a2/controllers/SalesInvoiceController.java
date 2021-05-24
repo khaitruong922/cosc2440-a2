@@ -17,9 +17,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/sales-invoices")
 public class SalesInvoiceController extends AbstractController<SalesInvoice, UUID> {
+    private final SalesInvoiceService salesInvoiceService;
+
     @Autowired
     public SalesInvoiceController(SalesInvoiceService service) {
         super(service);
+        this.salesInvoiceService = service;
     }
 
     // Without search param
@@ -32,12 +35,12 @@ public class SalesInvoiceController extends AbstractController<SalesInvoice, UUI
     // With search param
     @GetMapping
     public List<SalesInvoice> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                              @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                              @RequestParam(value = "customer", required = false) UUID customerId,
-                              @RequestParam(value = "staff", required = false) UUID staffId,
-                              @RequestParam(value = "page", required = false) Integer page
+                                     @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                     @RequestParam(value = "customer", required = false) UUID customerId,
+                                     @RequestParam(value = "staff", required = false) UUID staffId,
+                                     @RequestParam(value = "page", required = false) Integer page
     ) {
 
-        return new SalesInvoiceFilter(super.getAll(page)).start(startDate).end(endDate).ofStaff(staffId).ofCustomer(customerId).get();
+        return salesInvoiceService.search(startDate, endDate, page);
     }
 }

@@ -17,20 +17,19 @@ import java.util.UUID;
 @RequestMapping("/staffs")
 public class StaffController extends AbstractController<Staff, UUID> {
 
-    private final SalesInvoiceService salesInvoiceService;
+    private final StaffService staffService;
 
     @Autowired
-    public StaffController(StaffService service, SalesInvoiceService salesInvoiceService) {
+    public StaffController(StaffService service) {
         super(service);
-        this.salesInvoiceService = salesInvoiceService;
+        this.staffService = service;
     }
 
     @GetMapping("/{id}/revenue")
-    public double getRevenue(@PathVariable("id") UUID id,
+    public Double getRevenue(@PathVariable("id") UUID id,
                              @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                              @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
-        List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(salesInvoiceService.getAll()).ofStaff(id).start(startDate).end(endDate).get();
-        return salesInvoices.stream().mapToDouble(SalesInvoice::getTotalValue).sum();
+        return staffService.getRevenue(id, startDate, endDate);
     }
 
     @GetMapping("/{id}/sales-invoices")
@@ -38,6 +37,6 @@ public class StaffController extends AbstractController<Staff, UUID> {
                                                @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                                                @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
                                                @RequestParam(value = "page", required = false) Integer page) {
-        return new SalesInvoiceFilter(salesInvoiceService.getAll(page)).ofStaff(id).start(startDate).end(endDate).get();
+        return staffService.getSalesInvoices(id, startDate, endDate, page);
     }
 }
