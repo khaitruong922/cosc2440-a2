@@ -43,6 +43,4 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
     T updateById(@RequestBody T t, @PathVariable("id") ID id) {
         return service.updateById(t, id);
     }
-
-    ;
 }

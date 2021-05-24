@@ -2,10 +2,14 @@ package s3818074_s3818487.cosc2440a2;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import s3818074_s3818487.cosc2440a2.controllers.ReceivingNoteController;
 import s3818074_s3818487.cosc2440a2.models.*;
+import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
+import s3818074_s3818487.cosc2440a2.services.ReceivingNoteService;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -21,9 +25,15 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote>{
         super("receiving-notes");
     }
 
+    @MockBean
+    protected ReceivingNoteRepository repository;
+
+    @Autowired
+    protected ReceivingNoteService service;
+
     @BeforeEach
     public void init(){
-        setUp(controller);
+        setUp(controller, service, repository);
     }
 
     @Override

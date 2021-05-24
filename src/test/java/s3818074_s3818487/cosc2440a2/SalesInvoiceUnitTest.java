@@ -3,10 +3,14 @@ package s3818074_s3818487.cosc2440a2;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import s3818074_s3818487.cosc2440a2.controllers.SalesInvoiceController;
 import s3818074_s3818487.cosc2440a2.models.*;
+import s3818074_s3818487.cosc2440a2.repositories.SalesInvoiceRepository;
+import s3818074_s3818487.cosc2440a2.services.SalesInvoiceService;
 
 import java.util.*;
 
@@ -20,9 +24,15 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice>{
         super("sales-invoices");
     }
 
+    @MockBean
+    protected SalesInvoiceRepository repository;
+
+    @Autowired
+    protected SalesInvoiceService service;
+
     @BeforeEach
     public void init(){
-        setUp(controller);
+        setUp(controller, service, repository);
     }
 
     @Override

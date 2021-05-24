@@ -2,10 +2,14 @@ package s3818074_s3818487.cosc2440a2;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import s3818074_s3818487.cosc2440a2.controllers.StaffController;
 import s3818074_s3818487.cosc2440a2.models.*;
+import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
+import s3818074_s3818487.cosc2440a2.services.StaffService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +24,15 @@ class StaffControllerUnitTest extends AbstractUnitTest<Staff>{
         super("staffs");
     }
 
+    @MockBean
+    protected StaffRepository repository;
+
+    @Autowired
+    protected StaffService service;
+
     @BeforeEach
     public void init(){
-        setUp(controller);
+        setUp(controller, service, repository);
     }
 
     @Override
