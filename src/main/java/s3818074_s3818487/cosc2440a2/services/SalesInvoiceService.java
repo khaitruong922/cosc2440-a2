@@ -120,7 +120,7 @@ public class SalesInvoiceService extends AbstractService<SalesInvoice, UUID> {
         return salesInvoice;
     }
 
-    public List<SalesInvoice> search(Date startDate, Date endDate, Integer page) {
-        return new SalesInvoiceFilter(super.getAll(page)).start(startDate).end(endDate).get();
+    public List<SalesInvoice> search(Date startDate, Date endDate, UUID staffId, UUID customerId, Integer page) {
+        return new SalesInvoiceFilter(super.getAll(page)).start(startDate).end(endDate).ofStaff(staffId).ofCustomer(customerId).get();
     }
 }

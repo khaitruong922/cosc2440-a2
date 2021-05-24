@@ -41,6 +41,6 @@ public class SalesInvoiceController extends AbstractController<SalesInvoice, UUI
                                      @RequestParam(value = "page", required = false) Integer page
     ) {
 
-        return salesInvoiceService.search(startDate, endDate, page);
+        return salesInvoiceService.search(startDate, endDate, customerId, staffId, page);
     }
 }
