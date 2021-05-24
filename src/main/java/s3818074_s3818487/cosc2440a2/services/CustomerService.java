@@ -47,7 +47,7 @@ public class CustomerService extends AbstractService<Customer, UUID> {
     }
 
     public Double getRevenue(UUID id, Date startDate, Date endDate) {
-        List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(salesInvoiceRepository.findAll()).ofStaff(id).start(startDate).end(endDate).get();
+        List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(salesInvoiceRepository.findAll()).ofCustomer(id).start(startDate).end(endDate).get();
         return salesInvoices.stream().mapToDouble(SalesInvoice::getTotalValue).sum();
     }
 }

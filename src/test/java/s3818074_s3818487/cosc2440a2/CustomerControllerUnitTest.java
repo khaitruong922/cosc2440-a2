@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,13 @@ import org.springframework.http.MediaType;
 import s3818074_s3818487.cosc2440a2.controllers.CustomerController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.repositories.CustomerRepository;
+import s3818074_s3818487.cosc2440a2.repositories.SalesInvoiceRepository;
 import s3818074_s3818487.cosc2440a2.services.CustomerService;
+import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -26,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
+
     @Autowired
     @InjectMocks
     private CustomerController controller;
@@ -37,7 +43,11 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
     @MockBean
     protected CustomerRepository repository;
 
+    @MockBean
+    private SalesInvoiceRepository salesInvoiceRepository;
+
     @Autowired
+    @InjectMocks
     protected CustomerService service;
 
     @BeforeEach
@@ -70,11 +80,11 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         super.updateByIdTestWebLayerThrowDataNotFound("Customer");
     }
 
+
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class Search_API{
+    class Search_API {
         @Test
-        @Order(2)
         @DisplayName("[GET] Search by name")
         public void searchByNameTest() throws Exception {
             Mockito.when(repository.findAll()).thenReturn(populateListOfData());
@@ -88,7 +98,6 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         }
 
         @Test
-        @Order(2)
         @DisplayName("[GET] Search by phone")
         public void searchByPhoneTest() throws Exception {
             Mockito.when(repository.findAll()).thenReturn(populateListOfData());
@@ -102,7 +111,6 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         }
 
         @Test
-        @Order(2)
         @DisplayName("[GET] Search by address")
         public void searchByAddressTest() throws Exception {
             Mockito.when(repository.findAll()).thenReturn(populateListOfData());
@@ -116,7 +124,6 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         }
 
         @Test
-        @Order(2)
         @DisplayName("[GET] Search by multiple params")
         public void searchByMultipleParamsTest() throws Exception {
             Mockito.when(repository.findAll()).thenReturn(populateListOfData());
@@ -132,6 +139,39 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
                     .param("address", address))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(expectedCount)));
+        }
+
+
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Other {
+        @Test
+        @DisplayName("[GET] Get revenue")
+        public void getRevenueTest() throws Exception {
+            List<Customer> mockCustomers = populateListOfData();
+            Mockito.when(repository.findAll()).thenReturn(mockCustomers);
+            Date startDate = DateUtils.parse("2020-01-01");
+            Date endDate = DateUtils.parse("2020-05-31");
+            List<SalesInvoice> mockSalesInvoices = Arrays.asList(
+                    new SalesInvoice(uuid(), DateUtils.parse("2020-01-01"), new Staff(), mockCustomers.get(0), Collections.emptyList(), 20.0),
+                    new SalesInvoice(uuid(), DateUtils.parse("2020-04-01"), new Staff(), mockCustomers.get(0), Collections.emptyList(), 40.0),
+                    new SalesInvoice(uuid(), DateUtils.parse("2020-06-01"), new Staff(), mockCustomers.get(0), Collections.emptyList(), 25.0),
+                    new SalesInvoice(uuid(), DateUtils.parse("2020-03-01"), new Staff(), mockCustomers.get(1), Collections.emptyList(), 30.0)
+            );
+            Mockito.when(salesInvoiceRepository.findAll()).thenReturn(mockSalesInvoices);
+            // Without date
+            Assertions.assertEquals(service.getRevenue(mockCustomers.get(0).getId(), null, null), 85.0);
+            // With start and end date
+            Assertions.assertEquals(service.getRevenue(mockCustomers.get(0).getId(), startDate, endDate), 60.0);
+            // With another customer
+            Assertions.assertEquals(service.getRevenue(mockCustomers.get(1).getId(), startDate, endDate), 30.0);
+            // With a customer without sales invoices
+            Assertions.assertEquals(service.getRevenue(mockCustomers.get(2).getId(), startDate, endDate), 0);
+
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
         }
     }
 }
