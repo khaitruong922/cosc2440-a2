@@ -31,12 +31,4 @@ public class StaffController extends AbstractController<Staff, UUID> {
                              @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
         return staffService.getRevenue(id, startDate, endDate);
     }
-
-    @GetMapping("/{id}/sales-invoices")
-    public List<SalesInvoice> getSalesInvoices(@PathVariable("id") UUID id,
-                                               @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                                               @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                                               @RequestParam(value = "page", required = false) Integer page) {
-        return staffService.getSalesInvoices(id, startDate, endDate, page);
-    }
 }

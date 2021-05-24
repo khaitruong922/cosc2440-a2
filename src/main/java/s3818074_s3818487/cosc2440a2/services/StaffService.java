@@ -45,10 +45,5 @@ public class StaffService extends AbstractService<Staff, UUID> {
         List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(salesInvoiceRepository.findAll()).ofStaff(id).start(startDate).end(endDate).get();
         return salesInvoices.stream().mapToDouble(SalesInvoice::getTotalValue).sum();
     }
-
-    public List<SalesInvoice> getSalesInvoices(UUID id, Date startDate, Date endDate, Integer page) {
-        final int RESULTS_PER_PAGE = 5;
-        return new SalesInvoiceFilter(salesInvoiceRepository.findAll(PageRequest.of(page, RESULTS_PER_PAGE)).toList()).ofStaff(id).start(startDate).end(endDate).get();
-    }
 }
 
