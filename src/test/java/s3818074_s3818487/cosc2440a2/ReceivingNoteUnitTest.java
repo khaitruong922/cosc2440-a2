@@ -3,6 +3,7 @@ package s3818074_s3818487.cosc2440a2;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,11 +15,15 @@ import s3818074_s3818487.cosc2440a2.repositories.ReceivingDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 import s3818074_s3818487.cosc2440a2.services.ReceivingNoteService;
+import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 
 import java.util.*;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,23 +88,23 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
         Staff staff = new Staff(uuid(), "Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com", "Chung Quan Tin");
         return Arrays.asList(
-                new ReceivingNote(uuid(), new Date(), staff, Arrays.asList(
+                new ReceivingNote(uuid(), DateUtils.parse("2020-01-01"), staff, Arrays.asList(
                         new ReceivingDetail(uuid(), p1, 10),
                         new ReceivingDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), new Date(), staff, Arrays.asList(
+                new ReceivingNote(uuid(), DateUtils.parse("2020-02-01"), staff, Arrays.asList(
                         new ReceivingDetail(uuid(), p1, 10),
                         new ReceivingDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), new Date(), staff, Arrays.asList(
+                new ReceivingNote(uuid(), DateUtils.parse("2020-03-01"), staff, Arrays.asList(
                         new ReceivingDetail(uuid(), p1, 10),
                         new ReceivingDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), new Date(), staff, Arrays.asList(
+                new ReceivingNote(uuid(), DateUtils.parse("2020-04-01"), staff, Arrays.asList(
                         new ReceivingDetail(uuid(), p1, 10),
                         new ReceivingDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), new Date(), staff, Arrays.asList(
+                new ReceivingNote(uuid(), DateUtils.parse("2020-05-01"), staff, Arrays.asList(
                         new ReceivingDetail(uuid(), p1, 10),
                         new ReceivingDetail(uuid(), p2, 10)
                 ))
@@ -157,6 +162,25 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
             } catch (Exception e){
                 Assertions.assertEquals(e.getMessage(), "Receiving detail not found!");
             }
+        }
+    }
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Search_API {
+        @Test
+        @DisplayName("[GET] Filter by date")
+        public void filterByDateTest() throws Exception {
+            Mockito.when(repository.findAll()).thenReturn(populateListOfData());
+            int expectedCount = 3;
+            Date startDate = DateUtils.parse("2020-01-01");
+            Date endDate = DateUtils.parse("2020-03-01");
+            Assertions.assertEquals(controller.search(startDate, endDate, null).size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("start", DateUtils.format(startDate))
+                    .param("end", DateUtils.format(endDate)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+
         }
     }
 }

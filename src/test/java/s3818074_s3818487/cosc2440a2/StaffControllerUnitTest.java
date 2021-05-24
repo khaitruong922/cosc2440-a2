@@ -94,15 +94,15 @@ class StaffControllerUnitTest extends AbstractUnitTest<Staff> {
             );
             Mockito.when(salesInvoiceRepository.findAll()).thenReturn(mockSalesInvoices);
             // Without date
-            Assertions.assertEquals(service.getRevenue(mockStaffs.get(0).getId(), null, null), 85.0);
+            Assertions.assertEquals(controller.getRevenue(mockStaffs.get(0).getId(), null, null), 85.0);
             // With start and end date
-            Assertions.assertEquals(service.getRevenue(mockStaffs.get(0).getId(), startDate, endDate), 60.0);
+            Assertions.assertEquals(controller.getRevenue(mockStaffs.get(0).getId(), startDate, endDate), 60.0);
             // With another staff
-            Assertions.assertEquals(service.getRevenue(mockStaffs.get(1).getId(), startDate, endDate), 30.0);
+            Assertions.assertEquals(controller.getRevenue(mockStaffs.get(1).getId(), startDate, endDate), 30.0);
             // With a staff without sales invoices
-            Assertions.assertEquals(service.getRevenue(mockStaffs.get(2).getId(), startDate, endDate), 0);
+            Assertions.assertEquals(controller.getRevenue(mockStaffs.get(2).getId(), startDate, endDate), 0);
 
-            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON))
+            mockMvc.perform(get("/" + endpoint + "/" + mockStaffs.get(0).getId() + "/revenue").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
         }
     }

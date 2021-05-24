@@ -14,6 +14,11 @@ public class DateUtils {
         }
     }
 
+    public static String format(Date d) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        return fmt.format(d);
+    }
+
     public static boolean isSameDay(Date d1, Date d2) {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         return fmt.format(d1).equals(fmt.format(d2));
