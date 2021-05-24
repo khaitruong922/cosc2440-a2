@@ -53,8 +53,8 @@ public class OrderService extends AbstractService<Order, UUID> {
                     Optional<OrderDetail> orderDetailOptional = orderDetailRepository.findById(od.getId());
                     if (orderDetailOptional.isEmpty()) throw new RuntimeException("Order detail not found!");
                     OrderDetail orderDetail = orderDetailOptional.get();
-                    if (orderDetail.getOrder() != null)
-                        throw new RuntimeException("Order detail " + orderDetail.getId() + " has been used!");
+//                    if (orderDetail.getOrder() != null)
+//                        throw new RuntimeException("Order detail " + orderDetail.getId() + " has been used!");
                     orderDetail.setOrder(order);
                     orderDetails.add(orderDetail);
                 }

@@ -53,6 +53,11 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
                         "0909090888", "123","admin@email.com","Chung Quan Tin")
         );
     }
+
+    @Override
+    public void updateByIdTestWebLayerThrowDataNotFound(String name) {
+        super.updateByIdTestWebLayerThrowDataNotFound("Customer");
+    }
 }
 
 

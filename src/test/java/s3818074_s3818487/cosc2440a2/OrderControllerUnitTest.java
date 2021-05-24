@@ -1,24 +1,32 @@
 package s3818074_s3818487.cosc2440a2;
 
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.MediaType;
 import s3818074_s3818487.cosc2440a2.controllers.OrderController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.models.Order;
+import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
 import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
+import s3818074_s3818487.cosc2440a2.repositories.ProviderRepository;
+import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 import s3818074_s3818487.cosc2440a2.services.OrderService;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 class OrderControllerUnitTest extends AbstractUnitTest<Order> {
     @InjectMocks
+    @Autowired
     private OrderController controller;
 
     public OrderControllerUnitTest() {
@@ -27,6 +35,15 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
 
     @MockBean
     protected OrderRepository repository;
+
+    @MockBean
+    protected StaffRepository staffRepository;
+
+    @MockBean
+    protected ProviderRepository providerRepository;
+
+    @MockBean
+    protected OrderDetailRepository orderDetailRepository;
 
     @Autowired
     protected OrderService service;
@@ -41,12 +58,19 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
         Category category = new Category(uuid(), "bike");
         Product product = new Product(uuid(), "bike for kid", "BK3", "BKA",
                 "BikeForPeace", "This is a bike", category, 25.5);
+
         Staff staff = new Staff(uuid(), "Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com", "Chung Quan Tin");
+        when(staffRepository.findById(staff.getId())).thenReturn(Optional.of(staff));
+
         Provider provider = new Provider(uuid(), "Tin Provider", "123 ABC",
                 "0909090888", "123", "admin@email.com", "Chung Quan Tin");
+        when(providerRepository.findById(provider.getId())).thenReturn(Optional.of(provider));
+
         OrderDetail orderDetail = new OrderDetail(uuid(), product, 10,
                 product.getSellingPrice() * 10);
+        when(orderDetailRepository.findById(orderDetail.getId())).thenReturn(Optional.of(orderDetail));
+
         List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
         return new Order(uuid(), new Date(), staff, provider, orderDetails);
     }
@@ -67,5 +91,61 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
         return Arrays.asList(
                 new Order(uuid(), new Date(), staff, provider, orderDetails),
                 new Order(uuid(), new Date(), staff, provider, Collections.emptyList()));
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Element_Not_Found{
+
+        @Test
+        @DisplayName("[POST][ERROR] Staff not found!")
+        void addTestThrowStaffNotFound(){
+            try {
+                Order data = populateData();
+
+                data.setStaff(new Staff());
+
+                when(repository.save(data)).thenReturn(data);
+                Assertions.assertEquals(data, service.add(data));
+
+                // Assertions
+                String jsonRequest = om.writeValueAsString(data);
+                mockMvc.perform(
+                        post("/orders")
+                                .content(jsonRequest)
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isBadRequest()).andReturn();
+            } catch (Exception e){
+                Assertions.assertEquals(e.getMessage(), "Staff not found!");
+            }
+        }
+
+        @Test
+        @DisplayName("[POST][ERROR] Provider not found!")
+        void addTestThrowProviderNotFound(){
+            try {
+                Order data = populateData();
+
+                data.setProvider(new Provider());
+
+                when(repository.save(data)).thenReturn(data);
+                Assertions.assertEquals(data, service.add(data));
+
+                // Assertions
+                String jsonRequest = om.writeValueAsString(data);
+                mockMvc.perform(
+                        post("/orders")
+                                .content(jsonRequest)
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isBadRequest()).andReturn();
+            } catch (Exception e){
+                Assertions.assertEquals(e.getMessage(), "Provider not found");
+            }
+        }
+    }
+
+    @Override
+    public void updateByIdTestWebLayerThrowDataNotFound(String name) {
+        super.updateByIdTestWebLayerThrowDataNotFound("Order");
     }
 }
