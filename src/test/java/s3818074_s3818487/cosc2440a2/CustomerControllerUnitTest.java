@@ -118,7 +118,7 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         @Test
         @Order(2)
         @DisplayName("[GET] Search by multiple params")
-        public void searchByMultipleParams() throws Exception {
+        public void searchByMultipleParamsTest() throws Exception {
             Mockito.when(repository.findAll()).thenReturn(populateListOfData());
             int expectedCount = 1;
             String name = "Khai 2";
