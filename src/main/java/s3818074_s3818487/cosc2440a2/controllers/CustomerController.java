@@ -29,7 +29,7 @@ public class CustomerController extends AbstractController<Customer, UUID> {
     // Without search param
     @Override
     @GetMapping("/all")
-    List<Customer> getAll(Integer page) {
+    public List<Customer> getAll(Integer page) {
         return super.getAll(page);
     }
 
