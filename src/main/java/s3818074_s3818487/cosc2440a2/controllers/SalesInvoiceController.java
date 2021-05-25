@@ -36,11 +36,11 @@ public class SalesInvoiceController extends AbstractController<SalesInvoice, UUI
     @GetMapping
     public List<SalesInvoice> search(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                                      @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                                     @RequestParam(value = "customer", required = false) UUID customerId,
                                      @RequestParam(value = "staff", required = false) UUID staffId,
+                                     @RequestParam(value = "customer", required = false) UUID customerId,
                                      @RequestParam(value = "page", required = false) Integer page
     ) {
 
-        return salesInvoiceService.search(startDate, endDate, customerId, staffId, page);
+        return salesInvoiceService.search(startDate, endDate, staffId, customerId, page);
     }
 }
