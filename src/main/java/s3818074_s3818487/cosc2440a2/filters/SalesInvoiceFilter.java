@@ -17,19 +17,19 @@ public class SalesInvoiceFilter {
 
     public SalesInvoiceFilter start(Date startDate) {
         if (startDate == null) return this;
-        salesInvoices = salesInvoices.stream().filter(i -> DateUtils.isAfterInclusive(i.getDate(), startDate)).collect(Collectors.toList());
+        salesInvoices = salesInvoices.stream().filter(i -> i.getDate() != null && DateUtils.isAfterInclusive(i.getDate(), startDate)).collect(Collectors.toList());
         return this;
     }
 
     public SalesInvoiceFilter in(Date date) {
         if (date == null) return this;
-        salesInvoices = salesInvoices.stream().filter(i -> DateUtils.isSameDay(i.getDate(), date)).collect(Collectors.toList());
+        salesInvoices = salesInvoices.stream().filter(i -> i.getDate() != null && DateUtils.isSameDay(i.getDate(), date)).collect(Collectors.toList());
         return this;
     }
 
     public SalesInvoiceFilter end(Date endDate) {
         if (endDate == null) return this;
-        salesInvoices = salesInvoices.stream().filter(i -> DateUtils.isBeforeInclusive(i.getDate(), endDate)).collect(Collectors.toList());
+        salesInvoices = salesInvoices.stream().filter(i -> i.getDate() != null && DateUtils.isBeforeInclusive(i.getDate(), endDate)).collect(Collectors.toList());
         return this;
     }
 

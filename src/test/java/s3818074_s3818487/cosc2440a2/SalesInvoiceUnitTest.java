@@ -207,5 +207,29 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
                     .andExpect(jsonPath("$", hasSize(expectedCount)));
 
         }
+
+        @Test
+        @DisplayName("[GET] Filter by customer")
+        public void filterByCustomerTest() throws Exception {
+            List<SalesInvoice> salesInvoices = populateListOfData();
+            Customer c1 = new Customer(uuid(), "Tin", "123 ABC",
+                    "0909090888", "123", "admin@email.com", "Chung Quan Tin");
+            Customer c2 = new Customer(uuid(), "Khai", "123 ABC",
+                    "0908321238", "123", "admin@email.com", "Chung Quan Tin");
+            salesInvoices.get(0).setCustomer(c1);
+            salesInvoices.get(1).setCustomer(c1);
+            salesInvoices.get(2).setCustomer(c1);
+            salesInvoices.get(3).setCustomer(c2);
+            System.out.println(salesInvoices.get(0).getCustomer().getId());
+
+            Mockito.when(repository.findAll()).thenReturn(salesInvoices);
+            int expectedCount = 3;
+            Assertions.assertEquals(controller.search(null, null, c1.getId(), null, null).size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("customer", c1.getId().toString()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+
+        }
     }
 }
