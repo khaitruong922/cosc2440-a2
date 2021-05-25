@@ -78,7 +78,7 @@ class StaffControllerUnitTest extends AbstractUnitTest<Staff> {
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class Other {
+    class Additional_API {
         @Test
         @DisplayName("[GET] Get revenue")
         public void getRevenueTest() throws Exception {
