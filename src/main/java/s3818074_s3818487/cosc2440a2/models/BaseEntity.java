@@ -18,4 +18,11 @@ public abstract class BaseEntity {
     public UUID getId() {
         return id;
     }
+
+    public BaseEntity() {
+    }
+
+    public BaseEntity(UUID id) {
+        this.id = id;
+    }
 }
