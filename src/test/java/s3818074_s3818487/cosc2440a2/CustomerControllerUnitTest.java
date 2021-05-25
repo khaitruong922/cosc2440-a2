@@ -32,8 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
 
-    @Autowired
     @InjectMocks
+    @Autowired
     private CustomerController controller;
 
     public CustomerControllerUnitTest() {
@@ -46,8 +46,8 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
     @MockBean
     private SalesInvoiceRepository salesInvoiceRepository;
 
-    @Autowired
     @InjectMocks
+    @Autowired
     protected CustomerService service;
 
     @BeforeEach

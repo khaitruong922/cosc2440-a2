@@ -46,6 +46,7 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
     @MockBean
     protected StaffRepository staffRepository;
 
+    @InjectMocks
     @Autowired
     protected ReceivingNoteService service;
 

@@ -46,14 +46,15 @@ class DeliveryNoteUnitTest extends AbstractUnitTest<DeliveryNote> {
     @MockBean
     protected DeliveryDetailRepository deliveryDetailRepository;
 
-    @Autowired
-    protected DeliveryNoteService service;
-
     @BeforeEach
     public void init() {
         setUp(controller, service, repository);
     }
 
+
+    @InjectMocks
+    @Autowired
+    protected DeliveryNoteService service;
 
     @Override
     protected DeliveryNote populateData() {

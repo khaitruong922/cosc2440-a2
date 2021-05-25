@@ -50,6 +50,7 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
     @MockBean
     protected SalesDetailRepository salesDetailRepository;
 
+    @InjectMocks
     @Autowired
     protected SalesInvoiceService service;
 
@@ -215,20 +216,105 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
             Customer c1 = new Customer(uuid(), "Tin", "123 ABC",
                     "0909090888", "123", "admin@email.com", "Chung Quan Tin");
             Customer c2 = new Customer(uuid(), "Khai", "123 ABC",
-                    "0908321238", "123", "admin@email.com", "Chung Quan Tin");
+                    "0909090888", "123", "admin@email.com", "Chung Quan Tin");
             salesInvoices.get(0).setCustomer(c1);
             salesInvoices.get(1).setCustomer(c1);
             salesInvoices.get(2).setCustomer(c1);
             salesInvoices.get(3).setCustomer(c2);
-            System.out.println(salesInvoices.get(0).getCustomer().getId());
 
             Mockito.when(repository.findAll()).thenReturn(salesInvoices);
             int expectedCount = 3;
-            Assertions.assertEquals(controller.search(null, null, c1.getId(), null, null).size(), expectedCount);
+            Assertions.assertEquals(controller.search(null, null, null, c1.getId(), null).size(), expectedCount);
             mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
                     .param("customer", c1.getId().toString()))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(expectedCount)));
+
+        }
+
+        @Test
+        @DisplayName("[GET] Filter by staff")
+        public void filterByStaffTest() throws Exception {
+            List<SalesInvoice> salesInvoices = populateListOfData();
+            Staff s1 = new Staff(uuid(), "Tin", "123 ABC", "0909090888",
+                    "admin@email.com", "Chung Quan Tin");
+            Staff s2 = new Staff(uuid(), "Khai", "123 ABC", "0909090888",
+                    "admin@email.com", "Chung Quan Tin");
+
+            salesInvoices.get(0).setStaff(s1);
+            salesInvoices.get(1).setStaff(s1);
+            salesInvoices.get(2).setStaff(s1);
+            salesInvoices.get(3).setStaff(s2);
+
+            Mockito.when(repository.findAll()).thenReturn(salesInvoices);
+            int expectedCount = 3;
+            Assertions.assertEquals(controller.search(null, null, s1.getId(), null, null).size(), expectedCount);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("staff", s1.getId().toString()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount)));
+
+        }
+
+        @Test
+        @DisplayName("[GET] Filter by multiple params")
+        public void filterByMultipleParamsTest() throws Exception {
+            List<SalesInvoice> salesInvoices = populateListOfData();
+            Staff s1 = new Staff(uuid(), "Tin", "123 ABC", "0909090888",
+                    "admin@email.com", "Chung Quan Tin");
+            Customer c1 = new Customer(uuid(), "Khai", "123 ABC",
+                    "0909090888", "123", "admin@email.com", "Chung Quan Tin");
+            Date startDate = DateUtils.parse("2020-01-01");
+            Date endDate = DateUtils.parse("2020-02-01");
+
+            salesInvoices.get(0).setStaff(s1);
+            salesInvoices.get(0).setCustomer(c1);
+            salesInvoices.get(0).setDate(DateUtils.parse("2020-01-01"));
+
+            salesInvoices.get(1).setStaff(s1);
+            salesInvoices.get(1).setDate(DateUtils.parse("2020-02-01"));
+
+            salesInvoices.get(2).setCustomer(c1);
+            salesInvoices.get(2).setDate(DateUtils.parse("2020-02-01"));
+
+            salesInvoices.get(3).setStaff(s1);
+            salesInvoices.get(3).setCustomer(c1);
+            salesInvoices.get(3).setDate(DateUtils.parse("2020-03-01"));
+
+
+            Mockito.when(repository.findAll()).thenReturn(salesInvoices);
+
+            // Filter by customer within a period
+            int expectedCount1 = 2;
+            Assertions.assertEquals(controller.search(startDate, endDate, null, c1.getId(), null).size(), expectedCount1);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("customer", c1.getId().toString())
+                    .param("start", DateUtils.format(startDate))
+                    .param("end", DateUtils.format(endDate)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount1)));
+
+            // Filter by staff within a period
+            int expectedCount2 = 2;
+            Assertions.assertEquals(controller.search(startDate, endDate, s1.getId(), null, null).size(), expectedCount2);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("staff", s1.getId().toString())
+                    .param("start", DateUtils.format(startDate))
+                    .param("end", DateUtils.format(endDate)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount2)));
+
+            // Filter by customer and staff within a period
+            int expectedCount3 = 1;
+            Assertions.assertEquals(controller.search(startDate, endDate, s1.getId(), c1.getId(), null).size(), expectedCount3);
+            mockMvc.perform(get("/" + endpoint).contentType(MediaType.APPLICATION_JSON)
+                    .param("staff", s1.getId().toString())
+                    .param("customer", c1.getId().toString())
+                    .param("start", DateUtils.format(startDate))
+                    .param("end", DateUtils.format(endDate)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(expectedCount3)));
+
 
         }
     }

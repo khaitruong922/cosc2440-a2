@@ -45,6 +45,7 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
     @MockBean
     protected OrderDetailRepository orderDetailRepository;
 
+    @InjectMocks
     @Autowired
     protected OrderService service;
 
