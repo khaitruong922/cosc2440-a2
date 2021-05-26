@@ -11,10 +11,7 @@ import org.springframework.http.MediaType;
 import s3818074_s3818487.cosc2440a2.controllers.OrderController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.models.Order;
-import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
-import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
-import s3818074_s3818487.cosc2440a2.repositories.ProviderRepository;
-import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
+import s3818074_s3818487.cosc2440a2.repositories.*;
 import s3818074_s3818487.cosc2440a2.services.OrderService;
 import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 
@@ -40,7 +37,16 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
     protected OrderRepository repository;
 
     @MockBean
+    protected ProductRepository productRepository;
+
+    @MockBean
     protected StaffRepository staffRepository;
+
+    @MockBean
+    protected ReceivingNoteRepository receivingNoteRepository;
+
+    @MockBean
+    protected ReceivingDetailRepository receivingDetailRepository;
 
     @MockBean
     protected ProviderRepository providerRepository;
@@ -159,13 +165,27 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
         @Test
         @DisplayName("[POST] Create receiving note from order")
         public void createReceivingNoteTest() throws Exception {
-            Order order = new Order(uuid(), DateUtils.parse("2020-01-01"), new Staff(), new Provider(), Arrays.asList(
-                    new OrderDetail(uuid(), new Product(), 10, 20.0),
-                    new OrderDetail(uuid(), new Product(), 10, 20.0)
-            ));
+            Category category = new Category(uuid(), "bike");
+            Product product = new Product(uuid(), "bike for kid", "BK3", "BKA",
+                    "BikeForPeace", "This is a bike", category, 25.5);
+            when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
+            Staff staff = new Staff(uuid(), "Tin Staff", "123 ABC", "0909090888",
+                    "admin@email.com", "Chung Quan Tin");
+            when(staffRepository.findById(staff.getId())).thenReturn(Optional.of(staff));
+
+            Provider provider = new Provider(uuid(), "Tin Provider", "123 ABC",
+                    "0909090888", "123", "admin@email.com", "Chung Quan Tin");
+            when(providerRepository.findById(provider.getId())).thenReturn(Optional.of(provider));
+
+            OrderDetail orderDetail = new OrderDetail(uuid(), null, 10,
+                    20.0);
+            when(orderDetailRepository.findById(orderDetail.getId())).thenReturn(Optional.of(orderDetail));
+            List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
+            Order order = new Order(uuid(), DateUtils.parse("2020-01-01"), staff, provider, orderDetails);
             when(repository.findById(order.getId())).thenReturn(Optional.of(order));
             ReceivingNote receivingNote = controller.createReceivingNote(order.getId());
-
+            when(receivingNoteRepository.save(receivingNote)).thenReturn(receivingNote);
+            System.out.println(receivingNote);
             Assertions.assertEquals(order.getStaff(), receivingNote.getStaff());
             Assertions.assertEquals(order.getDate(), receivingNote.getDate());
             Assertions.assertEquals(order.getOrderDetails().size(), receivingNote.getReceivingDetails().size());
