@@ -20,15 +20,18 @@ public class DateUtils {
     }
 
     public static boolean isSameDay(Date d1, Date d2) {
+        if (d1 == null || d2 == null) return false;
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         return fmt.format(d1).equals(fmt.format(d2));
     }
 
     public static boolean isBeforeInclusive(Date d1, Date d2) {
+        if (d1 == null || d2 == null) return false;
         return d1.before(d2) || isSameDay(d1, d2);
     }
 
     public static boolean isAfterInclusive(Date d1, Date d2) {
+        if (d1 == null || d2 == null) return false;
         return d1.after(d2) || isSameDay(d1, d2);
     }
 }
