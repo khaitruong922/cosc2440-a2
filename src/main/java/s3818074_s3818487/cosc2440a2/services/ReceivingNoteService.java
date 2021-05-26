@@ -65,7 +65,7 @@ public class ReceivingNoteService extends AbstractService<ReceivingNote, UUID> {
         ReceivingNote receivingNote = receivingNoteOptional.get();
 
         // Handle receiving details update
-        if (receivingNote.getReceivingDetails() != null) {
+        if (updatedReceivingNote.getReceivingDetails() != null) {
             List<ReceivingDetail> receivingDetails = new ArrayList<>();
             updatedReceivingNote.getReceivingDetails().forEach(rd -> {
                 Optional<ReceivingDetail> receivingDetailOptional = receivingDetailRepository.findById(rd.getId());

@@ -43,4 +43,10 @@ public class SalesInvoiceController extends AbstractController<SalesInvoice, UUI
 
         return salesInvoiceService.search(startDate, endDate, staffId, customerId, page);
     }
+
+    @GetMapping("/revenue")
+    public Double getRevenue(@RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                             @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        return salesInvoiceService.getRevenue(startDate, endDate);
+    }
 }

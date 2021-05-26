@@ -76,7 +76,7 @@ public class SalesInvoiceService extends AbstractService<SalesInvoice, UUID> {
 
 
         // Handle sales details update
-        if (salesInvoice.getSalesDetails() != null) {
+        if (updatedSalesInvoice.getSalesDetails() != null) {
             AtomicReference<Double> totalValue = new AtomicReference<>((double) 0);
             List<SalesDetail> salesDetails = new ArrayList<>();
             updatedSalesInvoice.getSalesDetails().forEach(sd -> {
@@ -122,5 +122,10 @@ public class SalesInvoiceService extends AbstractService<SalesInvoice, UUID> {
 
     public List<SalesInvoice> search(Date startDate, Date endDate, UUID staffId, UUID customerId, Integer page) {
         return new SalesInvoiceFilter(super.getAll(page)).start(startDate).end(endDate).ofStaff(staffId).ofCustomer(customerId).get();
+    }
+
+    public Double getRevenue(Date startDate, Date endDate) {
+        List<SalesInvoice> salesInvoices = new SalesInvoiceFilter(repo.findAll()).start(startDate).end(endDate).get();
+        return salesInvoices.stream().mapToDouble(SalesInvoice::getTotalValue).sum();
     }
 }
