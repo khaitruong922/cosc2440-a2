@@ -21,7 +21,7 @@ public class Provider extends BaseEntity {
     @Column
     private String fax;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String email;
 
     @Column

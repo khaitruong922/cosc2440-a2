@@ -14,10 +14,10 @@ public class Staff extends BaseEntity {
     @Column
     private String address;
 
-    @Column(unique = true)
+    @Column
     private String phone;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String email;
 
     @Column
