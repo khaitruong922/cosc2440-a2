@@ -58,9 +58,4 @@ public class ReceivingNote extends BaseEntity {
     public void setReceivingDetails(List<ReceivingDetail> receivingDetails) {
         this.receivingDetails = receivingDetails;
     }
-
-    public void addReceivingDetail(ReceivingDetail receivingDetail) {
-        receivingDetails.add(receivingDetail);
-
-    }
 }
