@@ -2,14 +2,8 @@ package s3818074_s3818487.cosc2440a2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import s3818074_s3818487.cosc2440a2.models.Order;
-import s3818074_s3818487.cosc2440a2.models.OrderDetail;
-import s3818074_s3818487.cosc2440a2.models.Provider;
-import s3818074_s3818487.cosc2440a2.models.Staff;
-import s3818074_s3818487.cosc2440a2.repositories.OrderDetailRepository;
-import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
-import s3818074_s3818487.cosc2440a2.repositories.ProviderRepository;
-import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
+import s3818074_s3818487.cosc2440a2.models.*;
+import s3818074_s3818487.cosc2440a2.repositories.*;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -23,13 +17,19 @@ public class OrderService extends AbstractService<Order, UUID> {
 
     private final ProviderRepository providerRepository;
 
+    private final ReceivingNoteRepository receivingNoteRepository;
+    private final ReceivingDetailRepository receivingDetailRepository;
+
     @Autowired
     public OrderService(OrderRepository repo, OrderDetailRepository orderDetailRepository,
-                        StaffRepository staffRepository, ProviderRepository providerRepository) {
+                        StaffRepository staffRepository, ProviderRepository providerRepository,
+                        ReceivingNoteRepository receivingNoteRepository, ReceivingDetailRepository receivingDetailRepository) {
         super(repo);
         this.orderDetailRepository = orderDetailRepository;
         this.staffRepository = staffRepository;
         this.providerRepository = providerRepository;
+        this.receivingNoteRepository = receivingNoteRepository;
+        this.receivingDetailRepository = receivingDetailRepository;
     }
 
     @Override
@@ -103,5 +103,25 @@ public class OrderService extends AbstractService<Order, UUID> {
         order.setDate(Optional.ofNullable(updatedOrder.getDate()).orElse(order.getDate()));
 
         return order;
+    }
+
+    public ReceivingNote createReceivingNote(UUID id) {
+        Optional<Order> orderOptional = repo.findById(id);
+        if (orderOptional.isEmpty()) throw new RuntimeException("Order not found!");
+        Order order = orderOptional.get();
+        List<OrderDetail> orderDetails = order.getOrderDetails() != null ? order.getOrderDetails() : new ArrayList<>();
+        List<ReceivingDetail> receivingDetails = new ArrayList<>();
+        ReceivingNote receivingNote = new ReceivingNote(null, order.getDate(), order.getStaff(), receivingDetails);
+        orderDetails.forEach(od -> {
+                    ReceivingDetail receivingDetail = new ReceivingDetail(null, od.getProduct(), od.getQuantity());
+                    receivingDetail = receivingDetailRepository.saveAndFlush(receivingDetail);
+                    receivingDetail = receivingDetailRepository.findById(receivingDetail.getId()).get();
+                    receivingDetail.setReceivingNote(receivingNote);
+                    receivingDetails.add(receivingDetail);
+                }
+
+        );
+        receivingNote.setReceivingDetails(receivingDetails);
+        return receivingNoteRepository.save(receivingNote);
     }
 }
