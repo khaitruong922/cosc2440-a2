@@ -3,7 +3,6 @@ package s3818074_s3818487.cosc2440a2;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ class StaffControllerUnitTest extends AbstractUnitTest<Staff> {
 
     @BeforeEach
     public void init() {
-        setUp(controller, service, repository);
+        setup(controller, service, repository);
     }
 
     @Override

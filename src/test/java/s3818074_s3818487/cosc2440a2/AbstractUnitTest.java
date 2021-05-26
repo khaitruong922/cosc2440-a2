@@ -32,7 +32,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
 
     protected ObjectMapper om = new ObjectMapper();
 
-    public void setUp(AbstractController<T, UUID> controller, AbstractService<T, UUID> service, JpaRepository<T, UUID> repository) {
+    public void setup(AbstractController<T, UUID> controller, AbstractService<T, UUID> service, JpaRepository<T, UUID> repository) {
         om.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
         this.repository = repository;
         this.service = service;;

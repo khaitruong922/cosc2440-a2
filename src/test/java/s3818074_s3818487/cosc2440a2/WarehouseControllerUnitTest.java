@@ -1,9 +1,7 @@
 package s3818074_s3818487.cosc2440a2;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -11,6 +9,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import s3818074_s3818487.cosc2440a2.controllers.WarehouseInfoController;
 import s3818074_s3818487.cosc2440a2.models.*;
 import s3818074_s3818487.cosc2440a2.repositories.DeliveryNoteRepository;
@@ -19,6 +20,11 @@ import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
 import s3818074_s3818487.cosc2440a2.services.DeliveryNoteService;
 import s3818074_s3818487.cosc2440a2.services.ProductService;
 import s3818074_s3818487.cosc2440a2.services.ReceivingNoteService;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 
 import java.util.*;
@@ -28,6 +34,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class WarehouseControllerUnitTest {
+
+    private MockMvc mockMvc;
     @MockBean
     private ReceivingNoteRepository receivingNoteRepository;
     @MockBean
@@ -35,10 +43,15 @@ public class WarehouseControllerUnitTest {
     @MockBean
     private ProductRepository productRepository;
 
+
     @InjectMocks
     @Autowired
     private WarehouseInfoController warehouseInfoController;
 
+    @BeforeEach
+    private void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(warehouseInfoController).build();
+    }
 
     private UUID uuid() {
         return UUID.randomUUID();
@@ -46,7 +59,7 @@ public class WarehouseControllerUnitTest {
 
     @Test
     @DisplayName("[GET] Get warehouse info")
-    public void getWarehouseInfoTest() {
+    public void getWarehouseInfoTest() throws Exception {
         Product p1 = new Product(uuid(), "bike for kid", "BK3", "BKA",
                 "BikeForPeace", "This is a bike", new Category(), 20);
         Product p2 = new Product(uuid(), "book for kid", "BK5", "BOOKA",
@@ -109,6 +122,8 @@ public class WarehouseControllerUnitTest {
         Assertions.assertEquals(warehouseInfo2P3.getDelivery(), 4);
         Assertions.assertEquals(warehouseInfo2P3.getReceived(), 15);
         Assertions.assertEquals(warehouseInfo2P3.getBalance(), 11);
+
+        mockMvc.perform(get("/warehouse").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
     }
 }

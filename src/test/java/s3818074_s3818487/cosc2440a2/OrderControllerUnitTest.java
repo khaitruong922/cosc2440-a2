@@ -16,7 +16,10 @@ import s3818074_s3818487.cosc2440a2.repositories.OrderRepository;
 import s3818074_s3818487.cosc2440a2.repositories.ProviderRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
 import s3818074_s3818487.cosc2440a2.services.OrderService;
+import s3818074_s3818487.cosc2440a2.utils.DateUtils;
+
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +54,7 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
 
     @BeforeEach
     public void init() {
-        setUp(controller, service, repository);
+        setup(controller, service, repository);
     }
 
     @Override
@@ -68,8 +71,8 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
                 "0909090888", "123", "admin@email.com", "Chung Quan Tin");
         when(providerRepository.findById(provider.getId())).thenReturn(Optional.of(provider));
 
-        OrderDetail orderDetail = new OrderDetail(uuid(), product, 10,
-                product.getSellingPrice() * 10);
+        OrderDetail orderDetail = new OrderDetail(uuid(), null, 10,
+                20.0);
         when(orderDetailRepository.findById(orderDetail.getId())).thenReturn(Optional.of(orderDetail));
 
         List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
@@ -96,11 +99,11 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class Element_Not_Found{
+    class Element_Not_Found {
 
         @Test
         @DisplayName("[POST][ERROR] Staff not found!")
-        void addTestThrowStaffNotFound(){
+        void addTestThrowStaffNotFound() {
             try {
                 Order data = populateData();
 
@@ -116,14 +119,14 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
                                 .content(jsonRequest)
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest()).andReturn();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Assertions.assertEquals(e.getMessage(), "Staff not found!");
             }
         }
 
         @Test
         @DisplayName("[POST][ERROR] Provider not found!")
-        void addTestThrowProviderNotFound(){
+        void addTestThrowProviderNotFound() {
             try {
                 Order data = populateData();
 
@@ -139,7 +142,7 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
                                 .content(jsonRequest)
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest()).andReturn();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Assertions.assertEquals(e.getMessage(), "Provider not found");
             }
         }
@@ -148,6 +151,30 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
     @Override
     public void updateByIdTestWebLayerThrowDataNotFound(String name) {
         super.updateByIdTestWebLayerThrowDataNotFound("Order");
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Additional_API {
+        @Test
+        @DisplayName("[POST] Create receiving note from order")
+        public void createReceivingNoteTest() throws Exception {
+            Order order = new Order(uuid(), DateUtils.parse("2020-01-01"), new Staff(), new Provider(), Arrays.asList(
+                    new OrderDetail(uuid(), new Product(), 10, 20.0),
+                    new OrderDetail(uuid(), new Product(), 10, 20.0)
+            ));
+            when(repository.findById(order.getId())).thenReturn(Optional.of(order));
+            ReceivingNote receivingNote = controller.createReceivingNote(order.getId());
+
+            Assertions.assertEquals(order.getStaff(), receivingNote.getStaff());
+            Assertions.assertEquals(order.getDate(), receivingNote.getDate());
+            Assertions.assertEquals(order.getOrderDetails().size(), receivingNote.getReceivingDetails().size());
+
+
+            mockMvc.perform(post("/" + endpoint + "/" + order.getId() + "/receiving-note").contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+
+        }
     }
 
 }

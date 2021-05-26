@@ -48,7 +48,7 @@ class DeliveryNoteUnitTest extends AbstractUnitTest<DeliveryNote> {
 
     @BeforeEach
     public void init() {
-        setUp(controller, service, repository);
+        setup(controller, service, repository);
     }
 
 

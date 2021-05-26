@@ -56,7 +56,7 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
 
     @BeforeEach
     public void init() {
-        setUp(controller, service, repository);
+        setup(controller, service, repository);
     }
 
     @Override
@@ -318,4 +318,27 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
 
         }
     }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Additional_API {
+        @Test
+        @DisplayName("[GET] Get revenue")
+        public void getRevenueTest() throws Exception {
+            List<SalesInvoice> salesInvoices = populateListOfData();
+            when(repository.findAll()).thenReturn(salesInvoices);
+            Date startDate = DateUtils.parse("2020-01-01");
+            Date endDate = DateUtils.parse("2020-02-01");
+
+            Assertions.assertEquals(controller.getRevenue(null, null), 12000.0);
+            Assertions.assertEquals(controller.getRevenue(startDate, endDate), 6000.0);
+
+            mockMvc.perform(get("/" + endpoint + "/revenue").contentType(MediaType.APPLICATION_JSON)
+                    .param("start", DateUtils.format(startDate))
+                    .param("end", DateUtils.format(endDate)))
+                    .andExpect(status().isOk());
+
+        }
+    }
+
 }

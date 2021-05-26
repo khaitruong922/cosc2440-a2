@@ -52,7 +52,7 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
 
     @BeforeEach
     public void init() {
-        setUp(controller, service, repository);
+        setup(controller, service, repository);
     }
 
     @Override
