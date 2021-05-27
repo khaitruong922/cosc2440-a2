@@ -9,17 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import s3818074_s3818487.cosc2440a2.controllers.ReceivingNoteController;
+import s3818074_s3818487.cosc2440a2.controllers.DeliveryNoteController;
 import s3818074_s3818487.cosc2440a2.models.*;
-import s3818074_s3818487.cosc2440a2.repositories.ReceivingDetailRepository;
-import s3818074_s3818487.cosc2440a2.repositories.ReceivingNoteRepository;
+import s3818074_s3818487.cosc2440a2.repositories.DeliveryDetailRepository;
+import s3818074_s3818487.cosc2440a2.repositories.DeliveryNoteRepository;
 import s3818074_s3818487.cosc2440a2.repositories.StaffRepository;
-import s3818074_s3818487.cosc2440a2.services.ReceivingNoteService;
+import s3818074_s3818487.cosc2440a2.services.DeliveryNoteService;
 import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,35 +29,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
+class DeliveryNoteControllerUnitTest extends AbstractControllerUnitTest<DeliveryNote> {
     @InjectMocks
     @Autowired
-    private ReceivingNoteController controller;
+    private DeliveryNoteController controller;
 
-    public ReceivingNoteUnitTest() {
-        super("receiving-notes");
+    public DeliveryNoteControllerUnitTest() {
+        super("delivery-notes");
     }
 
     @MockBean
-    protected ReceivingNoteRepository repository;
-
-    @MockBean
-    protected ReceivingDetailRepository receivingDetailRepository;
+    protected DeliveryNoteRepository repository;
 
     @MockBean
     protected StaffRepository staffRepository;
 
-    @InjectMocks
-    @Autowired
-    protected ReceivingNoteService service;
+    @MockBean
+    protected DeliveryDetailRepository deliveryDetailRepository;
 
     @BeforeEach
     public void init() {
         setup(controller, service, repository);
     }
 
+
+    @InjectMocks
+    @Autowired
+    protected DeliveryNoteService service;
+
     @Override
-    protected ReceivingNote populateData() {
+    protected DeliveryNote populateData() {
         Category c1 = new Category(uuid(), "bike");
         Category c2 = new Category(uuid(), "book");
         Product p1 = new Product(uuid(), "bike for kid", "BK3", "BKA",
@@ -68,18 +70,18 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
                 "admin@email.com", "Chung Quan Tin");
         when(staffRepository.findById(staff.getId())).thenReturn(Optional.of(staff));
 
-        ReceivingDetail rd1 = new ReceivingDetail(uuid(), p1, 10);
-        when(receivingDetailRepository.findById(rd1.getId())).thenReturn(Optional.of(rd1));
-        ReceivingDetail rd2 = new ReceivingDetail(uuid(), p2, 10);
-        when(receivingDetailRepository.findById(rd2.getId())).thenReturn(Optional.of(rd2));
+        DeliveryDetail d1 = new DeliveryDetail(uuid(), p1, 10);
+        when(deliveryDetailRepository.findById(d1.getId())).thenReturn(Optional.of(d1));
+        DeliveryDetail d2 = new DeliveryDetail(uuid(), p2, 10);
+        when(deliveryDetailRepository.findById(d2.getId())).thenReturn(Optional.of(d2));
 
-        return new ReceivingNote(uuid(), new Date(), staff, Arrays.asList(
-                rd1, rd2
+        return new DeliveryNote(uuid(), new Date(), staff, Arrays.asList(
+                d1, d2
         ));
     }
 
     @Override
-    protected List<ReceivingNote> populateListOfData() {
+    protected List<DeliveryNote> populateListOfData() {
         Category c1 = new Category(uuid(), "bike");
         Category c2 = new Category(uuid(), "book");
         Product p1 = new Product(uuid(), "bike for kid", "BK3", "BKA",
@@ -89,42 +91,61 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
         Staff staff = new Staff(uuid(), "Tin Staff", "123 ABC", "0909090888",
                 "admin@email.com", "Chung Quan Tin");
         return Arrays.asList(
-                new ReceivingNote(uuid(), DateUtils.parse("2020-01-01"), staff, Arrays.asList(
-                        new ReceivingDetail(uuid(), p1, 10),
-                        new ReceivingDetail(uuid(), p2, 10)
+                new DeliveryNote(uuid(), DateUtils.parse("2020-01-01"), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(), p1, 10),
+                        new DeliveryDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), DateUtils.parse("2020-02-01"), staff, Arrays.asList(
-                        new ReceivingDetail(uuid(), p1, 10),
-                        new ReceivingDetail(uuid(), p2, 10)
+                new DeliveryNote(uuid(), DateUtils.parse("2020-02-01"), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(), p1, 10),
+                        new DeliveryDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), DateUtils.parse("2020-03-01"), staff, Arrays.asList(
-                        new ReceivingDetail(uuid(), p1, 10),
-                        new ReceivingDetail(uuid(), p2, 10)
+                new DeliveryNote(uuid(), DateUtils.parse("2020-03-01"), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(), p1, 10),
+                        new DeliveryDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), DateUtils.parse("2020-04-01"), staff, Arrays.asList(
-                        new ReceivingDetail(uuid(), p1, 10),
-                        new ReceivingDetail(uuid(), p2, 10)
+                new DeliveryNote(uuid(), DateUtils.parse("2020-04-01"), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(), p1, 10),
+                        new DeliveryDetail(uuid(), p2, 10)
                 )),
-                new ReceivingNote(uuid(), DateUtils.parse("2020-05-01"), staff, Arrays.asList(
-                        new ReceivingDetail(uuid(), p1, 10),
-                        new ReceivingDetail(uuid(), p2, 10)
+                new DeliveryNote(uuid(), DateUtils.parse("2020-05-01"), staff, Arrays.asList(
+                        new DeliveryDetail(uuid(), p1, 10),
+                        new DeliveryDetail(uuid(), p2, 10)
                 ))
         );
     }
 
     @Override
     public void updateByIdTestWebLayerThrowDataNotFound(String name) {
-        super.updateByIdTestWebLayerThrowDataNotFound("Receiving note");
+        super.updateByIdTestWebLayerThrowDataNotFound("Delivery note");
     }
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class Element_Not_Found{
+    class Override_CRUD_API {
+        @Test
+        @DisplayName("[GET] Get all without search params")
+        public void getAllTest() throws Exception {
+            List<DeliveryNote> data = populateListOfData();
+
+            given(repository.findAll()).willReturn(data);
+            Assertions.assertEquals(data.size(), controller.getAll(null).size());
+            Assertions.assertEquals(data, controller.getAll(null));
+
+            mockMvc.perform(
+                    get("/" + endpoint + "/all").contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(data.size()))).andReturn();
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Element_Not_Found {
         @Test
         @DisplayName("[POST][ERROR] Staff not found!")
-        void addTestThrowStaffNotFound(){
+        void addTestThrowStaffNotFound() {
             try {
-                ReceivingNote data = populateData();
+                DeliveryNote data = populateData();
 
                 data.setStaff(new Staff());
 
@@ -134,21 +155,22 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
                 // Assertions
                 String jsonRequest = om.writeValueAsString(data);
                 mockMvc.perform(
-                        post("/receiving-notes")
+                        post("/sales-invoices")
                                 .content(jsonRequest)
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest()).andReturn();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Assertions.assertEquals(e.getMessage(), "Staff not found!");
             }
         }
-        @Test
-        @DisplayName("[POST][ERROR] Receiving detail not found!")
-        void addTestThrowReceivingDetailNotFound(){
-            try {
-                ReceivingNote data = populateData();
 
-                data.setReceivingDetails(Collections.singletonList(new ReceivingDetail()));
+        @Test
+        @DisplayName("[POST][ERROR] Delivery detail not found!")
+        void addTestThrowDeliveryDetailNotFound() {
+            try {
+                DeliveryNote data = populateData();
+
+                data.setDeliveryDetails(Collections.singletonList(new DeliveryDetail()));
 
                 when(repository.save(data)).thenReturn(data);
                 Assertions.assertEquals(data, service.add(data));
@@ -156,15 +178,16 @@ class ReceivingNoteUnitTest extends AbstractUnitTest<ReceivingNote> {
                 // Assertions
                 String jsonRequest = om.writeValueAsString(data);
                 mockMvc.perform(
-                        post("/receiving-notes")
+                        post("/sales-invoices")
                                 .content(jsonRequest)
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest()).andReturn();
-            } catch (Exception e){
-                Assertions.assertEquals(e.getMessage(), "Receiving detail not found!");
+            } catch (Exception e) {
+                Assertions.assertEquals(e.getMessage(), "Delivery detail not found!");
             }
         }
     }
+
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class Search_API {

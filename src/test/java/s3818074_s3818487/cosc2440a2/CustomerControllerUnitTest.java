@@ -22,13 +22,14 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
+class CustomerControllerUnitTest extends AbstractControllerUnitTest<Customer> {
 
     @InjectMocks
     @Autowired
@@ -78,6 +79,24 @@ class CustomerControllerUnitTest extends AbstractUnitTest<Customer> {
         super.updateByIdTestWebLayerThrowDataNotFound("Customer");
     }
 
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Override_CRUD_API {
+        @Test
+        @DisplayName("[GET] Get all without search params")
+        public void getAllTest() throws Exception {
+            List<Customer> data = populateListOfData();
+
+            given(repository.findAll()).willReturn(data);
+            Assertions.assertEquals(data.size(), controller.getAll(null).size());
+            Assertions.assertEquals(data, controller.getAll(null));
+
+            mockMvc.perform(
+                    get("/" + endpoint + "/all").contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(data.size()))).andReturn();
+        }
+    }
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

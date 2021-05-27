@@ -3,6 +3,9 @@ package s3818074_s3818487.cosc2440a2;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,19 +26,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public abstract class AbstractUnitTest<T extends BaseEntity> {
+public abstract class AbstractControllerUnitTest<T extends BaseEntity> {
     protected MockMvc mockMvc;
+
 
     protected JpaRepository<T, UUID> repository;
 
     protected AbstractService<T, UUID> service;
+
+    protected AbstractController<T, UUID> controller;
 
     protected ObjectMapper om = new ObjectMapper();
 
     public void setup(AbstractController<T, UUID> controller, AbstractService<T, UUID> service, JpaRepository<T, UUID> repository) {
         om.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
         this.repository = repository;
-        this.service = service;;
+        this.service = service;
+        this.controller = controller;
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
@@ -51,7 +58,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
 
     protected final String endpoint;
 
-    public AbstractUnitTest(String endpoint) {
+    public AbstractControllerUnitTest(String endpoint) {
         this.endpoint = endpoint;
     }
 
@@ -61,7 +68,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class CRUD_API{
+    class CRUD_API {
         @Test
         @DisplayName("[POST] Add")
         public void addTest() {
@@ -69,7 +76,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
 
             // Assertions
             when(repository.save(data)).thenReturn(data);
-            Assertions.assertEquals(data, service.add(data));
+            Assertions.assertEquals(data, controller.add(data));
         }
 
         @Test
@@ -90,9 +97,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
         public void getAllTest() {
             List<T> data = populateListOfData();
 
-            given(repository.findAll()).willReturn(data);
-            Assertions.assertEquals(data.size(), service.getAll().size());
-            Assertions.assertEquals(data, service.getAll());
+            when(repository.findAll()).thenReturn(data);
+            Assertions.assertEquals(data.size(), controller.getAll(null).size());
+            Assertions.assertEquals(data, controller.getAll(null));
         }
 
         @Test
@@ -100,7 +107,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
         public void getAllTestWebLayer() throws Exception {
             List<T> data = populateListOfData();
 
-            given(repository.findAll()).willReturn(data);
+            when(repository.findAll()).thenReturn(data);
             mockMvc.perform(
                     get("/" + endpoint).contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk())
@@ -115,7 +122,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
             data.setId(dataId);
 
             when(repository.findById(dataId)).thenReturn(java.util.Optional.of(data));
-            Assertions.assertEquals(data, service.getById(dataId));
+            Assertions.assertEquals(data, controller.getById(dataId));
         }
 
         @Test
@@ -136,8 +143,8 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
             List<T> data = populateListOfData();
 
             when(repository.findAll()).thenReturn(data);
-            Assertions.assertEquals(data.size(), service.getAll().size());
-            Assertions.assertEquals(data, service.getAll());
+            Assertions.assertEquals(data.size(), controller.getAll(null).size());
+            Assertions.assertEquals(data, controller.getAll(null));
 
             // when
             repository.deleteAll();
@@ -145,7 +152,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
             verify(repository, times(1)).deleteAll();
 
             when(repository.findAll()).thenReturn(Collections.emptyList());
-            Assertions.assertEquals(0, service.getAll().size());
+            Assertions.assertEquals(0, controller.getAll(null).size());
         }
 
         @Test
@@ -164,7 +171,7 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
             data.setId(dataId);
 
             when(repository.findById(dataId)).thenReturn(java.util.Optional.of(data));
-            Assertions.assertEquals(data, service.getById(dataId));
+            Assertions.assertEquals(data, controller.getById(dataId));
 
             // when
             repository.deleteById(dataId);
@@ -192,12 +199,12 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
             data.setId(dataId);
 
             when(repository.findById(dataId)).thenReturn(java.util.Optional.of(data));
-            Assertions.assertEquals(data, service.getById(dataId));
+            Assertions.assertEquals(data, controller.getById(dataId));
 
             UUID newId = uuid();
             data.setId(newId);
             when(repository.save(data)).thenReturn(data);
-            Assertions.assertEquals(data, service.updateById(data, dataId));
+            Assertions.assertEquals(data, controller.updateById(data, dataId));
         }
 
         @Test
@@ -223,15 +230,21 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
             List<T> data = populateListOfData();
 
             when(repository.findAll()).thenReturn(data);
-            Assertions.assertEquals(data.size(), service.getAll().size());
+            when(repository.findAll(PageRequest.of(0, 5))).thenReturn(new PageImpl<>(data));
+            Assertions.assertEquals(data.size(), controller.getAll(0).size());
         }
 
         @Test
         @DisplayName("[GET][WEB] Get all in page")
         public void getAllInPageTestWebLayer() throws Exception {
+            List<T> data = populateListOfData();
+            when(repository.findAll(PageRequest.of(0, 5))).thenReturn(new PageImpl<>(data));
+
             mockMvc.perform(
-                    get("/" + endpoint ).contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(status().isOk()).andReturn();
+                    get("/" + endpoint).contentType(MediaType.APPLICATION_JSON_VALUE)
+                            .param("page", "0"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(data.size())));
         }
     }
 
@@ -249,9 +262,9 @@ public abstract class AbstractUnitTest<T extends BaseEntity> {
                             .content(jsonRequest)
                             .contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk()).andReturn();
-        } catch (Exception e){
+        } catch (Exception e) {
             Assertions.assertEquals(e.getMessage(),
-                    "Request processing failed; nested exception is java.lang.RuntimeException: " +name+ " not found!");
+                    "Request processing failed; nested exception is java.lang.RuntimeException: " + name + " not found!");
         }
 
     }

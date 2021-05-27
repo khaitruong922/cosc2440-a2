@@ -15,7 +15,7 @@ public abstract class AbstractController<T extends BaseEntity, ID> {
     }
 
     @GetMapping
-    public List<T> getAll(@PathVariable(value = "page", required = false) Integer page) {
+    public List<T> getAll(@RequestParam(value = "page", required = false) Integer page) {
         return service.getAll(page);
     }
 

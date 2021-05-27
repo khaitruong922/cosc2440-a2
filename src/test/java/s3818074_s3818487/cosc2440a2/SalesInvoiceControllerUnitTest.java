@@ -21,6 +21,7 @@ import s3818074_s3818487.cosc2440a2.utils.DateUtils;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,12 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
+class SalesInvoiceControllerUnitTest extends AbstractControllerUnitTest<SalesInvoice> {
     @InjectMocks
     @Autowired
     private SalesInvoiceController controller;
 
-    public SalesInvoiceUnitTest() {
+    public SalesInvoiceControllerUnitTest() {
         super("sales-invoices");
     }
 
@@ -187,6 +188,25 @@ class SalesInvoiceUnitTest extends AbstractUnitTest<SalesInvoice> {
             } catch (Exception e) {
                 Assertions.assertEquals(e.getMessage(), "Sales detail not found!");
             }
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class Override_CRUD_API {
+        @Test
+        @DisplayName("[GET] Get all without search params")
+        public void getAllTest() throws Exception {
+            List<SalesInvoice> data = populateListOfData();
+
+            given(repository.findAll()).willReturn(data);
+            Assertions.assertEquals(data.size(), controller.getAll(null).size());
+            Assertions.assertEquals(data, controller.getAll(null));
+
+            mockMvc.perform(
+                    get("/" + endpoint + "/all").contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(data.size()))).andReturn();
         }
     }
 

@@ -24,7 +24,7 @@ import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class OrderControllerUnitTest extends AbstractUnitTest<Order> {
+class OrderControllerUnitTest extends AbstractControllerUnitTest<Order> {
     @InjectMocks
     @Autowired
     private OrderController controller;

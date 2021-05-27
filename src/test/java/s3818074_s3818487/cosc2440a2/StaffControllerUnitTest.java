@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class StaffControllerUnitTest extends AbstractUnitTest<Staff> {
+class StaffControllerUnitTest extends AbstractControllerUnitTest<Staff> {
     public StaffControllerUnitTest() {
         super("staffs");
     }
