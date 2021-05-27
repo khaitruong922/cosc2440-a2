@@ -1,12 +1,7 @@
 package s3818074_s3818487.cosc2440a2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import s3818074_s3818487.cosc2440a2.filters.CustomerFilter;
 import s3818074_s3818487.cosc2440a2.filters.SalesInvoiceFilter;
 import s3818074_s3818487.cosc2440a2.models.Customer;
@@ -15,7 +10,10 @@ import s3818074_s3818487.cosc2440a2.repositories.CustomerRepository;
 import s3818074_s3818487.cosc2440a2.repositories.SalesInvoiceRepository;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional

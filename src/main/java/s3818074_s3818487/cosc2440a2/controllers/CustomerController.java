@@ -3,10 +3,7 @@ package s3818074_s3818487.cosc2440a2.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import s3818074_s3818487.cosc2440a2.filters.CustomerFilter;
-import s3818074_s3818487.cosc2440a2.filters.SalesInvoiceFilter;
 import s3818074_s3818487.cosc2440a2.models.Customer;
-import s3818074_s3818487.cosc2440a2.models.SalesInvoice;
 import s3818074_s3818487.cosc2440a2.services.CustomerService;
 import s3818074_s3818487.cosc2440a2.services.SalesInvoiceService;
 

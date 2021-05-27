@@ -3,14 +3,10 @@ package s3818074_s3818487.cosc2440a2.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import s3818074_s3818487.cosc2440a2.filters.SalesInvoiceFilter;
-import s3818074_s3818487.cosc2440a2.models.SalesInvoice;
 import s3818074_s3818487.cosc2440a2.models.Staff;
-import s3818074_s3818487.cosc2440a2.services.SalesInvoiceService;
 import s3818074_s3818487.cosc2440a2.services.StaffService;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @RestController

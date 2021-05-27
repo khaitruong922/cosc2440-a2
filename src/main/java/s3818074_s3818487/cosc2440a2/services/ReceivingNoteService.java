@@ -2,9 +2,7 @@ package s3818074_s3818487.cosc2440a2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import s3818074_s3818487.cosc2440a2.filters.DeliveryNoteFilter;
 import s3818074_s3818487.cosc2440a2.filters.ReceivingNoteFilter;
-import s3818074_s3818487.cosc2440a2.models.DeliveryNote;
 import s3818074_s3818487.cosc2440a2.models.ReceivingDetail;
 import s3818074_s3818487.cosc2440a2.models.ReceivingNote;
 import s3818074_s3818487.cosc2440a2.models.Staff;
