@@ -10,7 +10,7 @@ For example: http://localhost:8080/swagger.html
   
 - Chung Quan Tin - s3818074
 
-## Note
+## Notes
 
 ### Insert foreign key in POST / PATCH request
 
