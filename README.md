@@ -4,32 +4,58 @@ See the API documentation on: <SERVER-URI>/swagger.html
   
 For example: http://localhost:8080/swagger.html
 
-1. CRUD for these classes (5% for pagination)
+## Members
 
-- Staff [Done]
+- Truong Duc Khai - s3818074
+  
+- Chung Quan Tin - s3818074
 
-- Customer (Search API) [In-progress | #Contact person]
+## Note
 
-- Order [In-progress]
+### Insert foreign key in POST / PATCH request
 
-- Inventory receiving note
+Example 1: Insert order detail with product as foreign key 
 
-- Inventory delivery note
+```
+{
+    "product":{
+        "id": <product-id>
+    },
+    // other fields
+}
+```
 
-- Sales invoice (Search API)
+Example 2: Insert order with order details as foreign keys
+```
+    {
+        "orderDetails":[
+            {
+                "id": <orderDetail1-id>
+            },
+            {
+                "id": <orderDetail2-id>
+            }
+        ]
+         // other fields
+    }
+```
 
-1.1. Some additional REST API:
+### Insert date in POST / PATCH request
 
-- List all inventory note, sale invoice by a period: start date and end date
+Follow this format: yyyy-MM-dd
 
-- All sales invoice by a customer and by a sale staff in a period: start date and end date. 
+Example: Insert order date
+```
+{
+    "date": "2020-01-01"
+    // other fields
+}
+```
 
-The company also needs to know the following statistical data:
+### Provide date in GET request parameters
+Follow this format: yyyy-MM-dd
 
-- Revenue, revenue by a customer, revenue by a sale staff. Input params: start date and end date.  Revenue = total value of all sales invoices in a period. Total value of an invoice = all products quantity * price.
-
-- Inventory of all products in warehouse at a particular date
-
-2. Students write unit tests for all the API that they build. Ensure that unit tests will provide at least 100% code coverage. 
-
-3. Student writes a design report that has the following sections:
+Example: Get sales invoices from 2020-01-01 to 2021-01-01 
+```
+http://localhost:8080/sales-invoices?start=2020-01-01&end=2021-01-01
+```
