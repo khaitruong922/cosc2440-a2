@@ -183,9 +183,20 @@ class OrderControllerUnitTest extends AbstractUnitTest<Order> {
             List<OrderDetail> orderDetails = Collections.singletonList(orderDetail);
             Order order = new Order(uuid(), DateUtils.parse("2020-01-01"), staff, provider, orderDetails);
             when(repository.findById(order.getId())).thenReturn(Optional.of(order));
+            List<ReceivingDetail> receivingDetails = new ArrayList<>();
+            ReceivingNote expectedReceivingNote = new ReceivingNote(uuid(), order.getDate(), order.getStaff(), receivingDetails);
+            order.getOrderDetails().forEach(od -> {
+                receivingDetails.add(new ReceivingDetail(uuid(), od.getProduct(), od.getQuantity()));
+            });
+            ReceivingDetail expectedReceivingDetail = new ReceivingDetail(uuid(), new Product(), 10);
+
+            when(receivingNoteRepository.save(any(ReceivingNote.class))).thenReturn(expectedReceivingNote);
+            when(receivingDetailRepository.saveAndFlush(any(ReceivingDetail.class))).thenReturn(expectedReceivingDetail);
+            when(receivingDetailRepository.findById(any(UUID.class))).thenReturn(Optional.of(expectedReceivingDetail));
+
             ReceivingNote receivingNote = controller.createReceivingNote(order.getId());
-            when(receivingNoteRepository.save(receivingNote)).thenReturn(receivingNote);
             System.out.println(receivingNote);
+
             Assertions.assertEquals(order.getStaff(), receivingNote.getStaff());
             Assertions.assertEquals(order.getDate(), receivingNote.getDate());
             Assertions.assertEquals(order.getOrderDetails().size(), receivingNote.getReceivingDetails().size());
