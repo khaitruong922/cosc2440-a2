@@ -8,7 +8,7 @@ For example: http://localhost:8080/swagger.html
 
 - Truong Duc Khai - s3818074
   
-- Chung Quan Tin - s3818074
+- Chung Quan Tin - s3818487
 
 ## Notes
 
